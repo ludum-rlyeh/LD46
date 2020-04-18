@@ -10,7 +10,7 @@ var history = []
 
 func _ready():
 	# Set the initial state to the first child node
-	state = $GoStraight
+	state = $FollowPath
 	_enter_state([])
 	
 func change_to(new_state, params : Array):

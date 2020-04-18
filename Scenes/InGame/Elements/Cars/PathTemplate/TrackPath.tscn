@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=2]
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends Node2D
+
+func get_track_path():
+	return $Paths/PathTrack
+"
+
+[sub_resource type="GDScript" id=1]
+resource_name = "CrossArea"
+script/source = "extends Area2D
+
+func get_track_path() -> Path2D:
+	return get_parent().get_track_path()
+
+func get_type():
+	return Enums.TRIGGER_TYPE.CHANGE_TRACK
+"
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 2.79376, 0.416122 )
+
+[node name="TrackPath" type="Node2D"]
+script = SubResource( 4 )
+
+[node name="Trigger" type="Area2D" parent="."]
+rotation = -1.5708
+scale = Vector2( 3.3, 3.3 )
+monitoring = false
+script = SubResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Trigger"]
+shape = SubResource( 2 )
+one_way_collision = true
+one_way_collision_margin = 4.7
+
+[node name="Paths" type="Node2D" parent="."]
+
+[node name="PathTrack" type="Path2D" parent="Paths"]
+curve = null
