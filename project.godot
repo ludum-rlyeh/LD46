@@ -16,8 +16,14 @@ _global_script_class_icons={
 [application]
 
 config/name="LD46 - Keep It Alive"
-run/main_scene="res://Main.tscn"
+run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Events="*res://Scripts/Events.gd"
+Enums="*res://Scripts/Enums.gd"
+Tools="*res://Scripts/Tools.gd"
 
 [rendering]
 
