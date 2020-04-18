@@ -7,16 +7,18 @@ script/source = "extends KinematicBody2D
 
 const SPEED = 200.0
 
+var attract = Vector2.ZERO
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	add_to_group(\"doggo\")
 	set_physics_process(true)
 
 func _physics_process(delta):
+	var velocity = Vector2(0.0,0.0)
+	
 	if Input.is_action_pressed(\"ui_right\") or Input.is_action_pressed(\"ui_left\")\\
 		or Input.is_action_pressed(\"ui_down\") or Input.is_action_pressed(\"ui_up\"):
-		
-		var velocity = Vector2(0.0,0.0)
 		
 		if Input.is_action_pressed(\"ui_right\"):
 			velocity.x += 1.0
@@ -26,15 +28,19 @@ func _physics_process(delta):
 			velocity.y += 1.0
 		elif Input.is_action_pressed(\"ui_up\"):
 			velocity.y -= 1.0
+		velocity = velocity.normalized()
 		
-		# TODO: animation
-		
-		self.move_and_collide(velocity.normalized() * SPEED * delta)
+	# Doggo tracted by the human
+	if attract != Vector2.ZERO :
+		velocity += attract
+	
+	# TODO: animation
+	
+	if velocity != Vector2.ZERO:
+		self.move_and_collide(velocity * SPEED * delta)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func set_attract(var attract):
+	self.attract = attract
 "
 
 [sub_resource type="RectangleShape2D" id=2]

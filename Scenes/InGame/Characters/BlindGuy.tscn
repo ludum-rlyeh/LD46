@@ -6,12 +6,13 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends KinematicBody2D
 
-var doggo
 const FOLLOW_SPEED = 2.0
 const MAX_DOGGO_DIST = 100.0
 
 var follow = false
+var attract = Vector2.ZERO
 
+var doggo
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -28,13 +29,29 @@ func _physics_process(delta):
 		var mid_pos = self.position.linear_interpolate(doggo.position, delta*FOLLOW_SPEED)
 		velocity = mid_pos - self.position
 	
+	if attract != Vector2.ZERO :
+		velocity += attract
+		attract_doggo(attract)
+	
 	var collision_info = self.move_and_collide(velocity)
+	
+	# If collide dogo
 	if collision_info and collision_info.collider_id == $Harness/Doggo.get_instance_id():
 		# TODO: Bounce
 		follow = false
 	
 	# TODO: Animation
-	
+
+func set_attract(var attract):
+	self.attract = attract 
+	if attract == Vector2.ZERO:
+		doggo.set_attract(Vector2.ZERO)
+
+func attract_doggo(var attract):
+	var attract_bis = Vector2.ZERO # just in case
+	if attract != Vector2.ZERO and self.position.distance_to(doggo.position) >= MAX_DOGGO_DIST:
+		attract_bis = (self.position - doggo.position).normalized() * attract.length() / 8.0
+	doggo.set_attract(attract_bis)
 "
 
 [sub_resource type="RectangleShape2D" id=2]
