@@ -47,5 +47,4 @@ script = SubResource( 5 )
 position = Vector2( 3.74619, -1.0217 )
 frames = SubResource( 6 )
 animation = "fleche"
-frame = 2
 playing = true
