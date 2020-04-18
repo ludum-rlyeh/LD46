@@ -1,2 +1,3 @@
 extends Node
 
+enum TRIGGER_TYPE{ENTER_CROSS, EXIT_CROSS}
