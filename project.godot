@@ -25,6 +25,14 @@ Events="*res://Scripts/Events.gd"
 Enums="*res://Scripts/Enums.gd"
 Tools="*res://Scripts/Tools.gd"
 
+[layer_names]
+
+2d_physics/layer_1="building"
+2d_physics/layer_2="characters"
+2d_physics/layer_3="blindguy"
+2d_physics/layer_4="doggo"
+2d_physics/layer_5="activables"
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
