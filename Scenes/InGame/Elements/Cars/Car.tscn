@@ -98,7 +98,6 @@ speed = 100.0
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Car"]
 position = Vector2( 1.15982, 5.53244 )
 frames = SubResource( 6 )
-frame = 2
 playing = true
 
 [node name="StateMachine" type="Node" parent="Car"]
