@@ -36,9 +36,11 @@ func _physics_process(delta):
 	var collision_info = self.move_and_collide(velocity)
 	
 	# If collide dogo
-	if collision_info and collision_info.collider_id == $Harness/Doggo.get_instance_id():
-		# TODO: Bounce
-		follow = false
+	if collision_info :
+		velocity = velocity.bounce(collision_info.normal)
+		self.move_and_slide(velocity)
+		if collision_info.collider_id == $Harness/Doggo.get_instance_id():
+			follow = false
 	
 	# TODO: Animation
 
@@ -55,7 +57,7 @@ func attract_doggo(var attract):
 "
 
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 32.5457, 33.8698 )
+extents = Vector2( 32.0602, 31.8818 )
 
 [node name="BlindGuy" type="KinematicBody2D"]
 collision_layer = 6
