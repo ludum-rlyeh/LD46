@@ -37,6 +37,7 @@ func _physics_process(delta):
 	# TODO: animation
 	
 	if velocity != Vector2.ZERO:
+		Events.emit_signal(\"moved_signal\", self.position)
 		self.move_and_collide(velocity * SPEED * delta)
 
 func set_attract(var attract):
