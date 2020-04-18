@@ -9,9 +9,10 @@ const SPEED = 200.0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	set_process(true)
+	add_to_group(\"doggo\")
+	set_physics_process(true)
 
-func _process(delta):
+func _physics_process(delta):
 	if Input.is_action_pressed(\"ui_right\") or Input.is_action_pressed(\"ui_left\")\\
 		or Input.is_action_pressed(\"ui_down\") or Input.is_action_pressed(\"ui_up\"):
 		
@@ -25,11 +26,10 @@ func _process(delta):
 			velocity.y += 1.0
 		elif Input.is_action_pressed(\"ui_up\"):
 			velocity.y -= 1.0
-			
 		
 		# TODO: animation
 		
-		self.move_and_collide(velocity * SPEED * delta)
+		self.move_and_collide(velocity.normalized() * SPEED * delta)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -41,6 +41,8 @@ func _process(delta):
 extents = Vector2( 32.3824, 33.0942 )
 
 [node name="Doggo" type="KinematicBody2D"]
+collision_layer = 10
+collision_mask = 7
 script = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
