@@ -1,10 +1,43 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Scenes/InGame/Game.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Scenes/InGame/HUD/HUD.tscn" type="PackedScene" id=2]
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node
+
+var HUD = preload(\"res://Scenes/InGame/HUD/HUD.tscn\")
+var Game = preload(\"res://Scenes/InGame/Game.tscn\")
+var MainMenu = preload(\"res://Scenes/Menus/MainMenu.tscn\")
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	Events.connect(\"button_pressed_signal\",self,\"on_button_pressed_signal\")
+	var main_menu_instance = MainMenu.instance()
+	self.add_child(main_menu_instance)
+
+
+func on_button_pressed_signal(var button):
+	if button == \"quit\":
+		self.call_deferred(\"quit_game\")
+	elif button == \"start\":
+		self.call_deferred(\"goto_scene\", \"game\")
+
+func goto_scene(var scene):
+	if scene :
+		# remove all children
+		for child in self.get_children():
+			self.remove_child(child)
+			child.queue_free()
+		
+		# load asked scene
+		if scene == \"game\":
+			var HUD_instance = HUD.instance()
+			var Game_instance = Game.instance()
+			self.add_child(HUD_instance)
+			self.add_child(Game_instance)
+		
+
+func quit_game():
+	get_tree().quit()
+"
 
 [node name="Main" type="Node"]
-
-[node name="HUD" parent="." instance=ExtResource( 2 )]
-
-[node name="Game" parent="." instance=ExtResource( 1 )]
+script = SubResource( 1 )
