@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Assets/Fonts/ka1.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/Fonts/ARCADE.TTF" type="DynamicFontData" id=2]
+[ext_resource path="res://Assets/Sounds/menu_select.wav" type="AudioStream" id=3]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends CanvasLayer
@@ -20,16 +21,22 @@ func _input(event):
 		pause_unpause()
 
 func pause_unpause():
-	get_tree().paused = not get_tree().paused
-	$Elements.visible = not $Elements.visible
+	if enable:
+		get_tree().paused = not get_tree().paused
+		$Elements.visible = not $Elements.visible
 
 func _on_ResumeButton_pressed():
+	$Elements/AudioStreamPlayer.play()
 	self.call_deferred(\"pause_unpause\")
 
 func _on_RestartButton_pressed():
+	$Elements/AudioStreamPlayer.play()
+	yield($Elements/AudioStreamPlayer,\"finished\")
 	Events.emit_signal(\"button_pressed_signal\",\"start\")
 
 func _on_QuitButton_pressed():
+	$Elements/AudioStreamPlayer.play()
+	yield($Elements/AudioStreamPlayer,\"finished\")
 	Events.emit_signal(\"button_pressed_signal\",\"menu\")
 
 func on_game_over_signal(var type):
@@ -51,6 +58,9 @@ font_data = ExtResource( 2 )
 [sub_resource type="DynamicFont" id=5]
 size = 30
 font_data = ExtResource( 2 )
+
+[sub_resource type="AudioStreamRandomPitch" id=6]
+audio_stream = ExtResource( 3 )
 
 [node name="PauseMenu" type="CanvasLayer"]
 pause_mode = 2
@@ -121,6 +131,9 @@ clip_text = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Elements"]
+stream = SubResource( 6 )
 [connection signal="pressed" from="Elements/ResumeButton" to="." method="_on_ResumeButton_pressed"]
 [connection signal="pressed" from="Elements/RestartButton" to="." method="_on_RestartButton_pressed"]
 [connection signal="pressed" from="Elements/QuitButton" to="." method="_on_QuitButton_pressed"]
