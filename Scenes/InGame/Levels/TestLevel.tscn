@@ -349,6 +349,7 @@ curve = SubResource( 15 )
 position = Vector2( 440, 472 )
 
 [node name="Arriving" parent="." instance=ExtResource( 11 )]
+position = Vector2( 2176, -456 )
 
 [node name="Starting" type="Position2D" parent="."]
 position = Vector2( 392, 2760 )

@@ -6,8 +6,7 @@
 script/source = "extends Position2D
 
 func _on_Area2D_body_shape_entered(body_id, body, body_shape, area_shape):
-	print(\"win\")
-	Events.emit_signal(\"won_signal\")
+	Events.emit_signal(\"game_over_signal\", Enums.GAME_OVER_TYPE.VICTORY)
 "
 
 [sub_resource type="ParticlesMaterial" id=2]
