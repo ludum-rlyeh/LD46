@@ -48,12 +48,14 @@ func _physics_process(delta):
 	
 
 func set_animation(var velocity):
-	# TODO use angles
-	if velocity.x == 0.0: # TODO up
-		if $AnimatedSprite.animation != \"down\": $AnimatedSprite.animation = \"down\"
-	elif velocity.x > 0.0 : # go right
+	var angle = velocity.angle()
+	if  angle >= -PI/4.0 and angle < PI/4.0: # go right
 		if $AnimatedSprite.animation != \"right\": $AnimatedSprite.animation = \"right\"
-	else : # go left
+	elif angle >= PI/4.0 and angle < 3.0*PI/4.0 : # go down
+		if $AnimatedSprite.animation != \"down\": $AnimatedSprite.animation = \"down\"
+	elif angle >= 3.0*PI/4.0 and angle < -3.0*PI/4.0: # go left
+		if $AnimatedSprite.animation != \"left\": $AnimatedSprite.animation = \"left\"
+	else : # TODO: go up
 		if $AnimatedSprite.animation != \"left\": $AnimatedSprite.animation = \"left\"
 
 func set_attract(var attract):
@@ -68,7 +70,7 @@ func attract_doggo(var attract):
 	doggo.set_attract(attract_bis)
 "
 
-[sub_resource type="RectangleShape2D" id=11]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 23.9719, 30.2642 )
 
 [node name="BlindGuy" type="KinematicBody2D"]
@@ -79,12 +81,11 @@ script = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
 animation = "down"
-frame = 5
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -1, -4 )
-shape = SubResource( 11 )
+shape = SubResource( 2 )
 
 [node name="Harness" type="Node" parent="."]
 
