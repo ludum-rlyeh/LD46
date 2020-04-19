@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Assets/Sprites/TileMap/TileMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/Cross.tscn" type="PackedScene" id=2]
@@ -10,31 +10,25 @@
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Trashs/trash.tres" type="Texture" id=8]
 [ext_resource path="res://Assets/Sprites/Png/SewerOpen(1).png" type="Texture" id=9]
 [ext_resource path="res://Assets/Sprites/Png/Sewer(3).png" type="Texture" id=10]
-[ext_resource path="res://Scenes/InGame/Elements/Arriving/Point.tscn" type="PackedScene" id=11]
-[ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/CrossLeftStraight.tscn" type="PackedScene" id=12]
-[ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/CrossRight.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Assets/Sprites/Sheets/Buildings256.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Sprites/Sheets/Buildings.png" type="Texture" id=12]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
 var Seeker = preload(\"res://Scenes/InGame/Elements/Sewer.tscn\")
-onready var _misc = $Misc
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_init_opened_seekers()
 	
 func _init_opened_seekers() -> void:
-	var opened_seeker = _misc.get_used_cells_by_id(4)
+	var opened_seeker = $Misc.get_used_cells_by_id(4)
 	for tile in opened_seeker:
 		var seeker = Seeker.instance()
-		seeker.position = _misc.cell_size * tile + Vector2(0.23,0.58) * _misc.cell_size
-		_misc.add_child(seeker)
-
-func _init_street_lights():
-	var street_lights = _misc.get_used_cells_by_id(3)
-	for tile in street_lights:
-		_misc.tile_set.get_tiles_ids()
+		seeker.position = $Misc.cell_size * tile + Vector2(0.23,0.58) * $Misc.cell_size
+		$Misc.add_child(seeker)
 "
 
 [sub_resource type="ConvexPolygonShape2D" id=2]
@@ -144,6 +138,258 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 1/shape_one_way_margin = 0.0
 1/shapes = [  ]
 1/z_index = 0
+2/name = "Buildings256.png 2"
+2/texture = ExtResource( 11 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 0, 256, 256, 256 )
+2/tile_mode = 0
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
+3/name = "Buildings256.png 3"
+3/texture = ExtResource( 11 )
+3/tex_offset = Vector2( 0, 0 )
+3/modulate = Color( 1, 1, 1, 1 )
+3/region = Rect2( 256, 256, 256, 256 )
+3/tile_mode = 0
+3/occluder_offset = Vector2( 0, 0 )
+3/navigation_offset = Vector2( 0, 0 )
+3/shape_offset = Vector2( 0, 0 )
+3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+3/shape_one_way = false
+3/shape_one_way_margin = 0.0
+3/shapes = [  ]
+3/z_index = 0
+4/name = "Buildings256.png 4"
+4/texture = ExtResource( 11 )
+4/tex_offset = Vector2( 0, 0 )
+4/modulate = Color( 1, 1, 1, 1 )
+4/region = Rect2( 512, 256, 256, 256 )
+4/tile_mode = 0
+4/occluder_offset = Vector2( 0, 0 )
+4/navigation_offset = Vector2( 0, 0 )
+4/shape_offset = Vector2( 0, 0 )
+4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+4/shape_one_way = false
+4/shape_one_way_margin = 0.0
+4/shapes = [  ]
+4/z_index = 0
+5/name = "Buildings256.png 5"
+5/texture = ExtResource( 11 )
+5/tex_offset = Vector2( 0, 0 )
+5/modulate = Color( 1, 1, 1, 1 )
+5/region = Rect2( 768, 512, 256, 256 )
+5/tile_mode = 0
+5/occluder_offset = Vector2( 0, 0 )
+5/navigation_offset = Vector2( 0, 0 )
+5/shape_offset = Vector2( 0, 0 )
+5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+5/shape_one_way = false
+5/shape_one_way_margin = 0.0
+5/shapes = [  ]
+5/z_index = 0
+6/name = "Buildings256.png 6"
+6/texture = ExtResource( 11 )
+6/tex_offset = Vector2( 0, 0 )
+6/modulate = Color( 1, 1, 1, 1 )
+6/region = Rect2( 1024, 512, 256, 256 )
+6/tile_mode = 0
+6/occluder_offset = Vector2( 0, 0 )
+6/navigation_offset = Vector2( 0, 0 )
+6/shape_offset = Vector2( 0, 0 )
+6/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+6/shape_one_way = false
+6/shape_one_way_margin = 0.0
+6/shapes = [  ]
+6/z_index = 0
+7/name = "Buildings256.png 7"
+7/texture = ExtResource( 11 )
+7/tex_offset = Vector2( 0, 0 )
+7/modulate = Color( 1, 1, 1, 1 )
+7/region = Rect2( 1280, 512, 256, 256 )
+7/tile_mode = 0
+7/occluder_offset = Vector2( 0, 0 )
+7/navigation_offset = Vector2( 0, 0 )
+7/shape_offset = Vector2( 0, 0 )
+7/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+7/shape_one_way = false
+7/shape_one_way_margin = 0.0
+7/shapes = [  ]
+7/z_index = 0
+8/name = "Buildings256.png 8"
+8/texture = ExtResource( 11 )
+8/tex_offset = Vector2( 0, 0 )
+8/modulate = Color( 1, 1, 1, 1 )
+8/region = Rect2( 256, 1280, 256, 256 )
+8/tile_mode = 0
+8/occluder_offset = Vector2( 0, 0 )
+8/navigation_offset = Vector2( 0, 0 )
+8/shape_offset = Vector2( 0, 0 )
+8/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+8/shape_one_way = false
+8/shape_one_way_margin = 0.0
+8/shapes = [  ]
+8/z_index = 0
+9/name = "Buildings256.png 9"
+9/texture = ExtResource( 11 )
+9/tex_offset = Vector2( 0, 0 )
+9/modulate = Color( 1, 1, 1, 1 )
+9/region = Rect2( 0, 1024, 256, 256 )
+9/tile_mode = 0
+9/occluder_offset = Vector2( 0, 0 )
+9/navigation_offset = Vector2( 0, 0 )
+9/shape_offset = Vector2( 0, 0 )
+9/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+9/shape_one_way = false
+9/shape_one_way_margin = 0.0
+9/shapes = [  ]
+9/z_index = 0
+10/name = "Buildings.png 10"
+10/texture = ExtResource( 12 )
+10/tex_offset = Vector2( 0, 0 )
+10/modulate = Color( 1, 1, 1, 1 )
+10/region = Rect2( 0, 128, 128, 128 )
+10/tile_mode = 0
+10/occluder_offset = Vector2( 0, 0 )
+10/navigation_offset = Vector2( 0, 0 )
+10/shape_offset = Vector2( 0, 0 )
+10/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+10/shape_one_way = false
+10/shape_one_way_margin = 0.0
+10/shapes = [  ]
+10/z_index = 0
+11/name = "Buildings.png 11"
+11/texture = ExtResource( 12 )
+11/tex_offset = Vector2( 0, 0 )
+11/modulate = Color( 1, 1, 1, 1 )
+11/region = Rect2( 128, 128, 128, 128 )
+11/tile_mode = 0
+11/occluder_offset = Vector2( 0, 0 )
+11/navigation_offset = Vector2( 0, 0 )
+11/shape_offset = Vector2( 0, 0 )
+11/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+11/shape_one_way = false
+11/shape_one_way_margin = 0.0
+11/shapes = [  ]
+11/z_index = 0
+12/name = "Buildings.png 12"
+12/texture = ExtResource( 12 )
+12/tex_offset = Vector2( 0, 0 )
+12/modulate = Color( 1, 1, 1, 1 )
+12/region = Rect2( 256, 128, 128, 128 )
+12/tile_mode = 0
+12/occluder_offset = Vector2( 0, 0 )
+12/navigation_offset = Vector2( 0, 0 )
+12/shape_offset = Vector2( 0, 0 )
+12/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+12/shape_one_way = false
+12/shape_one_way_margin = 0.0
+12/shapes = [  ]
+12/z_index = 0
+13/name = "Buildings.png 13"
+13/texture = ExtResource( 12 )
+13/tex_offset = Vector2( 0, 0 )
+13/modulate = Color( 1, 1, 1, 1 )
+13/region = Rect2( 384, 256, 128, 128 )
+13/tile_mode = 0
+13/occluder_offset = Vector2( 0, 0 )
+13/navigation_offset = Vector2( 0, 0 )
+13/shape_offset = Vector2( 0, 0 )
+13/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+13/shape_one_way = false
+13/shape_one_way_margin = 0.0
+13/shapes = [  ]
+13/z_index = 0
+14/name = "Buildings.png 14"
+14/texture = ExtResource( 12 )
+14/tex_offset = Vector2( 0, 0 )
+14/modulate = Color( 1, 1, 1, 1 )
+14/region = Rect2( 512, 256, 128, 128 )
+14/tile_mode = 0
+14/occluder_offset = Vector2( 0, 0 )
+14/navigation_offset = Vector2( 0, 0 )
+14/shape_offset = Vector2( 0, 0 )
+14/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+14/shape_one_way = false
+14/shape_one_way_margin = 0.0
+14/shapes = [  ]
+14/z_index = 0
+15/name = "Buildings.png 15"
+15/texture = ExtResource( 12 )
+15/tex_offset = Vector2( 0, 0 )
+15/modulate = Color( 1, 1, 1, 1 )
+15/region = Rect2( 640, 256, 128, 128 )
+15/tile_mode = 0
+15/occluder_offset = Vector2( 0, 0 )
+15/navigation_offset = Vector2( 0, 0 )
+15/shape_offset = Vector2( 0, 0 )
+15/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+15/shape_one_way = false
+15/shape_one_way_margin = 0.0
+15/shapes = [  ]
+15/z_index = 0
+16/name = "Buildings.png 16"
+16/texture = ExtResource( 12 )
+16/tex_offset = Vector2( 0, 0 )
+16/modulate = Color( 1, 1, 1, 1 )
+16/region = Rect2( 0, 512, 128, 128 )
+16/tile_mode = 0
+16/occluder_offset = Vector2( 0, 0 )
+16/navigation_offset = Vector2( 0, 0 )
+16/shape_offset = Vector2( 0, 0 )
+16/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+16/shape_one_way = false
+16/shape_one_way_margin = 0.0
+16/shapes = [  ]
+16/z_index = 0
+17/name = "Buildings.png 17"
+17/texture = ExtResource( 12 )
+17/tex_offset = Vector2( 0, 0 )
+17/modulate = Color( 1, 1, 1, 1 )
+17/region = Rect2( 128, 640, 128, 128 )
+17/tile_mode = 0
+17/occluder_offset = Vector2( 0, 0 )
+17/navigation_offset = Vector2( 0, 0 )
+17/shape_offset = Vector2( 0, 0 )
+17/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+17/shape_one_way = false
+17/shape_one_way_margin = 0.0
+17/shapes = [  ]
+17/z_index = 0
+18/name = "Buildings.png 18"
+18/texture = ExtResource( 12 )
+18/tex_offset = Vector2( 0, 0 )
+18/modulate = Color( 1, 1, 1, 1 )
+18/region = Rect2( 256, 640, 128, 128 )
+18/tile_mode = 0
+18/occluder_offset = Vector2( 0, 0 )
+18/navigation_offset = Vector2( 0, 0 )
+18/shape_offset = Vector2( 0, 0 )
+18/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+18/shape_one_way = false
+18/shape_one_way_margin = 0.0
+18/shapes = [  ]
+18/z_index = 0
+19/name = "Buildings256.png 19"
+19/texture = ExtResource( 11 )
+19/tex_offset = Vector2( 0, 0 )
+19/modulate = Color( 1, 1, 1, 1 )
+19/region = Rect2( 512, 1280, 256, 256 )
+19/tile_mode = 0
+19/occluder_offset = Vector2( 0, 0 )
+19/navigation_offset = Vector2( 0, 0 )
+19/shape_offset = Vector2( 0, 0 )
+19/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+19/shape_one_way = false
+19/shape_one_way_margin = 0.0
+19/shapes = [  ]
+19/z_index = 0
 
 [sub_resource type="GDScript" id=6]
 script/source = "extends Node2D
@@ -192,7 +438,7 @@ extents = Vector2( 2.79376, 0.416122 )
 
 [sub_resource type="Curve2D" id=13]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 33.4753, 95.2079, -0.22602, -23.2714, 0.22602, 23.2714, 33.4767, 479.208, 24.627, 0.225847, -24.627, -0.225847, 5.47687, 511.208, 22.6413, -8.19612e-05, -22.6413, 8.19612e-05, -382.523, 511.209, -0.377272, 22.6413, 0.377272, -22.6413, -414.523, 479.21, 8.53527e-05, 23.5782, -8.53527e-05, -23.5782, -414.525, 95.2095, -24.4103, 0.277479, 24.4103, -0.277479, -382.525, 63.2094, 0, 0, 0, 0, 9.47522, 63.208 )
+"points": PoolVector2Array( 0, 0, 0, 0, 33.4753, 95.2079, -0.22602, -23.2714, 0.22602, 23.2714, 33.477, 543.208, 24.627, 0.225847, -24.627, -0.225847, 1.47708, 575.208, 22.6413, -8.19612e-05, -22.6413, 8.19612e-05, -382.523, 575.209, -0.377272, 22.6413, 0.377272, -22.6413, -414.523, 543.209, 8.53527e-05, 23.5782, -8.53527e-05, -23.5782, -414.525, 95.2095, -24.4103, 0.277479, 24.4103, -0.277479, -382.525, 63.2094, 0, 0, 0, 0, 9.47522, 63.208 )
 }
 
 [sub_resource type="Curve2D" id=14]
@@ -204,195 +450,6 @@ _data = {
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, -64, 1248, 19.7468, -0.429279, -19.7468, 0.429279, -256, 1248, 0.214639, 22.9664, -0.214639, -22.9664, -288, 1216, 0.263521, 23.9804, -0.263521, -23.9804, -288, 448, -24.7709, -0.527041, 24.7709, 0.527041, -256, 416, 0, 0, 0, 0, 192, 416, 0, 0, 0, 0, -256, 416 )
 }
-
-[sub_resource type="GDScript" id=16]
-script/source = "extends Node2D
-
-func get_track_path():
-	return $Paths/PathTrack
-"
-
-[sub_resource type="GDScript" id=17]
-script/source = "extends Area2D
-
-func get_track_path() -> Path2D:
-	return get_parent().get_track_path()
-
-func get_type():
-	return Enums.TRIGGER_TYPE.CHANGE_TRACK
-"
-
-[sub_resource type="RectangleShape2D" id=18]
-extents = Vector2( 2.79376, 0.416122 )
-
-[sub_resource type="Curve2D" id=19]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0.308014, 0, 0, 0, 0, 0, -511.692, 3.05176e-05 )
-}
-
-[sub_resource type="GDScript" id=20]
-script/source = "extends Node2D
-
-func get_track_path():
-	return $Paths/PathTrack
-"
-
-[sub_resource type="GDScript" id=21]
-script/source = "extends Area2D
-
-func get_track_path() -> Path2D:
-	return get_parent().get_track_path()
-
-func get_type():
-	return Enums.TRIGGER_TYPE.CHANGE_TRACK
-"
-
-[sub_resource type="RectangleShape2D" id=22]
-extents = Vector2( 2.79376, 0.416122 )
-
-[sub_resource type="Curve2D" id=23]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -448, -6.10352e-05, 37.9065, 1.65695e-06, -37.9065, -1.65695e-06, -572, -6.10352e-05, 31.4915, 57.1513, -31.4915, -57.1513, -672, 95.9999, 0, 0, 0, 0, -736, -6.10352e-05 )
-}
-
-[sub_resource type="GDScript" id=24]
-script/source = "extends Node2D
-
-func get_track_path():
-	return $Paths/PathTrack
-"
-
-[sub_resource type="GDScript" id=25]
-script/source = "extends Area2D
-
-func get_track_path() -> Path2D:
-	return get_parent().get_track_path()
-
-func get_type():
-	return Enums.TRIGGER_TYPE.CHANGE_TRACK
-"
-
-[sub_resource type="RectangleShape2D" id=26]
-extents = Vector2( 2.79376, 0.416122 )
-
-[sub_resource type="Curve2D" id=27]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0, -0.0870361, 0, 0, 0, 0, -95.9999, -0.0870361 )
-}
-
-[sub_resource type="GDScript" id=28]
-script/source = "extends Node2D
-
-func get_track_path():
-	return $Paths/PathTrack
-"
-
-[sub_resource type="GDScript" id=29]
-script/source = "extends Area2D
-
-func get_track_path() -> Path2D:
-	return get_parent().get_track_path()
-
-func get_type():
-	return Enums.TRIGGER_TYPE.CHANGE_TRACK
-"
-
-[sub_resource type="RectangleShape2D" id=30]
-extents = Vector2( 2.79376, 0.416122 )
-
-[sub_resource type="Curve2D" id=31]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 28.8089, -2.51856e-06, -28.8089, 2.51856e-06, -192, 3.05176e-05, 0, 0, 0, 0, -224, -32, 0, 0, 0, 0, -224, -352, -27.8877, 25.8472, 27.8877, -25.8472, 63.9999, -636, -61.217, 53.7349, 61.217, -53.7349, 288, -768 )
-}
-
-[sub_resource type="GDScript" id=32]
-script/source = "extends Node2D
-
-func get_track_path():
-	return $Paths/PathTrack
-"
-
-[sub_resource type="GDScript" id=33]
-script/source = "extends Area2D
-
-func get_track_path() -> Path2D:
-	return get_parent().get_track_path()
-
-func get_type():
-	return Enums.TRIGGER_TYPE.CHANGE_TRACK
-"
-
-[sub_resource type="RectangleShape2D" id=34]
-extents = Vector2( 2.79376, 0.416122 )
-
-[sub_resource type="Curve2D" id=35]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, -2.52499, 0, 17.1475, -7.49543e-07, -17.1475, 7.49543e-07, -350.525, 0, 1.28607, -5.57295, -1.28607, 5.57295, -382.525, 32, 15.8615, -0.428689, -15.8615, 0.428689, -418.525, 64, -0.857378, -32.5803, 0.857378, 32.5803, -478.525, 128, -1.40539e-06, -32.1516, 1.40539e-06, 32.1516, -478.525, 192, 0.428687, -30.4369, -0.428687, 30.4369, -538.525, 256, -1.54003, -22.3304, 1.54003, 22.3304, -542.525, 768, -13.3469, -17.4537, 13.3469, 17.4537, -514.525, 832, -26.1805, -0.770014, 26.1805, 0.770014, -414.525, 896, 0, 0, 0, 0, 1.47507, 900 )
-}
-
-[sub_resource type="GDScript" id=36]
-script/source = "extends Node2D
-
-func get_track_path():
-	return $Paths/PathTrack
-"
-
-[sub_resource type="GDScript" id=37]
-script/source = "extends Area2D
-
-func get_track_path() -> Path2D:
-	return get_parent().get_track_path()
-
-func get_type():
-	return Enums.TRIGGER_TYPE.CHANGE_TRACK
-"
-
-[sub_resource type="RectangleShape2D" id=38]
-extents = Vector2( 2.79376, 0.416122 )
-
-[sub_resource type="Curve2D" id=39]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, -25.133, -27.3666, 25.133, 27.3666, 360.661, 31.5537, 0, 0, 0, 0, 792.614, 546.336 )
-}
-
-[sub_resource type="Curve2D" id=40]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 14.6691, 0.898107, -14.6691, -0.898107, -512, 0, 0.299369, 19.459, -0.299369, -19.459, -544, -28, 0.428688, 28.2934, -0.428688, -28.2934, -544, -992, -13.2893, 0, 13.2893, 0, -512, -1024, 0, 0, 0, 0, -260, -1024, 0, 0, 0, 0, 256, -1024 )
-}
-
-[sub_resource type="GDScript" id=41]
-script/source = "extends Node2D
-
-func get_track_path():
-	return $Paths/PathTrack
-"
-
-[sub_resource type="GDScript" id=42]
-script/source = "extends Area2D
-
-func get_track_path() -> Path2D:
-	return get_parent().get_track_path()
-
-func get_type():
-	return Enums.TRIGGER_TYPE.CHANGE_TRACK
-"
-
-[sub_resource type="RectangleShape2D" id=43]
-extents = Vector2( 2.79376, 0.416122 )
-
-[sub_resource type="Curve2D" id=44]
-_data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 0, 0.243805, 0, 0, 0, 0, -64, 0.243801 )
-}
-
-[sub_resource type="GDScript" id=45]
-script/source = "extends Position2D
-
-
-func _process(delta):
-	Events.emit_signal(\"set_begin_position_signal\", position)
-	set_process(false)
-"
 
 [node name="Map0" type="Node2D"]
 script = SubResource( 1 )
@@ -418,7 +475,7 @@ __meta__ = {
 z_index = 10
 tile_set = SubResource( 5 )
 format = 1
-tile_data = PoolIntArray( -1179638, 7, 0, -1179634, 6, 0, -1179628, 536870915, 0, -1179624, 2, 0, -1048548, 4, 0, -851976, 9, 0, -851972, 9, 0, -917504, 9, 0, -917500, 9, 0, -917486, 536870926, 0, -786424, 536870929, 0, -786394, 1, 0, -786390, 1, 0, -589834, 536870923, 0, -655324, 536870929, 0, -393178, 536870931, 0, -393174, 19, 0, -196596, 1, 0, -196592, 1, 0, -196588, 1, 0, -65540, 1, 0, -131072, 1, 0, -131048, 0, 0, -131044, 0, 0, 65532, 4, 0, 0, 4, 0, 12, 2, 0, 16, 4, 0, 20, 536870915, 0, 24, 4, 0, 28, -1610612720, 0, 131100, -1610612720, 0, 262172, -1610612720, 0, 917518, 4, 0, 917522, 1, 0, 1048570, 1, 0, 1048574, 0, 0, 983040, 1, 0, 983052, 0, 0, 983062, 0, 0, 983072, 1, 0, 983076, 1, 0, 1114106, 19, 0, 1114110, 536870925, 0, 1048576, 8, 0, 1048588, 0, 0, 1048590, 0, 0, 1048592, 0, 0, 1048594, 4, 0, 1048598, 536870925, 0, 1048608, 1, 0, 1048612, 1, 0, 1114126, 0, 0, 1114128, 0, 0, 1245182, 536870925, 0, 1179660, 536870923, 0, 1179662, 0, 0, 1179664, 0, 0, 1179670, 536870927, 0, 1245198, 0, 0, 1245200, 0, 0, 1376254, 536870926, 0, 1310734, 0, 0, 1310736, 0, 0, 1310742, 536870926, 0, 1310758, 0, 0, 1441814, 15, 0, 1441824, 0, 0, 1441826, 0, 0, 1441828, 0, 0, 1572896, 0, 0, 1572898, 0, 0, 1703934, 536870928, 0, 1638446, 0, 0, 1769466, 536870928, 0, 1769468, 536870928, 0, 1703968, 0, 0, 1769516, 0, 0, 1900538, 536870928, 0, 1835016, 1, 0, 1835020, 1, 0, 1835024, 1, 0, 1835028, 1, 0, 1900548, 1, 0, 1900586, 0, 0, 2031610, 536870928, 0, 2031656, 0, 0, 2162682, 536870928, 0, 2162726, 0, 0, 2228226, 536870920, 0, 2228230, 536870920, 0, 2228234, 536870920, 0, 2228238, 536870920, 0, 2228242, 0, 0, 2228246, 0, 0, 2293780, 0, 0, 2293796, 0, 0, 2359314, 0, 0, 2359316, 0, 0, 2424866, 0, 0, 2490386, 0, 0, 2555936, 0, 0, 2687004, 0, 0, 2687006, 0, 0, 2818074, 0, 0, 3014680, 0, 0, 3080212, 1, 0, 3276782, 1, 0, 3276786, 1, 0, 3276790, 1, 0, 3276794, 1, 0, 3276798, 1, 0, 3211266, 1, 0, 3211270, 1, 0, 3211274, 1, 0, 3211278, 1, 0, 3211282, 0, 0 )
+tile_data = PoolIntArray( -1179638, 7, 0, -1179634, 6, 0, -1179628, 536870915, 0, -1179624, 2, 0, -1048548, 4, 0, -851976, 9, 0, -851972, 9, 0, -917504, 9, 0, -917500, 9, 0, -917486, 536870926, 0, -786424, 536870929, 0, -786394, 1, 0, -786390, 1, 0, -589834, 536870923, 0, -655324, 536870929, 0, -393178, 536870931, 0, -393174, 19, 0, -196596, 1, 0, -196592, 1, 0, -196588, 1, 0, -65540, 1, 0, -131072, 1, 0, -131048, 0, 0, -131044, 0, 0, 65532, 4, 0, 0, 4, 0, 12, 2, 0, 16, 4, 0, 20, 536870915, 0, 24, 4, 0, 28, -1610612720, 0, 131100, -1610612720, 0, 262172, -1610612720, 0, 917518, 4, 0, 917522, 1, 0, 1048570, 1, 0, 1048574, 0, 0, 983040, 1, 0, 983052, 0, 0, 983062, 0, 0, 983072, 1, 0, 983076, 1, 0, 1114106, 19, 0, 1114110, 536870925, 0, 1048576, 8, 0, 1048588, 0, 0, 1048594, 4, 0, 1048598, 536870925, 0, 1048608, 1, 0, 1048612, 1, 0, 1245182, 536870925, 0, 1179660, 536870923, 0, 1179670, 536870927, 0, 1376254, 536870926, 0, 1310742, 536870926, 0, 1310758, 0, 0, 1441814, 15, 0, 1441824, 0, 0, 1441826, 0, 0, 1441828, 0, 0, 1572896, 0, 0, 1572898, 0, 0, 1703934, 536870928, 0, 1638446, 0, 0, 1769466, 536870928, 0, 1769468, 536870928, 0, 1703968, 0, 0, 1769516, 0, 0, 1900538, 536870928, 0, 1835016, 1, 0, 1835020, 1, 0, 1835024, 1, 0, 1835028, 1, 0, 1900548, 1, 0, 1900586, 0, 0, 2031610, 536870928, 0, 2031656, 0, 0, 2162682, 536870928, 0, 2162726, 0, 0, 2228226, 536870920, 0, 2228230, 536870920, 0, 2228234, 536870920, 0, 2228238, 536870920, 0, 2228242, 0, 0, 2228246, 0, 0, 2293780, 0, 0, 2293796, 0, 0, 2359314, 0, 0, 2359316, 0, 0, 2424866, 0, 0, 2490386, 0, 0, 2555936, 0, 0, 2687004, 0, 0, 2687006, 0, 0, 2818074, 0, 0, 3014680, 0, 0, 3080212, 1, 0, 3276782, 1, 0, 3276786, 1, 0, 3276790, 1, 0, 3276794, 1, 0, 3276798, 1, 0, 3211266, 1, 0, 3211270, 1, 0, 3211274, 1, 0, 3211278, 1, 0, 3211282, 0, 0 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -472,11 +529,11 @@ one_way_collision_margin = 4.7
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath2/Paths"]
 curve = SubResource( 13 )
 
-[node name="CarPathFollower" parent="Tracks/TrackPath2/Paths/PathTrack" instance=ExtResource( 4 )]
-position = Vector2( -77.8993, 63.1517 )
-rotation = 0.000571426
+[node name="PathFollow2D" parent="Tracks/TrackPath2/Paths/PathTrack" instance=ExtResource( 4 )]
+position = Vector2( -204.137, 63.096 )
+rotation = 0.000290607
 offset = 1617.99
-init_speed = 120.0
+init_speed = 30.0
 
 [node name="TrackPath3" type="Node2D" parent="Tracks"]
 position = Vector2( 192, 350.472 )
@@ -524,7 +581,6 @@ rotation = 3.14159
 script = SubResource( 10 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath4"]
-position = Vector2( -64, 1248 )
 rotation = -1.5708
 scale = Vector2( 3.3, 3.3 )
 monitoring = false
@@ -542,219 +598,5 @@ one_way_collision_margin = 4.7
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath4/Paths"]
 curve = SubResource( 15 )
 
-[node name="TrackPath5" type="Node2D" parent="Tracks"]
-position = Vector2( 320.308, 416 )
-rotation = 3.14159
-script = SubResource( 16 )
-
-[node name="Trigger" type="Area2D" parent="Tracks/TrackPath5"]
-rotation = -1.5708
-scale = Vector2( 3.3, 3.3 )
-monitoring = false
-collision_layer = 0
-collision_mask = 32
-script = SubResource( 17 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath5/Trigger"]
-shape = SubResource( 18 )
-one_way_collision = true
-one_way_collision_margin = 4.7
-
-[node name="Paths" type="Node2D" parent="Tracks/TrackPath5"]
-
-[node name="PathTrack" type="Path2D" parent="Tracks/TrackPath5/Paths"]
-curve = SubResource( 19 )
-
-[node name="Cross6" parent="Tracks" instance=ExtResource( 3 )]
-position = Vector2( 832, 415.913 )
-rotation = 1.5708
-
-[node name="TrackPath6" type="Node2D" parent="Tracks"]
-position = Vector2( 864, 448 )
-rotation = -1.5708
-script = SubResource( 20 )
-
-[node name="Trigger" type="Area2D" parent="Tracks/TrackPath6"]
-rotation = -1.5708
-scale = Vector2( 3.3, 3.3 )
-monitoring = false
-collision_layer = 0
-collision_mask = 32
-script = SubResource( 21 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath6/Trigger"]
-shape = SubResource( 22 )
-one_way_collision = true
-one_way_collision_margin = 4.7
-
-[node name="Paths" type="Node2D" parent="Tracks/TrackPath6"]
-
-[node name="PathTrack" type="Path2D" parent="Tracks/TrackPath6/Paths"]
-curve = SubResource( 23 )
-
-[node name="TrackPath7" type="Node2D" parent="Tracks"]
-position = Vector2( 960, 415.913 )
-rotation = 3.14159
-script = SubResource( 24 )
-
-[node name="Trigger" type="Area2D" parent="Tracks/TrackPath7"]
-rotation = -1.5708
-scale = Vector2( 3.3, 3.3 )
-monitoring = false
-collision_layer = 0
-collision_mask = 32
-script = SubResource( 25 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath7/Trigger"]
-shape = SubResource( 26 )
-one_way_collision = true
-one_way_collision_margin = 4.7
-
-[node name="Paths" type="Node2D" parent="Tracks/TrackPath7"]
-
-[node name="PathTrack" type="Path2D" parent="Tracks/TrackPath7/Paths"]
-curve = SubResource( 27 )
-
-[node name="Cross7" parent="Tracks" instance=ExtResource( 12 )]
-position = Vector2( 1024, 416 )
-rotation = 1.5708
-
-[node name="TrackPath8" type="Node2D" parent="Tracks"]
-position = Vector2( 1152, 416 )
-rotation = 3.14159
-script = SubResource( 28 )
-
-[node name="Trigger" type="Area2D" parent="Tracks/TrackPath8"]
-rotation = -1.5708
-scale = Vector2( 3.3, 3.3 )
-monitoring = false
-collision_layer = 0
-collision_mask = 32
-script = SubResource( 29 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath8/Trigger"]
-shape = SubResource( 30 )
-one_way_collision = true
-one_way_collision_margin = 4.7
-
-[node name="Paths" type="Node2D" parent="Tracks/TrackPath8"]
-
-[node name="PathTrack" type="Path2D" parent="Tracks/TrackPath8/Paths"]
-curve = SubResource( 31 )
-
-[node name="CarPathFollower" parent="Tracks/TrackPath8/Paths/PathTrack" instance=ExtResource( 4 )]
-rotation = 3.14159
-init_speed = 150.0
-driver_mood = 1
-
-[node name="TrackPath9" type="Node2D" parent="Tracks"]
-position = Vector2( 1120, 318.525 )
-rotation = 1.5708
-script = SubResource( 32 )
-
-[node name="Trigger" type="Area2D" parent="Tracks/TrackPath9"]
-rotation = -1.5708
-scale = Vector2( 3.3, 3.3 )
-monitoring = false
-collision_layer = 0
-collision_mask = 32
-script = SubResource( 33 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath9/Trigger"]
-shape = SubResource( 34 )
-one_way_collision = true
-one_way_collision_margin = 4.7
-
-[node name="Paths" type="Node2D" parent="Tracks/TrackPath9"]
-
-[node name="PathTrack" type="Path2D" parent="Tracks/TrackPath9/Paths"]
-curve = SubResource( 35 )
-
-[node name="TrackPath10" type="Node2D" parent="Tracks"]
-position = Vector2( 864, 1184 )
-rotation = 2.26893
-script = SubResource( 36 )
-
-[node name="Trigger" type="Area2D" parent="Tracks/TrackPath10"]
-rotation = -1.5708
-scale = Vector2( 3.3, 3.3 )
-monitoring = false
-collision_layer = 0
-collision_mask = 32
-script = SubResource( 37 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath10/Trigger"]
-shape = SubResource( 38 )
-one_way_collision = true
-one_way_collision_margin = 4.7
-
-[node name="Paths" type="Node2D" parent="Tracks/TrackPath10"]
-
-[node name="PathTrack" type="Path2D" parent="Tracks/TrackPath10/Paths"]
-curve = SubResource( 39 )
-
-[node name="TrackPath11" type="Node2D" parent="Tracks"]
-position = Vector2( -64, 1440 )
-script = SubResource( 36 )
-
-[node name="Trigger" type="Area2D" parent="Tracks/TrackPath11"]
-rotation = -1.5708
-scale = Vector2( 3.3, 3.3 )
-monitoring = false
-collision_layer = 0
-collision_mask = 32
-script = SubResource( 37 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath11/Trigger"]
-shape = SubResource( 38 )
-one_way_collision = true
-one_way_collision_margin = 4.7
-
-[node name="Paths" type="Node2D" parent="Tracks/TrackPath11"]
-
-[node name="PathTrack" type="Path2D" parent="Tracks/TrackPath11/Paths"]
-curve = SubResource( 40 )
-
-[node name="CarPathFollower" parent="Tracks/TrackPath11/Paths/PathTrack" instance=ExtResource( 4 )]
-position = Vector2( -544.009, -359.531 )
-rotation = -1.57041
-offset = 891.16
-init_speed = 220.0
-driver_mood = 2
-
-[node name="TrackPath12" type="Node2D" parent="Tracks"]
-position = Vector2( -32.2438, 1344 )
-rotation = -1.5708
-script = SubResource( 41 )
-
-[node name="Trigger" type="Area2D" parent="Tracks/TrackPath12"]
-rotation = -1.5708
-scale = Vector2( 3.3, 3.3 )
-monitoring = false
-collision_layer = 0
-collision_mask = 32
-script = SubResource( 42 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath12/Trigger"]
-shape = SubResource( 43 )
-one_way_collision = true
-one_way_collision_margin = 4.7
-
-[node name="Paths" type="Node2D" parent="Tracks/TrackPath12"]
-
-[node name="PathTrack" type="Path2D" parent="Tracks/TrackPath12/Paths"]
-curve = SubResource( 44 )
-
-[node name="Cross8" parent="Tracks" instance=ExtResource( 13 )]
-position = Vector2( -32.2438, 1408 )
-rotation = 3.14159
-
 [node name="RedLightCross" parent="." instance=ExtResource( 5 )]
 position = Vector2( 440, 472 )
-
-[node name="Arriving" parent="." instance=ExtResource( 11 )]
-position = Vector2( 2176, -456 )
-
-[node name="Starting" type="Position2D" parent="."]
-position = Vector2( 392, 2760 )
-script = SubResource( 45 )
