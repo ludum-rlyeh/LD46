@@ -3,7 +3,7 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node
 
-var HUD = preload(\"res://Scenes/HUD/HUD.tscn\")
+var HUD = preload(\"res://Scenes/InGame/HUD/HUD.tscn\")
 var Game = preload(\"res://Scenes/InGame/Game.tscn\")
 var MainMenu = preload(\"res://Scenes/Menus/MainMenu.tscn\")
 
