@@ -26,26 +26,22 @@ func change_path(path : Path2D) -> void:
 
 func _on_Collision_body_shape_entered(body_id, body, body_shape, area_shape):
 	if Debug : print(\"Crushed by a car : \", body)
-	Events.emit_signal(\"game_over_signal\", body_id, Enums.GAME_OVER_TYPE.CRUSHED_BY_CAR)
+	Events.emit_signal(\"died_signal\", body_id, Enums.DIE_TYPE.CRUSHED_BY_CAR)
 "
 
 [sub_resource type="AtlasTexture" id=2]
-flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=3]
-flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 128, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=4]
-flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 256, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=5]
-flags = 4
 atlas = ExtResource( 1 )
 region = Rect2( 0, 128, 128, 128 )
 

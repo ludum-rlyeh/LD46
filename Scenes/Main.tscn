@@ -7,6 +7,7 @@ var HUD = preload(\"res://Scenes/InGame/HUD/HUD.tscn\")
 var Game = preload(\"res://Scenes/InGame/Game.tscn\")
 var MainMenu = preload(\"res://Scenes/Menus/MainMenu.tscn\")
 var PauseMenu = preload(\"res://Scenes/Menus/PauseMenu.tscn\")
+var GameOverMenu = preload(\"res://Scenes/Menus/GameOverMenu.tscn\")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -35,11 +36,13 @@ func goto_scene(var scene):
 		# load asked scene
 		if scene == \"game\":
 			var pause_menu_instance = PauseMenu.instance()
+			var gameover_menu_instance = GameOverMenu.instance()
 			var HUD_instance = HUD.instance()
 			var Game_instance = Game.instance()
 			self.add_child(HUD_instance)
 			self.add_child(Game_instance)
 			self.add_child(pause_menu_instance)
+			self.add_child(gameover_menu_instance)
 		elif scene == \"mainmenu\":
 			var main_menu_instance = MainMenu.instance()
 			self.add_child(main_menu_instance)

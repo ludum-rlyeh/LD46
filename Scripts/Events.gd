@@ -8,3 +8,4 @@ signal moved_signal
 signal button_pressed_signal
 
 signal game_over_signal
+signal died_signal

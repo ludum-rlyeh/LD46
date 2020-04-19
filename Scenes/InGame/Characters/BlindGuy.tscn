@@ -16,6 +16,7 @@ var doggo
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Events.connect(\"died_signal\",self,\"on_died_signal\")
 	doggo = $Harness/Doggo
 	set_physics_process(true)
 
@@ -71,6 +72,12 @@ func attract_doggo(var attract):
 	if attract != Vector2.ZERO and self.position.distance_to(doggo.position) >= MAX_DOGGO_DIST:
 		attract_bis = (self.position - doggo.position).normalized() * attract.length() / 8.0
 	doggo.set_attract(attract_bis)
+
+func on_died_signal(var body_id, var type):
+	if body_id == self.get_instance_id():
+		print_debug(\"BlindGuy died\")
+		# TODO: Animation
+		Events.emit_signal(\"game_over_signal\", Enums.GAME_OVER_TYPE.HUMAN_DIED)
 "
 
 [sub_resource type="RectangleShape2D" id=2]
