@@ -11,6 +11,17 @@ func end_game():
 	$Elements.visible = true
 
 func on_game_over_signal(var type):
-	# TODO: set elements
-	#call_deferred("end_game")
-	pass
+	if type == Enums.GAME_OVER_TYPE.VICTORY:
+		$Elements/VictoryLabel.visible = true
+	else:
+		$Elements/GameOverLabel.visible = true
+	
+	call_deferred("end_game")
+
+
+func _on_RestartButton_pressed():
+	Events.emit_signal("button_pressed_signal","start")
+
+
+func _on_QuitButton_pressed():
+	Events.emit_signal("button_pressed_signal","menu")
