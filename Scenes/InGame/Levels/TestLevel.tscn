@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=59 format=2]
 
 [ext_resource path="res://Assets/Sprites/TileMap/TileMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/Cross.tscn" type="PackedScene" id=2]
@@ -10,8 +10,9 @@
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Trashs/trash.tres" type="Texture" id=8]
 [ext_resource path="res://Assets/Sprites/Png/SewerOpen(1).png" type="Texture" id=9]
 [ext_resource path="res://Assets/Sprites/Png/Sewer(3).png" type="Texture" id=10]
-[ext_resource path="res://Assets/Sprites/Sheets/Buildings256.png" type="Texture" id=11]
-[ext_resource path="res://Assets/Sprites/Sheets/Buildings.png" type="Texture" id=12]
+[ext_resource path="res://Scenes/InGame/Elements/Arriving/Point.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/CrossLeftStraight.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/CrossRight.tscn" type="PackedScene" id=13]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
@@ -19,7 +20,6 @@ script/source = "extends Node2D
 var Seeker = preload(\"res://Scenes/InGame/Elements/Sewer.tscn\")
 var StreetLight = preload(\"res://Scenes/InGame/Elements/StreetLight.tscn\")
 onready var _misc = $Misc
->>>>>>> afbdb03891638b64a5a3f5f3ff6de121c6b0cc72
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,10 +27,9 @@ func _ready():
 	_init_street_lights()
 	
 func _init_opened_seekers() -> void:
-	var opened_seeker = $Misc.get_used_cells_by_id(4)
+	var opened_seeker = _misc.get_used_cells_by_id(4)
 	for tile in opened_seeker:
 		var seeker = Seeker.instance()
-
 		seeker.position = _misc.cell_size * tile + Vector2(0.23,0.58) * _misc.cell_size
 		_misc.add_child(seeker)
 
@@ -150,258 +149,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 1/shape_one_way_margin = 0.0
 1/shapes = [  ]
 1/z_index = 0
-2/name = "Buildings256.png 2"
-2/texture = ExtResource( 11 )
-2/tex_offset = Vector2( 0, 0 )
-2/modulate = Color( 1, 1, 1, 1 )
-2/region = Rect2( 0, 256, 256, 256 )
-2/tile_mode = 0
-2/occluder_offset = Vector2( 0, 0 )
-2/navigation_offset = Vector2( 0, 0 )
-2/shape_offset = Vector2( 0, 0 )
-2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-2/shape_one_way = false
-2/shape_one_way_margin = 0.0
-2/shapes = [  ]
-2/z_index = 0
-3/name = "Buildings256.png 3"
-3/texture = ExtResource( 11 )
-3/tex_offset = Vector2( 0, 0 )
-3/modulate = Color( 1, 1, 1, 1 )
-3/region = Rect2( 256, 256, 256, 256 )
-3/tile_mode = 0
-3/occluder_offset = Vector2( 0, 0 )
-3/navigation_offset = Vector2( 0, 0 )
-3/shape_offset = Vector2( 0, 0 )
-3/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-3/shape_one_way = false
-3/shape_one_way_margin = 0.0
-3/shapes = [  ]
-3/z_index = 0
-4/name = "Buildings256.png 4"
-4/texture = ExtResource( 11 )
-4/tex_offset = Vector2( 0, 0 )
-4/modulate = Color( 1, 1, 1, 1 )
-4/region = Rect2( 512, 256, 256, 256 )
-4/tile_mode = 0
-4/occluder_offset = Vector2( 0, 0 )
-4/navigation_offset = Vector2( 0, 0 )
-4/shape_offset = Vector2( 0, 0 )
-4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-4/shape_one_way = false
-4/shape_one_way_margin = 0.0
-4/shapes = [  ]
-4/z_index = 0
-5/name = "Buildings256.png 5"
-5/texture = ExtResource( 11 )
-5/tex_offset = Vector2( 0, 0 )
-5/modulate = Color( 1, 1, 1, 1 )
-5/region = Rect2( 768, 512, 256, 256 )
-5/tile_mode = 0
-5/occluder_offset = Vector2( 0, 0 )
-5/navigation_offset = Vector2( 0, 0 )
-5/shape_offset = Vector2( 0, 0 )
-5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-5/shape_one_way = false
-5/shape_one_way_margin = 0.0
-5/shapes = [  ]
-5/z_index = 0
-6/name = "Buildings256.png 6"
-6/texture = ExtResource( 11 )
-6/tex_offset = Vector2( 0, 0 )
-6/modulate = Color( 1, 1, 1, 1 )
-6/region = Rect2( 1024, 512, 256, 256 )
-6/tile_mode = 0
-6/occluder_offset = Vector2( 0, 0 )
-6/navigation_offset = Vector2( 0, 0 )
-6/shape_offset = Vector2( 0, 0 )
-6/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-6/shape_one_way = false
-6/shape_one_way_margin = 0.0
-6/shapes = [  ]
-6/z_index = 0
-7/name = "Buildings256.png 7"
-7/texture = ExtResource( 11 )
-7/tex_offset = Vector2( 0, 0 )
-7/modulate = Color( 1, 1, 1, 1 )
-7/region = Rect2( 1280, 512, 256, 256 )
-7/tile_mode = 0
-7/occluder_offset = Vector2( 0, 0 )
-7/navigation_offset = Vector2( 0, 0 )
-7/shape_offset = Vector2( 0, 0 )
-7/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-7/shape_one_way = false
-7/shape_one_way_margin = 0.0
-7/shapes = [  ]
-7/z_index = 0
-8/name = "Buildings256.png 8"
-8/texture = ExtResource( 11 )
-8/tex_offset = Vector2( 0, 0 )
-8/modulate = Color( 1, 1, 1, 1 )
-8/region = Rect2( 256, 1280, 256, 256 )
-8/tile_mode = 0
-8/occluder_offset = Vector2( 0, 0 )
-8/navigation_offset = Vector2( 0, 0 )
-8/shape_offset = Vector2( 0, 0 )
-8/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-8/shape_one_way = false
-8/shape_one_way_margin = 0.0
-8/shapes = [  ]
-8/z_index = 0
-9/name = "Buildings256.png 9"
-9/texture = ExtResource( 11 )
-9/tex_offset = Vector2( 0, 0 )
-9/modulate = Color( 1, 1, 1, 1 )
-9/region = Rect2( 0, 1024, 256, 256 )
-9/tile_mode = 0
-9/occluder_offset = Vector2( 0, 0 )
-9/navigation_offset = Vector2( 0, 0 )
-9/shape_offset = Vector2( 0, 0 )
-9/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-9/shape_one_way = false
-9/shape_one_way_margin = 0.0
-9/shapes = [  ]
-9/z_index = 0
-10/name = "Buildings.png 10"
-10/texture = ExtResource( 12 )
-10/tex_offset = Vector2( 0, 0 )
-10/modulate = Color( 1, 1, 1, 1 )
-10/region = Rect2( 0, 128, 128, 128 )
-10/tile_mode = 0
-10/occluder_offset = Vector2( 0, 0 )
-10/navigation_offset = Vector2( 0, 0 )
-10/shape_offset = Vector2( 0, 0 )
-10/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-10/shape_one_way = false
-10/shape_one_way_margin = 0.0
-10/shapes = [  ]
-10/z_index = 0
-11/name = "Buildings.png 11"
-11/texture = ExtResource( 12 )
-11/tex_offset = Vector2( 0, 0 )
-11/modulate = Color( 1, 1, 1, 1 )
-11/region = Rect2( 128, 128, 128, 128 )
-11/tile_mode = 0
-11/occluder_offset = Vector2( 0, 0 )
-11/navigation_offset = Vector2( 0, 0 )
-11/shape_offset = Vector2( 0, 0 )
-11/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-11/shape_one_way = false
-11/shape_one_way_margin = 0.0
-11/shapes = [  ]
-11/z_index = 0
-12/name = "Buildings.png 12"
-12/texture = ExtResource( 12 )
-12/tex_offset = Vector2( 0, 0 )
-12/modulate = Color( 1, 1, 1, 1 )
-12/region = Rect2( 256, 128, 128, 128 )
-12/tile_mode = 0
-12/occluder_offset = Vector2( 0, 0 )
-12/navigation_offset = Vector2( 0, 0 )
-12/shape_offset = Vector2( 0, 0 )
-12/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-12/shape_one_way = false
-12/shape_one_way_margin = 0.0
-12/shapes = [  ]
-12/z_index = 0
-13/name = "Buildings.png 13"
-13/texture = ExtResource( 12 )
-13/tex_offset = Vector2( 0, 0 )
-13/modulate = Color( 1, 1, 1, 1 )
-13/region = Rect2( 384, 256, 128, 128 )
-13/tile_mode = 0
-13/occluder_offset = Vector2( 0, 0 )
-13/navigation_offset = Vector2( 0, 0 )
-13/shape_offset = Vector2( 0, 0 )
-13/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-13/shape_one_way = false
-13/shape_one_way_margin = 0.0
-13/shapes = [  ]
-13/z_index = 0
-14/name = "Buildings.png 14"
-14/texture = ExtResource( 12 )
-14/tex_offset = Vector2( 0, 0 )
-14/modulate = Color( 1, 1, 1, 1 )
-14/region = Rect2( 512, 256, 128, 128 )
-14/tile_mode = 0
-14/occluder_offset = Vector2( 0, 0 )
-14/navigation_offset = Vector2( 0, 0 )
-14/shape_offset = Vector2( 0, 0 )
-14/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-14/shape_one_way = false
-14/shape_one_way_margin = 0.0
-14/shapes = [  ]
-14/z_index = 0
-15/name = "Buildings.png 15"
-15/texture = ExtResource( 12 )
-15/tex_offset = Vector2( 0, 0 )
-15/modulate = Color( 1, 1, 1, 1 )
-15/region = Rect2( 640, 256, 128, 128 )
-15/tile_mode = 0
-15/occluder_offset = Vector2( 0, 0 )
-15/navigation_offset = Vector2( 0, 0 )
-15/shape_offset = Vector2( 0, 0 )
-15/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-15/shape_one_way = false
-15/shape_one_way_margin = 0.0
-15/shapes = [  ]
-15/z_index = 0
-16/name = "Buildings.png 16"
-16/texture = ExtResource( 12 )
-16/tex_offset = Vector2( 0, 0 )
-16/modulate = Color( 1, 1, 1, 1 )
-16/region = Rect2( 0, 512, 128, 128 )
-16/tile_mode = 0
-16/occluder_offset = Vector2( 0, 0 )
-16/navigation_offset = Vector2( 0, 0 )
-16/shape_offset = Vector2( 0, 0 )
-16/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-16/shape_one_way = false
-16/shape_one_way_margin = 0.0
-16/shapes = [  ]
-16/z_index = 0
-17/name = "Buildings.png 17"
-17/texture = ExtResource( 12 )
-17/tex_offset = Vector2( 0, 0 )
-17/modulate = Color( 1, 1, 1, 1 )
-17/region = Rect2( 128, 640, 128, 128 )
-17/tile_mode = 0
-17/occluder_offset = Vector2( 0, 0 )
-17/navigation_offset = Vector2( 0, 0 )
-17/shape_offset = Vector2( 0, 0 )
-17/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-17/shape_one_way = false
-17/shape_one_way_margin = 0.0
-17/shapes = [  ]
-17/z_index = 0
-18/name = "Buildings.png 18"
-18/texture = ExtResource( 12 )
-18/tex_offset = Vector2( 0, 0 )
-18/modulate = Color( 1, 1, 1, 1 )
-18/region = Rect2( 256, 640, 128, 128 )
-18/tile_mode = 0
-18/occluder_offset = Vector2( 0, 0 )
-18/navigation_offset = Vector2( 0, 0 )
-18/shape_offset = Vector2( 0, 0 )
-18/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-18/shape_one_way = false
-18/shape_one_way_margin = 0.0
-18/shapes = [  ]
-18/z_index = 0
-19/name = "Buildings256.png 19"
-19/texture = ExtResource( 11 )
-19/tex_offset = Vector2( 0, 0 )
-19/modulate = Color( 1, 1, 1, 1 )
-19/region = Rect2( 512, 1280, 256, 256 )
-19/tile_mode = 0
-19/occluder_offset = Vector2( 0, 0 )
-19/navigation_offset = Vector2( 0, 0 )
-19/shape_offset = Vector2( 0, 0 )
-19/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
-19/shape_one_way = false
-19/shape_one_way_margin = 0.0
-19/shapes = [  ]
-19/z_index = 0
 
 [sub_resource type="GDScript" id=17]
 script/source = "extends Node2D
@@ -450,7 +197,7 @@ extents = Vector2( 2.79376, 0.416122 )
 
 [sub_resource type="Curve2D" id=24]
 _data = {
-"points": PoolVector2Array( 0, 0, 0, 0, 33.4753, 95.2079, -0.22602, -23.2714, 0.22602, 23.2714, 33.477, 543.208, 24.627, 0.225847, -24.627, -0.225847, 1.47708, 575.208, 22.6413, -8.19612e-05, -22.6413, 8.19612e-05, -382.523, 575.209, -0.377272, 22.6413, 0.377272, -22.6413, -414.523, 543.209, 8.53527e-05, 23.5782, -8.53527e-05, -23.5782, -414.525, 95.2095, -24.4103, 0.277479, 24.4103, -0.277479, -382.525, 63.2094, 0, 0, 0, 0, 9.47522, 63.208 )
+"points": PoolVector2Array( 0, 0, 0, 0, 33.4753, 95.2079, -0.22602, -23.2714, 0.22602, 23.2714, 33.4767, 479.208, 24.627, 0.225847, -24.627, -0.225847, 5.47687, 511.208, 22.6413, -8.19612e-05, -22.6413, 8.19612e-05, -382.523, 511.209, -0.377272, 22.6413, 0.377272, -22.6413, -414.523, 479.21, 8.53527e-05, 23.5782, -8.53527e-05, -23.5782, -414.525, 95.2095, -24.4103, 0.277479, 24.4103, -0.277479, -382.525, 63.2094, 0, 0, 0, 0, 9.47522, 63.208 )
 }
 
 [sub_resource type="Curve2D" id=25]
@@ -463,8 +210,6 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, -64, 1248, 19.7468, -0.429279, -19.7468, 0.429279, -256, 1248, 0.214639, 22.9664, -0.214639, -22.9664, -288, 1216, 0.263521, 23.9804, -0.263521, -23.9804, -288, 448, -24.7709, -0.527041, 24.7709, 0.527041, -256, 416, 0, 0, 0, 0, 192, 416, 0, 0, 0, 0, -256, 416 )
 }
 
-<<<<<<< HEAD
-=======
 [sub_resource type="GDScript" id=27]
 script/source = "extends Node2D
 
@@ -654,7 +399,6 @@ func _process(delta):
 	set_process(false)
 "
 
->>>>>>> afbdb03891638b64a5a3f5f3ff6de121c6b0cc72
 [node name="Map0" type="Node2D"]
 script = SubResource( 1 )
 
@@ -682,7 +426,7 @@ z_index = 10
 tile_set = SubResource( 16 )
 cell_tile_origin = 1
 format = 1
-tile_data = PoolIntArray( -1179638, 7, 0, -1179634, 6, 0, -1179628, 536870915, 0, -1179624, 2, 0, -1048548, 4, 0, -851976, 9, 0, -851972, 9, 0, -917504, 9, 0, -917500, 9, 0, -917486, 536870926, 0, -786424, 536870929, 0, -786394, 1, 0, -786390, 1, 0, -589834, 536870923, 0, -655324, 536870929, 0, -393178, 536870931, 0, -393174, 19, 0, -196596, 1, 0, -196592, 1, 0, -196588, 1, 0, -65540, 1, 0, -131072, 1, 0, -131048, 0, 0, -131044, 0, 0, 65532, 4, 0, 0, 4, 0, 12, 2, 0, 16, 4, 0, 20, 536870915, 0, 24, 4, 0, 28, -1610612720, 0, 131100, -1610612720, 0, 262172, -1610612720, 0, 917518, 4, 0, 917522, 1, 0, 1048570, 1, 0, 1048574, 0, 0, 983040, 1, 0, 983052, 0, 0, 983062, 0, 0, 983072, 1, 0, 983076, 1, 0, 1114106, 19, 0, 1114110, 536870925, 0, 1048576, 8, 0, 1048588, 0, 0, 1048594, 4, 0, 1048598, 536870925, 0, 1048608, 1, 0, 1048612, 1, 0, 1245182, 536870925, 0, 1179660, 536870923, 0, 1179670, 536870927, 0, 1376254, 536870926, 0, 1310742, 536870926, 0, 1310758, 0, 0, 1441814, 15, 0, 1441824, 0, 0, 1441826, 0, 0, 1441828, 0, 0, 1572896, 0, 0, 1572898, 0, 0, 1703934, 536870928, 0, 1638446, 0, 0, 1769466, 536870928, 0, 1769468, 536870928, 0, 1703968, 0, 0, 1769516, 0, 0, 1900538, 536870928, 0, 1835016, 1, 0, 1835020, 1, 0, 1835024, 1, 0, 1835028, 1, 0, 1900548, 1, 0, 1900586, 0, 0, 2031610, 536870928, 0, 2031656, 0, 0, 2162682, 536870928, 0, 2162726, 0, 0, 2228226, 536870920, 0, 2228230, 536870920, 0, 2228234, 536870920, 0, 2228238, 536870920, 0, 2228242, 0, 0, 2228246, 0, 0, 2293780, 0, 0, 2293796, 0, 0, 2359314, 0, 0, 2359316, 0, 0, 2424866, 0, 0, 2490386, 0, 0, 2555936, 0, 0, 2687004, 0, 0, 2687006, 0, 0, 2818074, 0, 0, 3014680, 0, 0, 3080212, 1, 0, 3276782, 1, 0, 3276786, 1, 0, 3276790, 1, 0, 3276794, 1, 0, 3276798, 1, 0, 3211266, 1, 0, 3211270, 1, 0, 3211274, 1, 0, 3211278, 1, 0, 3211282, 0, 0 )
+tile_data = PoolIntArray( -1179638, 7, 0, -1179634, 6, 0, -1179628, 536870915, 0, -1179624, 2, 0, -1048548, 4, 0, -851976, 9, 0, -851972, 9, 0, -917504, 9, 0, -917500, 9, 0, -917486, 536870926, 0, -786424, 536870929, 0, -786394, 1, 0, -786390, 1, 0, -589834, 536870923, 0, -655324, 536870929, 0, -393178, 536870931, 0, -393174, 19, 0, -196596, 1, 0, -196592, 1, 0, -196588, 1, 0, -65540, 1, 0, -131072, 1, 0, -131048, 0, 0, -131044, 0, 0, 65532, 4, 0, 0, 4, 0, 12, 2, 0, 16, 4, 0, 20, 536870915, 0, 24, 4, 0, 28, -1610612720, 0, 131100, -1610612720, 0, 262172, -1610612720, 0, 917518, 4, 0, 917522, 1, 0, 1048570, 1, 0, 1048574, 0, 0, 983040, 1, 0, 983052, 0, 0, 983062, 0, 0, 983072, 1, 0, 983076, 1, 0, 1114106, 19, 0, 1114110, 536870925, 0, 1048576, 8, 0, 1048588, 0, 0, 1048590, 0, 0, 1048592, 0, 0, 1048594, 4, 0, 1048598, 536870925, 0, 1048608, 1, 0, 1048612, 1, 0, 1114126, 0, 0, 1114128, 0, 0, 1245182, 536870925, 0, 1179660, 536870923, 0, 1179662, 0, 0, 1179664, 0, 0, 1179670, 536870927, 0, 1245198, 0, 0, 1245200, 0, 0, 1376254, 536870926, 0, 1310734, 0, 0, 1310736, 0, 0, 1310742, 536870926, 0, 1310758, 0, 0, 1441814, 15, 0, 1441824, 0, 0, 1441826, 0, 0, 1441828, 0, 0, 1572896, 0, 0, 1572898, 0, 0, 1703934, 536870928, 0, 1638446, 0, 0, 1769466, 536870928, 0, 1769468, 536870928, 0, 1703968, 0, 0, 1769516, 0, 0, 1900538, 536870928, 0, 1835016, 1, 0, 1835020, 1, 0, 1835024, 1, 0, 1835028, 1, 0, 1900548, 1, 0, 1900586, 0, 0, 2031610, 536870928, 0, 2031656, 0, 0, 2162682, 536870928, 0, 2162726, 0, 0, 2228226, 536870920, 0, 2228230, 536870920, 0, 2228234, 536870920, 0, 2228238, 536870920, 0, 2228242, 0, 0, 2228246, 0, 0, 2293780, 0, 0, 2293796, 0, 0, 2359314, 0, 0, 2359316, 0, 0, 2424866, 0, 0, 2490386, 0, 0, 2555936, 0, 0, 2687004, 0, 0, 2687006, 0, 0, 2818074, 0, 0, 3014680, 0, 0, 3080212, 1, 0, 3276782, 1, 0, 3276786, 1, 0, 3276790, 1, 0, 3276794, 1, 0, 3276798, 1, 0, 3211266, 1, 0, 3211270, 1, 0, 3211274, 1, 0, 3211278, 1, 0, 3211282, 0, 0 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -736,11 +480,11 @@ one_way_collision_margin = 4.7
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath2/Paths"]
 curve = SubResource( 24 )
 
-[node name="PathFollow2D" parent="Tracks/TrackPath2/Paths/PathTrack" instance=ExtResource( 4 )]
-position = Vector2( -204.137, 63.096 )
-rotation = 0.000290607
+[node name="CarPathFollower" parent="Tracks/TrackPath2/Paths/PathTrack" instance=ExtResource( 4 )]
+position = Vector2( -77.8993, 63.1517 )
+rotation = 0.000571426
 offset = 1617.99
-init_speed = 30.0
+init_speed = 120.0
 
 [node name="TrackPath3" type="Node2D" parent="Tracks"]
 position = Vector2( 192, 350.472 )
@@ -788,6 +532,7 @@ rotation = 3.14159
 script = SubResource( 21 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath4"]
+position = Vector2( -64, 1248 )
 rotation = -1.5708
 scale = Vector2( 3.3, 3.3 )
 monitoring = false
@@ -805,10 +550,6 @@ one_way_collision_margin = 4.7
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath4/Paths"]
 curve = SubResource( 26 )
 
-<<<<<<< HEAD
-[node name="RedLightCross" parent="." instance=ExtResource( 5 )]
-position = Vector2( 440, 472 )
-=======
 [node name="TrackPath5" type="Node2D" parent="Tracks"]
 position = Vector2( 320.308, 416 )
 rotation = 3.14159
@@ -1025,4 +766,3 @@ position = Vector2( 2176, -456 )
 [node name="Starting" type="Position2D" parent="."]
 position = Vector2( 392, 2760 )
 script = SubResource( 56 )
->>>>>>> afbdb03891638b64a5a3f5f3ff6de121c6b0cc72
