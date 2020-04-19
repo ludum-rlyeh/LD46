@@ -63,21 +63,16 @@ func change_state(var state) -> void:
 
 func _next_enable_opposite_break_zone():
 	var enable = false
-	if $BreakZones/BreakZone.monitorable:
+	if $BreakZones/BreakZone.get_children()[0].disabled:
 		enable = true
-	$BreakZones/BreakZone3.monitorable = enable
-	$BreakZones/BreakZone4.monitorable = enable
-	$BreakZones/BreakZone.monitorable = !enable
-	$BreakZones/BreakZone2.monitorable = !enable
+	$BreakZones/BreakZone3.get_children()[0].disabled = enable
+	$BreakZones/BreakZone4.get_children()[0].disabled = enable
+	$BreakZones/BreakZone.get_children()[0].disabled = !enable
+	$BreakZones/BreakZone2.get_children()[0].disabled = !enable
 	
 	if Debug:
-		print(\"Red light : BreakZone 1 and 2 : \", $BreakZones/BreakZone.monitorable)
-		print(\"Red light : BreakZone 3 and 4 : \", $BreakZones/BreakZone.monitorable)
-		
-		$BreakZones/BreakZone3.visible = enable
-		$BreakZones/BreakZone4.visible = enable
-		$BreakZones/BreakZone.visible = !enable
-		$BreakZones/BreakZone2.visible = !enable
+		print(\"Red light : BreakZone 1 and 2 : \", $BreakZones/BreakZone.get_children()[0].disabled)
+		print(\"Red light : BreakZone 3 and 4 : \", $BreakZones/BreakZone.get_children()[0].disabled)
 		
 func _set_enable_all_break_zones(var enable : bool):
 	for child in $BreakZones.get_children():

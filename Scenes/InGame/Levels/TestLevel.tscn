@@ -128,7 +128,6 @@ curve = SubResource( 8 )
 position = Vector2( -204.137, 63.096 )
 rotation = 0.000290607
 offset = 1617.99
-Debug = true
 init_speed = 30.0
 
 [node name="TrackPath3" type="Node2D" parent="Tracks"]
@@ -181,7 +180,7 @@ rotation = -1.5708
 scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
-collision_mask = 16
+collision_mask = 32
 script = SubResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath4/Trigger"]
