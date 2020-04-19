@@ -52,16 +52,15 @@ script/source = "extends Node
 
 var fsm : StateMachine
 
-var _path_index : int
-var _path_points : Array
-var _offset_position : Vector2
+export (bool) var Debug = false
+
 var _last_trigger : Area2D
 
 onready var _path_follower : Node2D = get_node(\"../../..\")
 onready var _car : Node2D = get_node(\"../..\")
 
 func enter(var params : Array) -> void:
-	print(\"Following path\")
+	if Debug : print(\"Car : Following path\")
 	
 func exit(next_state : String, params : Array) -> void:
 	fsm.change_to(next_state, params)
@@ -73,22 +72,27 @@ func _update_car_position(delta) -> void:
 	_path_follower.set_offset(_path_follower.get_offset() + _car.speed * delta)
 	
 func _change_path(path : Path2D) -> void:
-	print(\"Change path\")
+	if Debug : print(\"Car : Change path\")
 	_path_follower.get_parent().call_deferred(\"remove_child\", _path_follower)
 	path.call_deferred(\"add_child\", _path_follower)
 	_path_follower.offset = 0
 
 func _on_CollisionArea_area_entered(area : Area2D) -> void:
-	if area != _last_trigger && area.get_type() == Enums.TRIGGER_TYPE.CHANGE_TRACK:
-		print(area)
+	if area != _last_trigger:
+		if Debug : print(\"Car : Detection new Trigger\")
 		_last_trigger = area
-		_change_path(area.get_track_path())
+		match area.get_type():
+			Enums.TRIGGER_TYPE.CHANGE_TRACK:
+				_change_path(area.get_track_path())
+			Enums.TRIGGER_TYPE.CHANGE_TRACK:
+				exit(\"BreakZone\", [])
+		
 "
 
 [sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 6.3989, 2.36384 )
 
-[node name="PathFollow2D" type="PathFollow2D"]
+[node name="CarPathFollower" type="PathFollow2D"]
 
 [node name="Car" type="Node2D" parent="."]
 rotation = -1.5708
@@ -98,6 +102,7 @@ speed = 100.0
 [node name="AnimatedSprite" type="AnimatedSprite" parent="Car"]
 position = Vector2( 1.15982, 5.53244 )
 frames = SubResource( 6 )
+frame = 1
 playing = true
 
 [node name="StateMachine" type="Node" parent="Car"]

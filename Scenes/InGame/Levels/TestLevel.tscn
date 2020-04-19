@@ -1,9 +1,10 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Assets/Sprites/TileMap/TileMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/Cross.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/CrossRightStraight.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/InGame/Elements/Cars/Car.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/RedLightCross.tscn" type="PackedScene" id=5]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
@@ -190,3 +191,7 @@ one_way_collision_margin = 4.7
 
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath4/Paths"]
 curve = SubResource( 10 )
+
+[node name="RedLightCross" parent="." instance=ExtResource( 5 )]
+position = Vector2( 440, 472 )
+Debug = true
