@@ -17,10 +17,14 @@ var doggo
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Events.connect(\"died_signal\",self,\"on_died_signal\")
+	Events.connect(\"set_begin_position_signal\", self, \"_on_set_begin_position\")
 	doggo = $Harness/Doggo
 	set_physics_process(true)
 
-
+func _on_set_begin_position(pos) -> void:
+	position = pos
+	$Harness/Doggo.position = pos
+	
 func _physics_process(delta):
 	attract_doggo(Vector2(0.0,0.0))
 	if self.position.distance_to(doggo.position) >= MAX_DOGGO_DIST:
@@ -102,6 +106,3 @@ shape = SubResource( 2 )
 
 [node name="Doggo" parent="Harness" instance=ExtResource( 2 )]
 position = Vector2( 69, 73 )
-
-[node name="Camera2D" type="Camera2D" parent="Harness/Doggo"]
-current = true

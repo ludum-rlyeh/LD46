@@ -11,13 +11,13 @@ var destination = Vector2.ZERO
 
 func _ready():
 	Events.connect(\"moved_signal\", self, \"_on_moved_src\")
-	Events.connect(\"set_arrive_point\", self, \"_on_set_arrive_point\")
+	Events.connect(\"set_arrive_position_signal\", self, \"_on_set_arrive_position\")
 
 func _on_moved_src(position : Vector2) -> void:
 	var direction = (destination - position).normalized()
 	self.rotation = _init_direction.angle_to(direction)
 	
-func _on_set_arrive_point(pos) -> void:
+func _on_set_arrive_position(pos) -> void:
 	destination = pos
 "
 

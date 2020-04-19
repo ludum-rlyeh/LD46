@@ -9,7 +9,7 @@ func _on_Area2D_body_shape_entered(body_id, body, body_shape, area_shape):
 	Events.emit_signal(\"game_over_signal\", Enums.GAME_OVER_TYPE.VICTORY)
 
 func _ready():
-	Events.emit_signal(\"set_arrive_point\", position)
+	Events.emit_signal(\"set_arrive_position_signal\", position)
 "
 
 [sub_resource type="ParticlesMaterial" id=2]

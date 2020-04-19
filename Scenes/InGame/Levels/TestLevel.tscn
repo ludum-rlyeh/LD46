@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=2]
+[gd_scene load_steps=59 format=2]
 
 [ext_resource path="res://Assets/Sprites/TileMap/TileMap.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/Cross.tscn" type="PackedScene" id=2]
@@ -140,7 +140,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 1/shapes = [  ]
 1/z_index = 0
 2/name = "Buildings256.png 2"
-2/texture = ExtResource( 11 )
 2/tex_offset = Vector2( 0, 0 )
 2/modulate = Color( 1, 1, 1, 1 )
 2/region = Rect2( 0, 256, 256, 256 )
@@ -154,7 +153,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 2/shapes = [  ]
 2/z_index = 0
 3/name = "Buildings256.png 3"
-3/texture = ExtResource( 11 )
 3/tex_offset = Vector2( 0, 0 )
 3/modulate = Color( 1, 1, 1, 1 )
 3/region = Rect2( 256, 256, 256, 256 )
@@ -168,7 +166,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 3/shapes = [  ]
 3/z_index = 0
 4/name = "Buildings256.png 4"
-4/texture = ExtResource( 11 )
 4/tex_offset = Vector2( 0, 0 )
 4/modulate = Color( 1, 1, 1, 1 )
 4/region = Rect2( 512, 256, 256, 256 )
@@ -182,7 +179,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 4/shapes = [  ]
 4/z_index = 0
 5/name = "Buildings256.png 5"
-5/texture = ExtResource( 11 )
 5/tex_offset = Vector2( 0, 0 )
 5/modulate = Color( 1, 1, 1, 1 )
 5/region = Rect2( 768, 512, 256, 256 )
@@ -196,7 +192,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 5/shapes = [  ]
 5/z_index = 0
 6/name = "Buildings256.png 6"
-6/texture = ExtResource( 11 )
 6/tex_offset = Vector2( 0, 0 )
 6/modulate = Color( 1, 1, 1, 1 )
 6/region = Rect2( 1024, 512, 256, 256 )
@@ -210,7 +205,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 6/shapes = [  ]
 6/z_index = 0
 7/name = "Buildings256.png 7"
-7/texture = ExtResource( 11 )
 7/tex_offset = Vector2( 0, 0 )
 7/modulate = Color( 1, 1, 1, 1 )
 7/region = Rect2( 1280, 512, 256, 256 )
@@ -224,7 +218,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 7/shapes = [  ]
 7/z_index = 0
 8/name = "Buildings256.png 8"
-8/texture = ExtResource( 11 )
 8/tex_offset = Vector2( 0, 0 )
 8/modulate = Color( 1, 1, 1, 1 )
 8/region = Rect2( 256, 1280, 256, 256 )
@@ -238,7 +231,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 8/shapes = [  ]
 8/z_index = 0
 9/name = "Buildings256.png 9"
-9/texture = ExtResource( 11 )
 9/tex_offset = Vector2( 0, 0 )
 9/modulate = Color( 1, 1, 1, 1 )
 9/region = Rect2( 0, 1024, 256, 256 )
@@ -252,7 +244,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 9/shapes = [  ]
 9/z_index = 0
 10/name = "Buildings.png 10"
-10/texture = ExtResource( 12 )
 10/tex_offset = Vector2( 0, 0 )
 10/modulate = Color( 1, 1, 1, 1 )
 10/region = Rect2( 0, 128, 128, 128 )
@@ -266,7 +257,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 10/shapes = [  ]
 10/z_index = 0
 11/name = "Buildings.png 11"
-11/texture = ExtResource( 12 )
 11/tex_offset = Vector2( 0, 0 )
 11/modulate = Color( 1, 1, 1, 1 )
 11/region = Rect2( 128, 128, 128, 128 )
@@ -280,7 +270,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 11/shapes = [  ]
 11/z_index = 0
 12/name = "Buildings.png 12"
-12/texture = ExtResource( 12 )
 12/tex_offset = Vector2( 0, 0 )
 12/modulate = Color( 1, 1, 1, 1 )
 12/region = Rect2( 256, 128, 128, 128 )
@@ -294,7 +283,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 12/shapes = [  ]
 12/z_index = 0
 13/name = "Buildings.png 13"
-13/texture = ExtResource( 12 )
 13/tex_offset = Vector2( 0, 0 )
 13/modulate = Color( 1, 1, 1, 1 )
 13/region = Rect2( 384, 256, 128, 128 )
@@ -308,7 +296,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 13/shapes = [  ]
 13/z_index = 0
 14/name = "Buildings.png 14"
-14/texture = ExtResource( 12 )
 14/tex_offset = Vector2( 0, 0 )
 14/modulate = Color( 1, 1, 1, 1 )
 14/region = Rect2( 512, 256, 128, 128 )
@@ -322,7 +309,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 14/shapes = [  ]
 14/z_index = 0
 15/name = "Buildings.png 15"
-15/texture = ExtResource( 12 )
 15/tex_offset = Vector2( 0, 0 )
 15/modulate = Color( 1, 1, 1, 1 )
 15/region = Rect2( 640, 256, 128, 128 )
@@ -336,7 +322,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 15/shapes = [  ]
 15/z_index = 0
 16/name = "Buildings.png 16"
-16/texture = ExtResource( 12 )
 16/tex_offset = Vector2( 0, 0 )
 16/modulate = Color( 1, 1, 1, 1 )
 16/region = Rect2( 0, 512, 128, 128 )
@@ -350,7 +335,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 16/shapes = [  ]
 16/z_index = 0
 17/name = "Buildings.png 17"
-17/texture = ExtResource( 12 )
 17/tex_offset = Vector2( 0, 0 )
 17/modulate = Color( 1, 1, 1, 1 )
 17/region = Rect2( 128, 640, 128, 128 )
@@ -364,7 +348,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 17/shapes = [  ]
 17/z_index = 0
 18/name = "Buildings.png 18"
-18/texture = ExtResource( 12 )
 18/tex_offset = Vector2( 0, 0 )
 18/modulate = Color( 1, 1, 1, 1 )
 18/region = Rect2( 256, 640, 128, 128 )
@@ -378,7 +361,6 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 18/shapes = [  ]
 18/z_index = 0
 19/name = "Buildings256.png 19"
-19/texture = ExtResource( 11 )
 19/tex_offset = Vector2( 0, 0 )
 19/modulate = Color( 1, 1, 1, 1 )
 19/region = Rect2( 512, 1280, 256, 256 )
@@ -631,6 +613,15 @@ extents = Vector2( 2.79376, 0.416122 )
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0.243805, 0, 0, 0, 0, -64, 0.243801 )
 }
+
+[sub_resource type="GDScript" id=45]
+script/source = "extends Position2D
+
+
+func _process(delta):
+	Events.emit_signal(\"set_begin_position_signal\", position)
+	set_process(false)
+"
 
 [node name="Map0" type="Node2D"]
 script = SubResource( 1 )
@@ -995,8 +986,4 @@ position = Vector2( 2176, -456 )
 
 [node name="Starting" type="Position2D" parent="."]
 position = Vector2( 392, 2760 )
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 928, 1096 )
-current = true
-zoom = Vector2( 6, 6 )
+script = SubResource( 45 )

@@ -16,6 +16,11 @@ script/source = "extends Node2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	VisualServer.set_default_clear_color(Color(0.0,0.0,0.0,1.0))
+	Events.connect(\"set_begin_position_signal\", self, \"_on_set_begin_position\")
+	
+func _on_set_begin_position(pos) -> void:
+	$BlindGuy._on_set_begin_position(pos)
+
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -32,16 +37,12 @@ script = SubResource( 1 )
 [node name="Map0" parent="." instance=ExtResource( 1 )]
 
 [node name="BlindGuy" parent="." instance=ExtResource( 2 )]
-position = Vector2( 350.655, 226.895 )
+position = Vector2( 341.939, 2768.66 )
 
 [node name="AnimatedSprite" parent="BlindGuy" index="0"]
-frame = 0
+frame = 1
 
 [node name="Doggo" parent="BlindGuy/Harness" index="0"]
-position = Vector2( 353.288, 158.738 )
-
-[node name="Camera2D" type="Camera2D" parent="BlindGuy/Harness/Doggo" index="2"]
-position = Vector2( -2.6326, 68.1571 )
-current = true
+position = Vector2( 410.755, 2765.68 )
 
 [editable path="BlindGuy"]
