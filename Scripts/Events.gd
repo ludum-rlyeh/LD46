@@ -6,3 +6,5 @@ extends Node
 
 signal moved_signal
 signal button_pressed_signal
+
+signal game_over_signal
