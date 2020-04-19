@@ -1,0 +1,157 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Assets/Fonts/ka1.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/Fonts/ARCADE.TTF" type="DynamicFontData" id=2]
+[ext_resource path="res://Assets/Animations/Doggo.tres" type="SpriteFrames" id=3]
+[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Sprites/Png/Building.png" type="Texture" id=5]
+
+[sub_resource type="GDScript" id=5]
+script/source = "extends Control
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	$BackgroundAnimation/AnimationPlayer.play(\"street\")
+
+
+func _on_StartButton_pressed():
+	Events.emit_signal(\"button_pressed_signal\",\"start\")
+
+func _on_SelectButton_pressed():
+	Events.emit_signal(\"button_pressed_signal\",\"select\")
+
+func _on_QuitButton_pressed():
+	Events.emit_signal(\"button_pressed_signal\",\"quit\")
+"
+
+[sub_resource type="Animation" id=6]
+resource_name = "street"
+length = 10.0
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("BuildingSprite:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 1221, -0.25, 0, 0.25, 0, -200, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 10 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("BuildingSprite:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = false
+tracks/1/keys = {
+"points": PoolRealArray(  ),
+"times": PoolRealArray(  )
+}
+
+[sub_resource type="DynamicFont" id=1]
+size = 48
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 40
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 32
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 40
+font_data = ExtResource( 2 )
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = 2.58472
+margin_bottom = 2.58472
+script = SubResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BackgroundAnimation" type="Control" parent="."]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BuildingSprite" type="Sprite" parent="BackgroundAnimation"]
+position = Vector2( 659.97, 313.631 )
+texture = ExtResource( 5 )
+
+[node name="DoggoSprite" type="AnimatedSprite" parent="BackgroundAnimation"]
+position = Vector2( 496.292, 536.519 )
+frames = ExtResource( 3 )
+animation = "right"
+frame = 3
+playing = true
+
+[node name="BlindGuySprite" type="Sprite" parent="BackgroundAnimation"]
+position = Vector2( 371.964, 496.044 )
+scale = Vector2( 1.25907, 1.87143 )
+texture = ExtResource( 4 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundAnimation"]
+method_call_mode = 1
+anims/street = SubResource( 6 )
+
+[node name="Label" type="Label" parent="."]
+anchor_right = 0.5
+anchor_bottom = 0.236
+margin_left = 247.583
+margin_top = 46.2121
+margin_right = 263.583
+margin_bottom = 17.6121
+custom_fonts/font = SubResource( 1 )
+text = "Untitled 
+Guide-dog Game"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartButton" type="Button" parent="."]
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 412.0
+margin_top = 207.0
+margin_right = 100.0
+margin_bottom = -47.0
+custom_fonts/font = SubResource( 2 )
+text = "Start"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SelectButton" type="Button" parent="."]
+margin_left = 411.0
+margin_top = 288.0
+margin_right = 611.0
+margin_bottom = 327.0
+custom_fonts/font = SubResource( 3 )
+text = "Select Level"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuitButton" type="Button" parent="."]
+anchor_right = 0.5
+anchor_bottom = 0.751
+margin_left = 411.0
+margin_top = 357.0
+margin_right = 99.0
+margin_bottom = -47.6
+custom_fonts/font = SubResource( 4 )
+text = "Quit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="pressed" from="SelectButton" to="." method="_on_SelectButton_pressed"]
+[connection signal="pressed" from="QuitButton" to="." method="_on_QuitButton_pressed"]
