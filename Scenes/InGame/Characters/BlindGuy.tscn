@@ -45,6 +45,9 @@ func _physics_process(delta):
 				follow = false
 			else: #TODO test that
 				attract_doggo(Vector2(10.0,0.0))
+	else:
+		if not $AnimatedSprite.animation.begins_with(\"wait_\"):
+			$AnimatedSprite.animation = \"wait_\" + $AnimatedSprite.animation
 	
 
 func set_animation(var velocity):
@@ -80,7 +83,8 @@ script = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
-animation = "down"
+animation = "wait_down"
+frame = 3
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
