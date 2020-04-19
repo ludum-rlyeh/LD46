@@ -1,0 +1,118 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Assets/Fonts/ka1.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/Fonts/ARCADE.TTF" type="DynamicFontData" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends CanvasLayer
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	$Elements.visible = false
+	set_process_input(true)
+	get_tree().paused = false
+
+func _input(event):
+	if event.is_action_pressed(\"ui_cancel\"):
+		pause_unpause()
+
+func pause_unpause():
+	get_tree().paused = not get_tree().paused
+	$Elements.visible = not $Elements.visible
+
+func _on_ResumeButton_pressed():
+	self.call_deferred(\"pause_unpause\")
+
+func _on_RestartButton_pressed():
+	Events.emit_signal(\"button_pressed_signal\",\"start\")
+
+func _on_QuitButton_pressed():
+	Events.emit_signal(\"button_pressed_signal\",\"menu\")
+"
+
+[sub_resource type="DynamicFont" id=2]
+size = 50
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 30
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 30
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 30
+font_data = ExtResource( 2 )
+
+[node name="PauseMenu" type="CanvasLayer"]
+pause_mode = 2
+script = SubResource( 1 )
+
+[node name="Elements" type="Control" parent="."]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Elements"]
+anchor_right = 0.5
+anchor_bottom = 0.233
+margin_left = 401.767
+margin_top = 111.143
+margin_right = 621.767
+margin_bottom = 168.143
+custom_fonts/font = SubResource( 2 )
+text = "Pause"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ResumeButton" type="Button" parent="Elements"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 437.0
+margin_top = 243.0
+margin_right = 587.0
+margin_bottom = 279.0
+custom_fonts/font = SubResource( 3 )
+text = "Resume"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RestartButton" type="Button" parent="Elements"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 437.0
+margin_top = 306.0
+margin_right = 587.0
+margin_bottom = 342.0
+custom_fonts/font = SubResource( 4 )
+text = "Restart"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuitButton" type="Button" parent="Elements"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 437.0
+margin_top = 366.0
+margin_right = 587.0
+margin_bottom = 402.0
+custom_fonts/font = SubResource( 5 )
+text = "Quit"
+clip_text = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Elements/ResumeButton" to="." method="_on_ResumeButton_pressed"]
+[connection signal="pressed" from="Elements/RestartButton" to="." method="_on_RestartButton_pressed"]
+[connection signal="pressed" from="Elements/QuitButton" to="." method="_on_QuitButton_pressed"]

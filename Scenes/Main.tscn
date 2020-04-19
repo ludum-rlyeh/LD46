@@ -6,6 +6,7 @@ script/source = "extends Node
 var HUD = preload(\"res://Scenes/InGame/HUD/HUD.tscn\")
 var Game = preload(\"res://Scenes/InGame/Game.tscn\")
 var MainMenu = preload(\"res://Scenes/Menus/MainMenu.tscn\")
+var PauseMenu = preload(\"res://Scenes/Menus/PauseMenu.tscn\")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,6 +20,10 @@ func on_button_pressed_signal(var button):
 		self.call_deferred(\"quit_game\")
 	elif button == \"start\":
 		self.call_deferred(\"goto_scene\", \"game\")
+	elif button == \"menu\":
+		self.call_deferred(\"goto_scene\", \"mainmenu\")
+	else:
+		print_debug(\"No scene affected to button \" + button)
 
 func goto_scene(var scene):
 	if scene :
@@ -29,15 +34,20 @@ func goto_scene(var scene):
 		
 		# load asked scene
 		if scene == \"game\":
+			var pause_menu_instance = PauseMenu.instance()
 			var HUD_instance = HUD.instance()
 			var Game_instance = Game.instance()
 			self.add_child(HUD_instance)
 			self.add_child(Game_instance)
-		
+			self.add_child(pause_menu_instance)
+		elif scene == \"mainmenu\":
+			var main_menu_instance = MainMenu.instance()
+			self.add_child(main_menu_instance)
 
 func quit_game():
 	get_tree().quit()
 "
 
 [node name="Main" type="Node"]
+pause_mode = 2
 script = SubResource( 1 )
