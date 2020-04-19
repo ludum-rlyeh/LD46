@@ -15,7 +15,6 @@ func _ready():
 	var main_menu_instance = MainMenu.instance()
 	self.add_child(main_menu_instance)
 
-
 func on_button_pressed_signal(var button):
 	if button == \"quit\":
 		self.call_deferred(\"quit_game\")
