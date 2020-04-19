@@ -36,7 +36,7 @@ script = SubResource( 1 )
 position = Vector2( 295.755, 2746.29 )
 
 [node name="AnimatedSprite" parent="BlindGuy" index="0"]
-frame = 0
+frame = 2
 
 [node name="Doggo" parent="BlindGuy/Harness" index="0"]
 position = Vector2( 367.293, 2712.83 )
