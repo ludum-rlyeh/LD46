@@ -3,7 +3,7 @@
 [ext_resource path="res://Assets/Fonts/ka1.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/Fonts/ARCADE.TTF" type="DynamicFontData" id=2]
 [ext_resource path="res://Assets/Animations/Doggo.tres" type="SpriteFrames" id=3]
-[ext_resource path="res://icon.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Animations/BlindGuy.tres" type="SpriteFrames" id=4]
 [ext_resource path="res://Assets/Sprites/Png/Building.png" type="Texture" id=5]
 
 [sub_resource type="GDScript" id=1]
@@ -68,8 +68,10 @@ font_data = ExtResource( 2 )
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 2.58472
-margin_bottom = 2.58472
+margin_left = 0.773804
+margin_top = 1.81095
+margin_right = 0.773804
+margin_bottom = 1.81097
 script = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -85,15 +87,17 @@ position = Vector2( 659.97, 313.631 )
 texture = ExtResource( 5 )
 
 [node name="DoggoSprite" type="AnimatedSprite" parent="BackgroundAnimation"]
-position = Vector2( 496.292, 536.519 )
+position = Vector2( 536.097, 537.217 )
 frames = ExtResource( 3 )
 animation = "right"
 playing = true
 
-[node name="BlindGuySprite" type="Sprite" parent="BackgroundAnimation"]
-position = Vector2( 371.964, 496.044 )
-scale = Vector2( 1.25907, 1.87143 )
-texture = ExtResource( 4 )
+[node name="BlindGuySprite" type="AnimatedSprite" parent="BackgroundAnimation"]
+position = Vector2( 453.961, 499.207 )
+frames = ExtResource( 4 )
+animation = "right"
+frame = 6
+playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundAnimation"]
 method_call_mode = 1
@@ -107,8 +111,8 @@ margin_top = 46.2121
 margin_right = 263.583
 margin_bottom = 17.6121
 custom_fonts/font = SubResource( 3 )
-text = "Untitled 
-Guide-dog Game"
+text = "Guide
+Ur Human"
 align = 1
 valign = 1
 __meta__ = {
