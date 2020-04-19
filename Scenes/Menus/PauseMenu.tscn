@@ -6,8 +6,11 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends CanvasLayer
 
+var enable = true
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Events.connect(\"game_over_signal\",self,\"on_game_over_signal\")
 	$Elements.visible = false
 	set_process_input(true)
 	get_tree().paused = false
@@ -28,6 +31,9 @@ func _on_RestartButton_pressed():
 
 func _on_QuitButton_pressed():
 	Events.emit_signal(\"button_pressed_signal\",\"menu\")
+
+func on_game_over_signal(var type):
+	self.enable = false
 "
 
 [sub_resource type="DynamicFont" id=2]
@@ -59,11 +65,13 @@ __meta__ = {
 anchor_right = 0.5
 anchor_bottom = 0.233
 margin_left = 401.767
-margin_top = 111.143
+margin_top = 111.0
 margin_right = 621.767
-margin_bottom = 168.143
+margin_bottom = 168.0
 custom_fonts/font = SubResource( 2 )
 text = "Pause"
+align = 1
+valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }

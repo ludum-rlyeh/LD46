@@ -22,6 +22,7 @@ func _ready():
 
 
 func _physics_process(delta):
+	attract_doggo(Vector2(0.0,0.0))
 	if self.position.distance_to(doggo.position) >= MAX_DOGGO_DIST:
 		follow = true
 	
@@ -44,7 +45,7 @@ func _physics_process(delta):
 			self.move_and_slide(velocity)
 			if collision_info.collider_id == $Harness/Doggo.get_instance_id():
 				follow = false
-			else: #TODO test that
+			else: # attract dog if locked on wall
 				attract_doggo(Vector2(10.0,0.0))
 	else:
 		if not $AnimatedSprite.animation.begins_with(\"wait_\"):
@@ -70,12 +71,11 @@ func set_attract(var attract):
 func attract_doggo(var attract):
 	var attract_bis = Vector2.ZERO # just in case
 	if attract != Vector2.ZERO and self.position.distance_to(doggo.position) >= MAX_DOGGO_DIST:
-		attract_bis = (self.position - doggo.position).normalized() * attract.length() / 8.0
+		attract_bis = (self.position - doggo.position).normalized() * attract.length() * 20.0
 	doggo.set_attract(attract_bis)
 
 func on_died_signal(var body_id, var type):
 	if body_id == self.get_instance_id():
-		print_debug(\"BlindGuy died\")
 		# TODO: Animation
 		Events.emit_signal(\"game_over_signal\", Enums.GAME_OVER_TYPE.HUMAN_DIED)
 "
@@ -91,7 +91,7 @@ script = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
 animation = "wait_down"
-frame = 1
+frame = 3
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

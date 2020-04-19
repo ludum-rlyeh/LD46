@@ -164,6 +164,7 @@ script = SubResource( 1 )
 position = Vector2( 5.53244, -1.15984 )
 rotation = -1.5708
 frames = SubResource( 6 )
+frame = 3
 playing = true
 
 [node name="StateMachine" type="Node" parent="."]
