@@ -87,7 +87,7 @@ position = Vector2( -32, -96 )
 scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
-collision_mask = 16
+collision_mask = 32
 script = SubResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath/Trigger"]
@@ -100,11 +100,6 @@ one_way_collision_margin = 4.7
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath/Paths"]
 curve = SubResource( 4 )
 
-[node name="PathFollow2D" parent="Tracks/TrackPath/Paths/PathTrack" instance=ExtResource( 4 )]
-position = Vector2( -31.9722, -151.678 )
-rotation = -1.57033
-offset = 55.7263
-
 [node name="TrackPath2" type="Node2D" parent="Tracks"]
 position = Vector2( 287.208, 318.525 )
 rotation = 1.5708
@@ -116,7 +111,7 @@ rotation = 3.14159
 scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
-collision_mask = 16
+collision_mask = 32
 script = SubResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath2/Trigger"]
@@ -129,6 +124,13 @@ one_way_collision_margin = 4.7
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath2/Paths"]
 curve = SubResource( 8 )
 
+[node name="PathFollow2D" parent="Tracks/TrackPath2/Paths/PathTrack" instance=ExtResource( 4 )]
+position = Vector2( -204.142, 63.096 )
+rotation = 0.000290606
+offset = 1617.99
+Debug = true
+init_speed = 30.0
+
 [node name="TrackPath3" type="Node2D" parent="Tracks"]
 position = Vector2( 192, 350.472 )
 script = SubResource( 5 )
@@ -139,7 +141,7 @@ rotation = 3.14159
 scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
-collision_mask = 16
+collision_mask = 32
 script = SubResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath3/Trigger"]
@@ -194,4 +196,3 @@ curve = SubResource( 10 )
 
 [node name="RedLightCross" parent="." instance=ExtResource( 5 )]
 position = Vector2( 440, 472 )
-Debug = true

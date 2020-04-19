@@ -16,6 +16,7 @@ func _ready():
 func change_to(new_state, params : Array):
 	history.append(state.name)
 	state.set_block_signals(true)
+	state.is_active = false
 	state = get_node(new_state)
 	_enter_state(params)
 
@@ -25,6 +26,7 @@ func _enter_state(var params : Array):
 	# Give the new state a reference to this state machine script
 	state.fsm = self
 	state.set_block_signals(false)
+	state.is_active = true
 	state.enter(params)
 
 # Route Game Loop function calls to
