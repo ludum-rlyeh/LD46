@@ -56,10 +56,10 @@ func set_animation(var velocity):
 		if $AnimatedSprite.animation != \"right\": $AnimatedSprite.animation = \"right\"
 	elif angle >= PI/4.0 and angle < 3.0*PI/4.0 : # go down
 		if $AnimatedSprite.animation != \"down\": $AnimatedSprite.animation = \"down\"
-	elif angle >= 3.0*PI/4.0 and angle < -3.0*PI/4.0: # go left
+	elif (angle >= 3.0*PI/4.0 and angle < PI) or  (angle < -3.0*PI/4.0 and angle > -PI) : # go left
 		if $AnimatedSprite.animation != \"left\": $AnimatedSprite.animation = \"left\"
-	else : # TODO: go up
-		if $AnimatedSprite.animation != \"left\": $AnimatedSprite.animation = \"left\"
+	else : # go up
+		if $AnimatedSprite.animation != \"up\": $AnimatedSprite.animation = \"up\"
 
 func set_attract(var attract):
 	self.attract = attract 
@@ -84,7 +84,7 @@ script = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
 animation = "wait_down"
-frame = 3
+frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
