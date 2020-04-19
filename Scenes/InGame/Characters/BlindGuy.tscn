@@ -102,3 +102,6 @@ shape = SubResource( 2 )
 
 [node name="Doggo" parent="Harness" instance=ExtResource( 2 )]
 position = Vector2( 69, 73 )
+
+[node name="Camera2D" type="Camera2D" parent="Harness/Doggo"]
+current = true

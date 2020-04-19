@@ -9,3 +9,5 @@ signal button_pressed_signal
 
 signal game_over_signal
 signal died_signal
+
+signal set_arrive_point
