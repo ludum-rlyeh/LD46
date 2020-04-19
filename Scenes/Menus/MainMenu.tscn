@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Assets/Fonts/ka1.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/Fonts/ARCADE.TTF" type="DynamicFontData" id=2]
 [ext_resource path="res://Assets/Animations/Doggo.tres" type="SpriteFrames" id=3]
 [ext_resource path="res://Assets/Animations/BlindGuy.tres" type="SpriteFrames" id=4]
 [ext_resource path="res://Assets/Sprites/Png/BackgroundMenu.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Sounds/menu_select.wav" type="AudioStream" id=6]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control
@@ -15,12 +16,18 @@ func _ready():
 
 
 func _on_StartButton_pressed():
+	$AudioStreamPlayer.play()
+	yield($AudioStreamPlayer,\"finished\")
 	Events.emit_signal(\"button_pressed_signal\",\"start\")
 
 func _on_SelectButton_pressed():
+	$AudioStreamPlayer.play()
+	yield($AudioStreamPlayer,\"finished\")
 	Events.emit_signal(\"button_pressed_signal\",\"select\")
 
 func _on_QuitButton_pressed():
+	$AudioStreamPlayer.play()
+	yield($AudioStreamPlayer,\"finished\")
 	Events.emit_signal(\"button_pressed_signal\",\"quit\")
 "
 
@@ -85,6 +92,9 @@ font_data = ExtResource( 2 )
 size = 40
 font_data = ExtResource( 2 )
 
+[sub_resource type="AudioStreamRandomPitch" id=7]
+audio_stream = ExtResource( 6 )
+
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -116,13 +126,13 @@ centered = false
 position = Vector2( 536.097, 537.217 )
 frames = ExtResource( 3 )
 animation = "right"
-frame = 2
 playing = true
 
 [node name="BlindGuySprite" type="AnimatedSprite" parent="BackgroundAnimation"]
 position = Vector2( 453.961, 499.207 )
 frames = ExtResource( 4 )
 animation = "right"
+frame = 6
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundAnimation"]
@@ -181,6 +191,9 @@ text = "Quit"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = SubResource( 7 )
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
 [connection signal="pressed" from="SelectButton" to="." method="_on_SelectButton_pressed"]
 [connection signal="pressed" from="QuitButton" to="." method="_on_QuitButton_pressed"]

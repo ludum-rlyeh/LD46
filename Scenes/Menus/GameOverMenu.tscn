@@ -1,5 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
+[ext_resource path="res://Assets/Sounds/menu_select.wav" type="AudioStream" id=1]
 [ext_resource path="res://Assets/Fonts/ka1.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://Assets/Fonts/ARCADE.TTF" type="DynamicFontData" id=3]
 
@@ -26,10 +27,14 @@ func on_game_over_signal(var type):
 
 
 func _on_RestartButton_pressed():
+	$Elements/AudioStreamPlayer.play()
+	yield($Elements/AudioStreamPlayer,\"finished\")
 	Events.emit_signal(\"button_pressed_signal\",\"start\")
 
 
 func _on_QuitButton_pressed():
+	$Elements/AudioStreamPlayer.play()
+	yield($Elements/AudioStreamPlayer,\"finished\")
 	Events.emit_signal(\"button_pressed_signal\",\"menu\")
 "
 
@@ -44,6 +49,9 @@ font_data = ExtResource( 2 )
 [sub_resource type="DynamicFont" id=4]
 size = 30
 font_data = ExtResource( 3 )
+
+[sub_resource type="AudioStreamRandomPitch" id=5]
+audio_stream = ExtResource( 1 )
 
 [node name="GameOverMenu" type="CanvasLayer"]
 pause_mode = 2
@@ -118,5 +126,8 @@ margin_right = 75.0
 margin_bottom = 58.0
 custom_fonts/font = SubResource( 4 )
 text = "Quit"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Elements"]
+stream = SubResource( 5 )
 [connection signal="pressed" from="Elements/RestartButton" to="." method="_on_RestartButton_pressed"]
 [connection signal="pressed" from="Elements/QuitButton" to="." method="_on_QuitButton_pressed"]
