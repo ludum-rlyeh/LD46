@@ -25,7 +25,6 @@ func _ready():
 
 [node name="Game" type="Node2D"]
 pause_mode = 1
-position = Vector2( 3.67548, -30.874 )
 script = SubResource( 1 )
 
 [node name="HUD" parent="." instance=ExtResource( 3 )]
@@ -33,12 +32,16 @@ script = SubResource( 1 )
 [node name="Map0" parent="." instance=ExtResource( 1 )]
 
 [node name="BlindGuy" parent="." instance=ExtResource( 2 )]
-position = Vector2( 295.755, 2746.29 )
+position = Vector2( 350.655, 226.895 )
 
 [node name="AnimatedSprite" parent="BlindGuy" index="0"]
-frame = 2
+frame = 0
 
 [node name="Doggo" parent="BlindGuy/Harness" index="0"]
-position = Vector2( 367.293, 2712.83 )
+position = Vector2( 353.288, 158.738 )
+
+[node name="Camera2D" type="Camera2D" parent="BlindGuy/Harness/Doggo" index="2"]
+position = Vector2( -2.6326, 68.1571 )
+current = true
 
 [editable path="BlindGuy"]
