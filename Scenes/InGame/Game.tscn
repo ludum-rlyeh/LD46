@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scenes/InGame/Levels/TestLevel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/InGame/HUD/HUD.tscn" type="PackedScene" id=3]
@@ -109,22 +109,9 @@ func _ready():
 	self.material.set_shader_param(\"ViewportTexture\", get_viewport().get_texture())
 "
 
-[sub_resource type="VisualShaderNodeInput" id=10]
-input_name = "screen_uv"
-
-[sub_resource type="VisualShaderNodeTextureUniform" id=11]
-uniform_name = "ViewportTexture"
-
-[sub_resource type="VisualShaderNodeVec3Uniform" id=12]
-uniform_name = "VectorUniform"
-
-[sub_resource type="VisualShaderNodeVectorOp" id=13]
-operator = 2
-
-[sub_resource type="VisualShader" id=14]
+[sub_resource type="Shader" id=9]
 code = "shader_type canvas_item;
 uniform sampler2D ViewportTexture;
-uniform vec3 VectorUniform;
 
 
 
@@ -135,19 +122,17 @@ void vertex() {
 
 void fragment() {
 // Input:2
-	vec3 n_out2p0 = vec3(SCREEN_UV, 0.0);
+	vec3 uv = vec3(SCREEN_UV, 0.0);
 
 // TextureUniform:3
 	vec3 n_out3p0;
 	float n_out3p1;
 	{
-		vec4 n_tex_read = texture(ViewportTexture, n_out2p0.xy);
+		vec4 n_tex_read = texture(ViewportTexture, uv.xy);
 		n_out3p0 = n_tex_read.rgb;
 		n_out3p1 = n_tex_read.a;
 	}
 
-// VectorUniform:4
-	vec3 n_out4p0 = VectorUniform;
 
 // VectorOp:5
 	vec3 n_out5p0 = n_out3p0 * n_out4p0;
@@ -162,30 +147,18 @@ void light() {
 
 }
 "
-graph_offset = Vector2( 0, 75 )
-mode = 1
-flags/light_only = false
-nodes/fragment/0/position = Vector2( 920, 120 )
-nodes/fragment/2/node = SubResource( 10 )
-nodes/fragment/2/position = Vector2( 100, 160 )
-nodes/fragment/3/node = SubResource( 11 )
-nodes/fragment/3/position = Vector2( 360, 160 )
-nodes/fragment/4/node = SubResource( 12 )
-nodes/fragment/4/position = Vector2( 360, 400 )
-nodes/fragment/5/node = SubResource( 13 )
-nodes/fragment/5/position = Vector2( 580, 320 )
-nodes/fragment/connections = PoolIntArray( 2, 0, 3, 0, 3, 0, 5, 0, 4, 0, 5, 1, 5, 0, 0, 0 )
 
-[sub_resource type="ShaderMaterial" id=15]
-shader = SubResource( 14 )
-shader_param/VectorUniform = Vector3( 0.6, 0.6, 1 )
+[sub_resource type="ShaderMaterial" id=10]
+shader = SubResource( 9 )
 
-[sub_resource type="GDScript" id=9]
+[sub_resource type="GDScript" id=11]
 script/source = "extends ColorRect
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.material.set_shader_param(\"ViewportTexture\", get_viewport().get_texture())
+	
+	print(Color(242,30,180).to_rgba64())
 "
 
 [node name="Game" type="Control"]
@@ -224,6 +197,8 @@ autoplay = true
 [node name="PostProcesses" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 1.16638
+margin_right = 1.16638
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -239,10 +214,11 @@ __meta__ = {
 }
 
 [node name="NightFilter" type="ColorRect" parent="PostProcesses"]
-material = SubResource( 15 )
+visible = false
+material = SubResource( 10 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = SubResource( 9 )
+script = SubResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
