@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Assets/Animations/BlindGuy.tres" type="SpriteFrames" id=1]
-[ext_resource path="res://Scenes/InGame/Characters/Doggo.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Assets/Sounds/wood01.wav" type="AudioStream" id=3]
+[ext_resource path="res://Assets/Sounds/take_damage02.wav" type="AudioStream" id=4]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends KinematicBody2D
@@ -12,48 +13,54 @@ const MAX_DOGGO_DIST = 100.0
 var follow = false
 var attract = Vector2.ZERO
 
-var doggo
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Events.connect(\"died_signal\",self,\"on_died_signal\")
 	Events.connect(\"set_begin_position_signal\", self, \"_on_set_begin_position\")
-	doggo = $Harness/Doggo
 	set_physics_process(true)
 
 func _on_set_begin_position(pos) -> void:
 	position = pos
-	$Harness/Doggo.position = pos
 	
 func _physics_process(delta):
-	attract_doggo(Vector2(0.0,0.0))
-	if self.position.distance_to(doggo.position) >= MAX_DOGGO_DIST:
-		follow = true
+	var doggos = get_tree().get_nodes_in_group(\"doggo\")
+	if doggos.size() > 0:
+		var doggo = doggos[0]
 	
-	var velocity = Vector2.ZERO
-	if follow :
-		var mid_pos = self.position.linear_interpolate(doggo.position, delta*FOLLOW_SPEED)
-		velocity = mid_pos - self.position
-	
-	if attract != Vector2.ZERO :
-		velocity += attract
-		attract_doggo(attract)
-	
-	if velocity != Vector2.ZERO:
-		var collision_info = self.move_and_collide(velocity)
-		set_animation(velocity)
+		attract_doggo(Vector2(0.0,0.0),doggo)
+		if self.position.distance_to(doggo.position) >= MAX_DOGGO_DIST:
+			follow = true
 		
-		# If collide dogo
-		if collision_info :
-			velocity = velocity.bounce(collision_info.normal)
-			self.move_and_slide(velocity)
-			if collision_info.collider_id == $Harness/Doggo.get_instance_id():
-				follow = false
-			else: # attract dog if locked on wall
-				attract_doggo(Vector2(10.0,0.0))
-	else:
-		if not $AnimatedSprite.animation.begins_with(\"wait_\"):
-			$AnimatedSprite.animation = \"wait_\" + $AnimatedSprite.animation
+		var velocity = Vector2.ZERO
+		if follow :
+			var mid_pos = self.position.linear_interpolate(doggo.position, delta*FOLLOW_SPEED)
+			velocity = mid_pos - self.position
+		
+		if attract != Vector2.ZERO :
+			velocity += attract
+			attract_doggo(attract,doggo)
+		
+		if velocity != Vector2.ZERO:
+			var collision_info = self.move_and_collide(velocity)
+			set_animation(velocity)
+			
+			if not $StepAudioPlayer2D.playing :
+				$StepAudioPlayer2D.play()
+			
+			# If collide dogo
+			if collision_info :
+				
+				velocity = velocity.bounce(collision_info.normal)
+				self.move_and_slide(velocity)
+				if collision_info.collider_id == doggo.get_instance_id():
+					follow = false
+				else: # attract dog if locked on wall
+					if not $HitAudioPlayer2D.playing :
+						$HitAudioPlayer2D.play()
+					attract_doggo(Vector2(10.0,0.0),doggo)
+		else:
+			if not $AnimatedSprite.animation.begins_with(\"wait_\"):
+				$AnimatedSprite.animation = \"wait_\" + $AnimatedSprite.animation
 	
 
 func set_animation(var velocity):
@@ -70,9 +77,12 @@ func set_animation(var velocity):
 func set_attract(var attract):
 	self.attract = attract 
 	if attract == Vector2.ZERO:
-		doggo.set_attract(Vector2.ZERO)
+		var doggos = get_tree().get_nodes_in_group(\"doggo\")
+		if doggos.size() > 0:
+			var doggo = doggos[0]
+			doggo.set_attract(Vector2.ZERO)
 
-func attract_doggo(var attract):
+func attract_doggo(var attract, var doggo):
 	var attract_bis = Vector2.ZERO # just in case
 	if attract != Vector2.ZERO and self.position.distance_to(doggo.position) >= MAX_DOGGO_DIST:
 		attract_bis = (self.position - doggo.position).normalized() * attract.length() * 20.0
@@ -86,6 +96,12 @@ func on_died_signal(var body_id, var type):
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 23.9719, 30.2642 )
+
+[sub_resource type="AudioStreamRandomPitch" id=3]
+audio_stream = ExtResource( 3 )
+
+[sub_resource type="AudioStreamRandomPitch" id=4]
+audio_stream = ExtResource( 4 )
 
 [node name="BlindGuy" type="KinematicBody2D"]
 collision_layer = 6
@@ -102,8 +118,12 @@ playing = true
 position = Vector2( -1, -4 )
 shape = SubResource( 2 )
 
-[node name="Harness" type="Node" parent="."]
+[node name="StepAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource( 3 )
+volume_db = 1.0
 
+[node name="HitAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource( 4 )
 [node name="Doggo" parent="Harness" instance=ExtResource( 2 )]
 position = Vector2( 69, 73 )
 z_as_relative = false
