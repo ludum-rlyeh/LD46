@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Assets/Animations/BlindGuy.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://Assets/Sounds/wihelm.wav" type="AudioStream" id=2]
 [ext_resource path="res://Assets/Sounds/wood01.wav" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Sounds/take_damage02.wav" type="AudioStream" id=4]
 
@@ -92,7 +93,23 @@ func attract_doggo(var attract, var doggo):
 
 func on_died_signal(var body_id, var type):
 	if body_id == self.get_instance_id():
+		if type == Enums.DIE_TYPE.FELL_IN_SEEKER:
+			self.call_deferred(\"set_physics_process\",false)
+			$AnimationPlayer.play(\"fall\")
+			yield($AnimationPlayer,\"animation_finished\")
+		
 		Events.emit_signal(\"game_over_signal\", Enums.GAME_OVER_TYPE.HUMAN_DIED)
+"
+
+[sub_resource type="GDScript" id=6]
+script/source = "extends AnimatedSprite
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	self.play(\"wait_down\")
+	self.visible = true
+
 "
 
 [sub_resource type="RectangleShape2D" id=2]
@@ -104,6 +121,72 @@ audio_stream = ExtResource( 3 )
 [sub_resource type="AudioStreamRandomPitch" id=4]
 audio_stream = ExtResource( 4 )
 
+[sub_resource type="AudioStreamRandomPitch" id=7]
+audio_stream = ExtResource( 2 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "fall"
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "fall" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimatedSprite:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.4 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("AnimatedSprite:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("FallAudioPlayer2D")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ 0.0 ],
+"method": "play"
+} ]
+}
+
 [node name="BlindGuy" type="KinematicBody2D"]
 collision_layer = 6
 collision_mask = 27
@@ -111,9 +194,8 @@ script = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
-animation = "wait_down"
-frame = 1
-playing = true
+animation = "fall"
+script = SubResource( 6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -1, -4 )
@@ -125,3 +207,10 @@ volume_db = 1.0
 
 [node name="HitAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource( 4 )
+
+[node name="FallAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource( 7 )
+volume_db = -2.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/fall = SubResource( 5 )

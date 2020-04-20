@@ -236,6 +236,7 @@ script = SubResource( 1 )
 shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+
 frames = SubResource( 27 )
 animation = "wait_up"
 frame = 1
