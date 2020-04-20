@@ -224,11 +224,6 @@ audio_listener_enable_2d = true
 
 [node name="HUD" parent="ViewportContainer/Viewport" instance=ExtResource( 3 )]
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 5 )
-volume_db = -5.0
-autoplay = true
-
 [node name="PostProcesses" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -248,7 +243,6 @@ __meta__ = {
 }
 
 [node name="GrayScale" type="ColorRect" parent="PostProcesses"]
-visible = false
 material = SubResource( 10 )
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -256,3 +250,8 @@ script = SubResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+volume_db = -5.0
+autoplay = true
