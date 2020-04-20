@@ -3,7 +3,7 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
 
-const ATTRACTION_STRENGH = 500.0
+const ATTRACTION_STRENGH = 400.0
 
 var body = null
 
