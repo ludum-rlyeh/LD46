@@ -20,7 +20,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="LD46 - Keep It Alive"
+config/name="LD46 - Guide Ur Human"
 run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
 
