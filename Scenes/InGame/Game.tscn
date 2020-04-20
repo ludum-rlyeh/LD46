@@ -27,6 +27,91 @@ func on_active_gray_scale_post_process(var active : bool) -> void:
 #	pass
 "
 
+[sub_resource type="Shader" id=9]
+code = "shader_type canvas_item;
+uniform sampler2D ViewportTexture;
+uniform vec3 blueNightColor;
+
+
+void vertex() {
+// Output:0
+
+}
+
+float when_eq(float  x, float  y) {
+  return 1.0 - abs(sign(x - y));
+}
+
+vec3 when_lt(vec3 x, vec3 y) {
+  return max(sign(y - x), 0.0);
+}
+
+vec3 when_gt(vec3 x, vec3 y) {
+  return max(sign(x - y), 0.0);
+}
+
+void fragment() {
+// Input:2
+	vec3 uv = vec3(SCREEN_UV, 0.0);
+
+// TextureUniform:3
+	vec3 n_out3p0;
+	float n_out3p1;
+	{
+		vec4 n_tex_read = texture(ViewportTexture, uv.xy);
+		n_out3p0 = n_tex_read.rgb;
+		n_out3p1 = n_tex_read.a;
+	}
+
+
+	vec3 colors[] = {vec3(0.94902,0.117647,0.705882),
+	vec3(0.14902,0.470588,1.113726),
+	vec3(0.941176,0.172549,0.141176),
+	vec3(0.627451,0.129412,0.65098),
+	vec3(0.658824,0.129412,0.129412),
+	vec3(0.164706,0.92549,0.117647),
+	vec3(0.117647,0.643137,0.670588),
+	vec3(0.666667,0.670588,0.090196),
+	vec3(0.658824,0.4,0.117647),
+	vec3(0.12549,0.65098,0.321569),
+	vec3(0.596078,0.415686,0.560784),
+	vec3(0.219608,0.188235,0.411765)};
+	
+	vec3 color = vec3(0.0);
+	float a = 0.0;
+	for(int i = 0; i < 12; i++)
+	{
+		vec3 offset = colors[i] - n_out3p0;
+		vec3 result = when_lt(offset, vec3(0.01)) * when_gt(offset, vec3(-0.01));
+		float r = when_eq(result.x, result.y) *  when_eq(result.z, result.y) * when_eq(result.z, 1.0);
+		a += r;
+		color += r * colors[i];
+	}
+	
+	// Output:0
+	COLOR.rgb = color + (1.0-a) * blueNightColor * n_out3p0;
+	COLOR.a = 1.0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+
+[sub_resource type="ShaderMaterial" id=10]
+shader = SubResource( 9 )
+shader_param/blueNightColor = Vector3( 0.4, 0.4, 0.65 )
+
+[sub_resource type="GDScript" id=11]
+script/source = "extends ColorRect
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	self.material.set_shader_param(\"ViewportTexture\", get_viewport().get_texture())
+"
+
 [sub_resource type="VisualShaderNodeInput" id=2]
 output_port_for_preview = 0
 input_name = "screen_uv"
@@ -79,7 +164,6 @@ void light() {
 
 }
 "
-graph_offset = Vector2( 0, 75 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 1000, 80 )
@@ -108,58 +192,6 @@ script/source = "extends ColorRect
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	self.material.set_shader_param(\"ViewportTexture\", get_viewport().get_texture())
-"
-
-[sub_resource type="Shader" id=9]
-code = "shader_type canvas_item;
-uniform sampler2D ViewportTexture;
-
-
-
-void vertex() {
-// Output:0
-
-}
-
-void fragment() {
-// Input:2
-	vec3 uv = vec3(SCREEN_UV, 0.0);
-
-// TextureUniform:3
-	vec3 n_out3p0;
-	float n_out3p1;
-	{
-		vec4 n_tex_read = texture(ViewportTexture, uv.xy);
-		n_out3p0 = n_tex_read.rgb;
-		n_out3p1 = n_tex_read.a;
-	}
-
-
-// VectorOp:5
-	vec3 n_out5p0 = n_out3p0 * n_out4p0;
-
-// Output:0
-	COLOR.rgb = n_out5p0;
-
-}
-
-void light() {
-// Output:0
-
-}
-"
-
-[sub_resource type="ShaderMaterial" id=10]
-shader = SubResource( 9 )
-
-[sub_resource type="GDScript" id=11]
-script/source = "extends ColorRect
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	self.material.set_shader_param(\"ViewportTexture\", get_viewport().get_texture())
-	
-	print(Color(242,30,180).to_rgba64())
 "
 
 [node name="Game" type="Control"]
@@ -205,22 +237,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="NightFilter" type="ColorRect" parent="PostProcesses"]
+material = SubResource( 10 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = SubResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="GrayScale" type="ColorRect" parent="PostProcesses"]
 visible = false
 material = SubResource( 7 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = SubResource( 8 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="NightFilter" type="ColorRect" parent="PostProcesses"]
-visible = false
-material = SubResource( 10 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-script = SubResource( 11 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
