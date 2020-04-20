@@ -62,6 +62,8 @@ func _physics_process(delta):
 		else:
 			if not $AnimatedSprite.animation.begins_with(\"wait_\"):
 				$AnimatedSprite.animation = \"wait_\" + $AnimatedSprite.animation
+		
+		update()
 	
 
 func set_animation(var velocity):
@@ -99,9 +101,15 @@ func on_died_signal(var body_id, var type):
 			yield($AnimationPlayer,\"animation_finished\")
 		
 		Events.emit_signal(\"game_over_signal\", Enums.GAME_OVER_TYPE.HUMAN_DIED)
+
+func _draw():
+	var doggos = get_tree().get_nodes_in_group(\"doggo\")
+	if doggos and doggos.size() > 0:
+		var doggo = doggos[0]
+		draw_line(Vector2.ZERO, doggo.position - self.position, Color(1.0, 0.0, 0.0))
 "
 
-[sub_resource type="GDScript" id=6]
+[sub_resource type="GDScript" id=2]
 script/source = "extends AnimatedSprite
 
 
@@ -112,20 +120,19 @@ func _ready():
 
 "
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 23.9719, 30.2642 )
 
-[sub_resource type="AudioStreamRandomPitch" id=3]
+[sub_resource type="AudioStreamRandomPitch" id=4]
 audio_stream = ExtResource( 3 )
 
-[sub_resource type="AudioStreamRandomPitch" id=4]
+[sub_resource type="AudioStreamRandomPitch" id=5]
 audio_stream = ExtResource( 4 )
 
-[sub_resource type="AudioStreamRandomPitch" id=7]
+[sub_resource type="AudioStreamRandomPitch" id=6]
 audio_stream = ExtResource( 2 )
 
-[sub_resource type="Animation" id=5]
-resource_name = "fall"
+[sub_resource type="Animation" id=7]
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimatedSprite:animation")
 tracks/0/interp = 1
@@ -195,22 +202,22 @@ script = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
 animation = "fall"
-script = SubResource( 6 )
+script = SubResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( -1, -4 )
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="StepAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource( 3 )
+stream = SubResource( 4 )
 volume_db = 1.0
 
 [node name="HitAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource( 4 )
+stream = SubResource( 5 )
 
 [node name="FallAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource( 7 )
+stream = SubResource( 6 )
 volume_db = -2.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/fall = SubResource( 5 )
+anims/fall = SubResource( 7 )

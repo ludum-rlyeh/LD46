@@ -118,22 +118,22 @@ outline_size = 3
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=9]
+[sub_resource type="DynamicFont" id=7]
 size = 40
 outline_size = 3
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=10]
+[sub_resource type="DynamicFont" id=8]
 size = 30
 outline_size = 3
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 2 )
 
-[sub_resource type="AudioStreamRandomPitch" id=7]
+[sub_resource type="AudioStreamRandomPitch" id=9]
 audio_stream = ExtResource( 7 )
 
-[sub_resource type="AudioStreamRandomPitch" id=8]
+[sub_resource type="AudioStreamRandomPitch" id=10]
 audio_stream = ExtResource( 6 )
 
 [node name="MainMenu" type="Control"]
@@ -163,17 +163,23 @@ position = Vector2( 708.866, 0 )
 texture = ExtResource( 5 )
 centered = false
 
+[node name="Line2D" type="Line2D" parent="BackgroundAnimation"]
+points = PoolVector2Array( 540.354, 524.472, 451.957, 498.689 )
+width = 1.0
+default_color = Color( 1, 0, 0, 1 )
+
 [node name="DoggoSprite" type="AnimatedSprite" parent="BackgroundAnimation"]
 position = Vector2( 536.097, 537.217 )
 frames = ExtResource( 3 )
 animation = "right"
+frame = 2
 playing = true
 
 [node name="BlindGuySprite" type="AnimatedSprite" parent="BackgroundAnimation"]
 position = Vector2( 453.961, 499.207 )
 frames = ExtResource( 4 )
 animation = "right"
-frame = 6
+frame = 4
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundAnimation"]
@@ -338,7 +344,7 @@ margin_left = 118.583
 margin_top = 389.832
 margin_right = 299.583
 margin_bottom = 429.832
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 7 )
 text = "Movements"
 align = 1
 valign = 1
@@ -351,7 +357,7 @@ margin_left = 424.0
 margin_top = 208.0
 margin_right = 605.0
 margin_bottom = 248.0
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 7 )
 text = "Bark"
 align = 1
 valign = 1
@@ -364,7 +370,7 @@ margin_left = 761.0
 margin_top = 235.0
 margin_right = 942.0
 margin_bottom = 275.0
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 7 )
 text = "Zoom Out"
 align = 1
 valign = 1
@@ -377,7 +383,7 @@ margin_left = 753.0
 margin_top = 315.0
 margin_right = 934.0
 margin_bottom = 355.0
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 7 )
 text = "Zoom In"
 align = 1
 valign = 1
@@ -394,14 +400,14 @@ margin_left = -64.6396
 margin_top = 52.0
 margin_right = 67.3604
 margin_bottom = 88.0
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 8 )
 text = "Got It !"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 7 )
+stream = SubResource( 9 )
 
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 8 )
+stream = SubResource( 10 )
 
 [node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
