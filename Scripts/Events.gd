@@ -12,3 +12,5 @@ signal died_signal
 
 signal set_arrive_position_signal
 signal set_begin_position_signal
+
+signal set_paused_signal

@@ -28,6 +28,7 @@ func pause_unpause():
 		var pause = not get_tree().paused
 		
 		if pause :
+			Events.emit_signal(\"set_paused_signal\", true)
 			get_tree().paused = true
 			$Elements.visible = true
 			$AnimationPlayer.play(\"pause\")
@@ -39,6 +40,8 @@ func pause_unpause():
 			yield($AnimationPlayer,\"animation_finished\")
 			$Elements.visible = false
 			get_tree().paused = false
+			Events.emit_signal(\"set_paused_signal\", false)
+			
 		
 
 func _on_ResumeButton_pressed():
