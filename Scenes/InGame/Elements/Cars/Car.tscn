@@ -1,10 +1,11 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://Assets/Sprites/Sheets/Car_b.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/StateMachine.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Sprites/Sheets/Car_r.png" type="Texture" id=3]
 [ext_resource path="res://Assets/Sounds/engine-loop-1.ogg" type="AudioStream" id=4]
 [ext_resource path="res://Assets/Sounds/tires_squal_loop.wav" type="AudioStream" id=5]
+[ext_resource path="res://Assets/Sprites/Png/light_car.png" type="Texture" id=6]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends PathFollow2D
@@ -199,6 +200,7 @@ position = Vector2( 5.53244, -1.15984 )
 rotation = -1.5708
 frames = SubResource( 10 )
 animation = "orange"
+frame = 1
 playing = true
 script = SubResource( 11 )
 
@@ -242,6 +244,36 @@ autoplay = true
 
 [node name="CrashAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 5 )
+
+[node name="front_right" type="Light2D" parent="."]
+position = Vector2( 62.6748, -10.732 )
+rotation = 1.5708
+texture = ExtResource( 6 )
+texture_scale = 0.18
+color = Color( 0.807843, 0.866667, 0.12549, 1 )
+
+[node name="front_right2" type="Light2D" parent="."]
+position = Vector2( 62.6748, 10.0881 )
+rotation = 1.5708
+texture = ExtResource( 6 )
+texture_scale = 0.18
+color = Color( 0.807843, 0.866667, 0.12549, 1 )
+
+[node name="front_right3" type="Light2D" parent="."]
+position = Vector2( -37.5619, 13.3077 )
+rotation = -1.5708
+scale = Vector2( 1, 0.6 )
+texture = ExtResource( 6 )
+texture_scale = 0.1
+color = Color( 0.866667, 0.12549, 0.12549, 1 )
+
+[node name="front_right4" type="Light2D" parent="."]
+position = Vector2( -37.5619, -8.37094 )
+rotation = -1.5708
+scale = Vector2( 1, 0.6 )
+texture = ExtResource( 6 )
+texture_scale = 0.1
+color = Color( 0.866667, 0.12549, 0.12549, 1 )
 [connection signal="area_entered" from="Trigger" to="StateMachine/FollowPath" method="_on_CollisionArea_area_entered"]
 [connection signal="area_entered" from="Trigger" to="StateMachine/BreakZone" method="_on_CollisionArea_area_entered"]
 [connection signal="body_shape_entered" from="Collision" to="." method="_on_Collision_body_shape_entered"]

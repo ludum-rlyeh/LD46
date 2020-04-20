@@ -38,7 +38,6 @@ func goto_scene(var scene):
 			var gameover_menu_instance = GameOverMenu.instance()
 			var HUD_instance = HUD.instance()
 			var Game_instance = Game.instance()
-			self.add_child(HUD_instance)
 			self.add_child(Game_instance)
 			self.add_child(pause_menu_instance)
 			self.add_child(gameover_menu_instance)
