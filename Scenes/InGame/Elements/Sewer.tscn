@@ -36,6 +36,7 @@ func _on_Area2D_body_exited(body):
 
 
 func _on_Area2D2_body_entered(body):
+	body.position = self.position + Vector2(8.0,4.0)
 	Events.emit_signal(\"died_signal\", body.get_instance_id(), Enums.DIE_TYPE.FELL_IN_SEEKER)
 "
 
@@ -55,6 +56,7 @@ collision_mask = 4
 shape = SubResource( 2 )
 
 [node name="Area2D2" type="Area2D" parent="."]
+position = Vector2( 8, 4 )
 collision_layer = 16
 collision_mask = 4
 
