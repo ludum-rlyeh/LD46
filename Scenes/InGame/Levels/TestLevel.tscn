@@ -421,6 +421,10 @@ __meta__ = {
 
 [node name="YSort" type="YSort" parent="Misc"]
 
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+light_mask = 2
+color = Color( 0.6831, 0.6831, 0.69, 1 )
+
 [node name="Roofs" type="TileMap" parent="."]
 z_index = 10
 tile_set = SubResource( 5 )
@@ -430,6 +434,9 @@ tile_data = PoolIntArray( -1179638, 7, 0, -1179634, 6, 0, -1179628, 536870915, 0
 __meta__ = {
 "_edit_lock_": true
 }
+
+[node name="BackBufferCopy" type="BackBufferCopy" parent="Roofs"]
+copy_mode = 2
 
 [node name="Tracks" type="Node2D" parent="."]
 scale = Vector2( 2, 2 )
