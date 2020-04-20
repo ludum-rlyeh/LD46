@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Assets/Fonts/ka1.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/Fonts/ARCADE.TTF" type="DynamicFontData" id=2]
@@ -8,6 +8,13 @@
 [ext_resource path="res://Assets/Sounds/Click.wav" type="AudioStream" id=6]
 [ext_resource path="res://Assets/Sounds/menu_select.wav" type="AudioStream" id=7]
 [ext_resource path="res://Assets/Sounds/Funk_Loop_-_Funk_Loop_-_Jam_Session.ogg" type="AudioStream" id=8]
+[ext_resource path="res://Assets/Sprites/Png/Keyboard_White_Arrow_Up.png" type="Texture" id=9]
+[ext_resource path="res://Assets/Sprites/Png/Keyboard_White_Arrow_Down.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Sprites/Png/Keyboard_White_Arrow_Right.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Sprites/Png/Keyboard_White_Arrow_Left.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Sprites/Png/Keyboard_White_Space.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Sprites/Png/Keyboard_White_Minus.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Sprites/Png/Keyboard_White_Plus.png" type="Texture" id=15]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control
@@ -24,8 +31,8 @@ func _on_StartButton_pressed():
 
 func _on_SelectButton_pressed():
 	$AudioStreamPlayer.play()
-	yield($AudioStreamPlayer,\"finished\")
-	Events.emit_signal(\"button_pressed_signal\",\"select\")
+	$MainMenuElements.visible = false
+	$ControlElements.visible = true
 
 func _on_QuitButton_pressed():
 	$AudioStreamPlayer.play()
@@ -34,6 +41,12 @@ func _on_QuitButton_pressed():
 
 func _on_button_mouse_entered():
 	$AudioStreamPlayer2.play()
+
+
+func _on_GotItButton_pressed():
+	$AudioStreamPlayer.play()
+	$MainMenuElements.visible = true
+	$ControlElements.visible = false
 "
 
 [sub_resource type="Animation" id=2]
@@ -83,18 +96,38 @@ tracks/3/keys = {
 
 [sub_resource type="DynamicFont" id=3]
 size = 48
+outline_size = 7
+outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=4]
 size = 40
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=5]
-size = 32
+size = 40
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=6]
 size = 40
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 40
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=10]
+size = 30
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 2 )
 
 [sub_resource type="AudioStreamRandomPitch" id=7]
@@ -134,14 +167,13 @@ centered = false
 position = Vector2( 536.097, 537.217 )
 frames = ExtResource( 3 )
 animation = "right"
-frame = 3
 playing = true
 
 [node name="BlindGuySprite" type="AnimatedSprite" parent="BackgroundAnimation"]
 position = Vector2( 453.961, 499.207 )
 frames = ExtResource( 4 )
 animation = "right"
-frame = 1
+frame = 6
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundAnimation"]
@@ -149,12 +181,11 @@ method_call_mode = 1
 anims/street = SubResource( 2 )
 
 [node name="Label" type="Label" parent="."]
+anchor_left = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.236
-margin_left = 247.583
-margin_top = 46.2121
-margin_right = 263.583
-margin_bottom = 17.6121
+margin_left = -403.0
+margin_right = 403.0
+margin_bottom = 200.0
 custom_fonts/font = SubResource( 3 )
 text = "Guide
 Ur Human"
@@ -164,31 +195,38 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StartButton" type="Button" parent="."]
+[node name="MainMenuElements" type="Control" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartButton" type="Button" parent="MainMenuElements"]
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = 412.0
-margin_top = 207.0
+margin_top = 219.0
 margin_right = 100.0
-margin_bottom = -47.0
+margin_bottom = -35.0
 custom_fonts/font = SubResource( 4 )
 text = "Start"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SelectButton" type="Button" parent="."]
+[node name="SelectButton" type="Button" parent="MainMenuElements"]
 margin_left = 411.0
 margin_top = 288.0
 margin_right = 611.0
 margin_bottom = 327.0
 custom_fonts/font = SubResource( 5 )
-text = "Select Level"
+text = "Controls"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="QuitButton" type="Button" parent="."]
+[node name="QuitButton" type="Button" parent="MainMenuElements"]
 anchor_right = 0.5
 anchor_bottom = 0.751
 margin_left = 411.0
@@ -201,6 +239,164 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ControlElements" type="Control" parent="."]
+visible = false
+margin_right = 1024.0
+margin_bottom = 600.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Up" type="TextureRect" parent="ControlElements"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -358.0
+margin_top = -99.0
+margin_right = -258.0
+margin_bottom = 1.0
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Down" type="TextureRect" parent="ControlElements"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -358.0
+margin_top = -17.0
+margin_right = -258.0
+margin_bottom = 83.0
+texture = ExtResource( 10 )
+
+[node name="Right" type="TextureRect" parent="ControlElements"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -279.0
+margin_top = -17.0
+margin_right = -179.0
+margin_bottom = 83.0
+texture = ExtResource( 11 )
+
+[node name="Left" type="TextureRect" parent="ControlElements"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -440.0
+margin_top = -17.0
+margin_right = -340.0
+margin_bottom = 83.0
+texture = ExtResource( 12 )
+
+[node name="Space" type="TextureRect" parent="ControlElements"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -80.0
+margin_right = 50.0
+margin_bottom = 20.0
+texture = ExtResource( 13 )
+
+[node name="Minus" type="TextureRect" parent="ControlElements"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 154.0
+margin_top = -99.0
+margin_right = 254.0
+margin_bottom = 1.0
+texture = ExtResource( 14 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Plus" type="TextureRect" parent="ControlElements"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = 154.0
+margin_top = -19.0
+margin_right = 254.0
+margin_bottom = 81.0
+texture = ExtResource( 15 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="ControlElements"]
+margin_left = 118.583
+margin_top = 389.832
+margin_right = 299.583
+margin_bottom = 429.832
+custom_fonts/font = SubResource( 9 )
+text = "Movements"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="ControlElements"]
+margin_left = 424.0
+margin_top = 208.0
+margin_right = 605.0
+margin_bottom = 248.0
+custom_fonts/font = SubResource( 9 )
+text = "Bark"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label3" type="Label" parent="ControlElements"]
+margin_left = 761.0
+margin_top = 235.0
+margin_right = 942.0
+margin_bottom = 275.0
+custom_fonts/font = SubResource( 9 )
+text = "Zoom Out"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label4" type="Label" parent="ControlElements"]
+margin_left = 753.0
+margin_top = 315.0
+margin_right = 934.0
+margin_bottom = 355.0
+custom_fonts/font = SubResource( 9 )
+text = "Zoom In"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GotItButton" type="Button" parent="ControlElements"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -64.6396
+margin_top = 52.0
+margin_right = 67.3604
+margin_bottom = 88.0
+custom_fonts/font = SubResource( 10 )
+text = "Got It !"
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 7 )
 
@@ -211,9 +407,11 @@ stream = SubResource( 8 )
 stream = ExtResource( 8 )
 volume_db = -15.0
 autoplay = true
-[connection signal="mouse_entered" from="StartButton" to="." method="_on_button_mouse_entered"]
-[connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
-[connection signal="mouse_entered" from="SelectButton" to="." method="_on_button_mouse_entered"]
-[connection signal="pressed" from="SelectButton" to="." method="_on_SelectButton_pressed"]
-[connection signal="mouse_entered" from="QuitButton" to="." method="_on_button_mouse_entered"]
-[connection signal="pressed" from="QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="mouse_entered" from="MainMenuElements/StartButton" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="MainMenuElements/StartButton" to="." method="_on_StartButton_pressed"]
+[connection signal="mouse_entered" from="MainMenuElements/SelectButton" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="MainMenuElements/SelectButton" to="." method="_on_SelectButton_pressed"]
+[connection signal="mouse_entered" from="MainMenuElements/QuitButton" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="MainMenuElements/QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="mouse_entered" from="ControlElements/GotItButton" to="." method="_on_button_mouse_entered"]
+[connection signal="pressed" from="ControlElements/GotItButton" to="." method="_on_GotItButton_pressed"]
