@@ -24,7 +24,7 @@ func _on_set_begin_position(pos):
 	
 func _physics_process(delta):
 	var doggos = get_tree().get_nodes_in_group(\"doggo\")
-	if doggos.size() > 0:
+	if doggos and doggos.size() > 0:
 		var doggo = doggos[0]
 	
 		attract_doggo(Vector2(0.0,0.0),doggo)
@@ -77,10 +77,12 @@ func set_animation(var velocity):
 func set_attract(var attract):
 	self.attract = attract 
 	if attract == Vector2.ZERO:
-		var doggos = get_tree().get_nodes_in_group(\"doggo\")
-		if doggos.size() > 0:
-			var doggo = doggos[0]
-			doggo.set_attract(Vector2.ZERO)
+		var tree = get_tree()
+		if tree :
+			var doggos = tree.get_nodes_in_group(\"doggo\")
+			if doggos and doggos.size() > 0:
+				var doggo = doggos[0]
+				doggo.set_attract(Vector2.ZERO)
 
 func attract_doggo(var attract, var doggo):
 	var attract_bis = Vector2.ZERO # just in case
