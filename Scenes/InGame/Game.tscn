@@ -17,7 +17,7 @@ script/source = "extends Control
 func _ready():
 	VisualServer.set_default_clear_color(Color(0.0,0.0,0.0,1.0))
 	Events.connect(\"set_paused_signal\", self, \"on_active_gray_scale_post_process\")
-	Events.connect(\"game_over_signal\",self,\"on_active_gray_scale_post_process\")
+	Events.connect(\"set_game_over_signal\",self,\"on_active_gray_scale_post_process\")
 
 func on_active_gray_scale_post_process(var active : bool) -> void:
 	$PostProcesses/GrayScale.visible = active

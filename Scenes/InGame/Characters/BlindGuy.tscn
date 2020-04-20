@@ -92,7 +92,6 @@ func attract_doggo(var attract, var doggo):
 
 func on_died_signal(var body_id, var type):
 	if body_id == self.get_instance_id():
-		# TODO: Animation
 		Events.emit_signal(\"game_over_signal\", Enums.GAME_OVER_TYPE.HUMAN_DIED)
 "
 
@@ -113,7 +112,7 @@ script = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
 animation = "wait_down"
-frame = 3
+frame = 1
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
