@@ -134,13 +134,13 @@ centered = false
 position = Vector2( 536.097, 537.217 )
 frames = ExtResource( 3 )
 animation = "right"
-frame = 2
 playing = true
 
 [node name="BlindGuySprite" type="AnimatedSprite" parent="BackgroundAnimation"]
 position = Vector2( 453.961, 499.207 )
 frames = ExtResource( 4 )
 animation = "right"
+frame = 6
 playing = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundAnimation"]
@@ -208,6 +208,7 @@ stream = SubResource( 8 )
 
 [node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
+volume_db = -15.0
 autoplay = true
 [connection signal="mouse_entered" from="StartButton" to="." method="_on_button_mouse_entered"]
 [connection signal="pressed" from="StartButton" to="." method="_on_StartButton_pressed"]
