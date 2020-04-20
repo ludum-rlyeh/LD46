@@ -120,7 +120,7 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 5/shapes = [  ]
 5/z_index = 0
 
-[sub_resource type="TileSet" id=16]
+[sub_resource type="TileSet" id=5]
 0/name = "Town.png 0"
 0/texture = ExtResource( 6 )
 0/tex_offset = Vector2( 0, 0 )
@@ -150,14 +150,14 @@ points = PoolVector2Array( 39.9052, 59.2859, 22.9471, 59.2859, 22.9471, 52.9872,
 1/shapes = [  ]
 1/z_index = 0
 
-[sub_resource type="GDScript" id=17]
+[sub_resource type="GDScript" id=6]
 script/source = "extends Node2D
 
 func get_track_path():
 	return $Paths/PathTrack
 "
 
-[sub_resource type="GDScript" id=18]
+[sub_resource type="GDScript" id=7]
 script/source = "extends Area2D
 
 func get_track_path() -> Path2D:
@@ -167,22 +167,22 @@ func get_type():
 	return Enums.TRIGGER_TYPE.CHANGE_TRACK
 "
 
-[sub_resource type="RectangleShape2D" id=19]
+[sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 2.79376, 0.416122 )
 
-[sub_resource type="Curve2D" id=20]
+[sub_resource type="Curve2D" id=9]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, -32, -96, 0.237827, 15.4588, -0.237827, -15.4588, -32, -544, -31.8689, 0.475654, 31.8689, -0.475654, 0, -576, -15.7008, -0.203907, 15.7008, 0.203907, 512, -576, -0.407814, -20.3907, 0.407814, 20.3907, 544, -544, -21.0024, 0.61172, 21.0024, -0.61172, 576, -512, -23.8571, -0.407814, 23.8571, 0.407814, 640, -512, -0.203907, -24.2649, 0.203907, 24.2649, 672, -480, -23.4493, -0.61172, 23.4493, 0.61172, 704, -448, 0.203907, -23.4493, -0.203907, 23.4493, 736, -416, 0, -23.8571, 0, 23.8571, 736, -96, 25.0805, 0, -25.0805, 0, 704, -64, 0, 0, 0, 0, -8, -64 )
 }
 
-[sub_resource type="GDScript" id=21]
+[sub_resource type="GDScript" id=10]
 script/source = "extends Node2D
 
 func get_track_path():
 	return $Paths/PathTrack
 "
 
-[sub_resource type="GDScript" id=22]
+[sub_resource type="GDScript" id=11]
 script/source = "extends Area2D
 
 func get_track_path() -> Path2D:
@@ -192,32 +192,32 @@ func get_type():
 	return Enums.TRIGGER_TYPE.CHANGE_TRACK
 "
 
-[sub_resource type="RectangleShape2D" id=23]
+[sub_resource type="RectangleShape2D" id=12]
 extents = Vector2( 2.79376, 0.416122 )
 
-[sub_resource type="Curve2D" id=24]
+[sub_resource type="Curve2D" id=13]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 33.4753, 95.2079, -0.22602, -23.2714, 0.22602, 23.2714, 33.4767, 479.208, 24.627, 0.225847, -24.627, -0.225847, 5.47687, 511.208, 22.6413, -8.19612e-05, -22.6413, 8.19612e-05, -382.523, 511.209, -0.377272, 22.6413, 0.377272, -22.6413, -414.523, 479.21, 8.53527e-05, 23.5782, -8.53527e-05, -23.5782, -414.525, 95.2095, -24.4103, 0.277479, 24.4103, -0.277479, -382.525, 63.2094, 0, 0, 0, 0, 9.47522, 63.208 )
 }
 
-[sub_resource type="Curve2D" id=25]
+[sub_resource type="Curve2D" id=14]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 32, 97.528, -0.307358, -23.9739, 0.307358, 23.9739, 32, 481.528, 10.4502, -7.37658, -10.4502, 7.37658, 0, 513.528, 0, 0, 0, 0, -32, 545.528, 0, 0, 0, 0, -64, 577.528, 0, 0, 0, 0, -96, 609.528, 0, 0, 0, 0, -128, 641.528, 0, 0, 0, 0, -160, 673.528, 7.21214, -4.99302, -7.21214, 4.99302, -192, 705.528, 0.55478, -16.9208, -0.55478, 16.9208, -224, 737.528, 0, 0, 0, 0, -224, 865.528 )
 }
 
-[sub_resource type="Curve2D" id=26]
+[sub_resource type="Curve2D" id=15]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, -64, 1248, 19.7468, -0.429279, -19.7468, 0.429279, -256, 1248, 0.214639, 22.9664, -0.214639, -22.9664, -288, 1216, 0.263521, 23.9804, -0.263521, -23.9804, -288, 448, -24.7709, -0.527041, 24.7709, 0.527041, -256, 416, 0, 0, 0, 0, 192, 416, 0, 0, 0, 0, -256, 416 )
 }
 
-[sub_resource type="GDScript" id=27]
+[sub_resource type="GDScript" id=16]
 script/source = "extends Node2D
 
 func get_track_path():
 	return $Paths/PathTrack
 "
 
-[sub_resource type="GDScript" id=28]
+[sub_resource type="GDScript" id=17]
 script/source = "extends Area2D
 
 func get_track_path() -> Path2D:
@@ -227,22 +227,22 @@ func get_type():
 	return Enums.TRIGGER_TYPE.CHANGE_TRACK
 "
 
-[sub_resource type="RectangleShape2D" id=29]
+[sub_resource type="RectangleShape2D" id=18]
 extents = Vector2( 2.79376, 0.416122 )
 
-[sub_resource type="Curve2D" id=30]
+[sub_resource type="Curve2D" id=19]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0.308014, 0, 0, 0, 0, 0, -511.692, 3.05176e-05 )
 }
 
-[sub_resource type="GDScript" id=31]
+[sub_resource type="GDScript" id=20]
 script/source = "extends Node2D
 
 func get_track_path():
 	return $Paths/PathTrack
 "
 
-[sub_resource type="GDScript" id=32]
+[sub_resource type="GDScript" id=21]
 script/source = "extends Area2D
 
 func get_track_path() -> Path2D:
@@ -252,22 +252,22 @@ func get_type():
 	return Enums.TRIGGER_TYPE.CHANGE_TRACK
 "
 
-[sub_resource type="RectangleShape2D" id=33]
+[sub_resource type="RectangleShape2D" id=22]
 extents = Vector2( 2.79376, 0.416122 )
 
-[sub_resource type="Curve2D" id=34]
+[sub_resource type="Curve2D" id=23]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -448, -6.10352e-05, 37.9065, 1.65695e-06, -37.9065, -1.65695e-06, -572, -6.10352e-05, 31.4915, 57.1513, -31.4915, -57.1513, -672, 95.9999, 0, 0, 0, 0, -736, -6.10352e-05 )
 }
 
-[sub_resource type="GDScript" id=35]
+[sub_resource type="GDScript" id=24]
 script/source = "extends Node2D
 
 func get_track_path():
 	return $Paths/PathTrack
 "
 
-[sub_resource type="GDScript" id=36]
+[sub_resource type="GDScript" id=25]
 script/source = "extends Area2D
 
 func get_track_path() -> Path2D:
@@ -277,22 +277,22 @@ func get_type():
 	return Enums.TRIGGER_TYPE.CHANGE_TRACK
 "
 
-[sub_resource type="RectangleShape2D" id=37]
+[sub_resource type="RectangleShape2D" id=26]
 extents = Vector2( 2.79376, 0.416122 )
 
-[sub_resource type="Curve2D" id=38]
+[sub_resource type="Curve2D" id=27]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, -0.0870361, 0, 0, 0, 0, -95.9999, -0.0870361 )
 }
 
-[sub_resource type="GDScript" id=39]
+[sub_resource type="GDScript" id=28]
 script/source = "extends Node2D
 
 func get_track_path():
 	return $Paths/PathTrack
 "
 
-[sub_resource type="GDScript" id=40]
+[sub_resource type="GDScript" id=29]
 script/source = "extends Area2D
 
 func get_track_path() -> Path2D:
@@ -302,22 +302,22 @@ func get_type():
 	return Enums.TRIGGER_TYPE.CHANGE_TRACK
 "
 
-[sub_resource type="RectangleShape2D" id=41]
+[sub_resource type="RectangleShape2D" id=30]
 extents = Vector2( 2.79376, 0.416122 )
 
-[sub_resource type="Curve2D" id=42]
+[sub_resource type="Curve2D" id=31]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 28.8089, -2.51856e-06, -28.8089, 2.51856e-06, -192, 3.05176e-05, 0, 0, 0, 0, -224, -32, 0, 0, 0, 0, -224, -352, -27.8877, 25.8472, 27.8877, -25.8472, 63.9999, -636, -61.217, 53.7349, 61.217, -53.7349, 288, -768 )
 }
 
-[sub_resource type="GDScript" id=43]
+[sub_resource type="GDScript" id=32]
 script/source = "extends Node2D
 
 func get_track_path():
 	return $Paths/PathTrack
 "
 
-[sub_resource type="GDScript" id=44]
+[sub_resource type="GDScript" id=33]
 script/source = "extends Area2D
 
 func get_track_path() -> Path2D:
@@ -327,22 +327,22 @@ func get_type():
 	return Enums.TRIGGER_TYPE.CHANGE_TRACK
 "
 
-[sub_resource type="RectangleShape2D" id=45]
+[sub_resource type="RectangleShape2D" id=34]
 extents = Vector2( 2.79376, 0.416122 )
 
-[sub_resource type="Curve2D" id=46]
+[sub_resource type="Curve2D" id=35]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, -2.52499, 0, 17.1475, -7.49543e-07, -17.1475, 7.49543e-07, -350.525, 0, 1.28607, -5.57295, -1.28607, 5.57295, -382.525, 32, 15.8615, -0.428689, -15.8615, 0.428689, -418.525, 64, -0.857378, -32.5803, 0.857378, 32.5803, -478.525, 128, -1.40539e-06, -32.1516, 1.40539e-06, 32.1516, -478.525, 192, 0.428687, -30.4369, -0.428687, 30.4369, -538.525, 256, -1.54003, -22.3304, 1.54003, 22.3304, -542.525, 768, -13.3469, -17.4537, 13.3469, 17.4537, -514.525, 832, -26.1805, -0.770014, 26.1805, 0.770014, -414.525, 896, 0, 0, 0, 0, 1.47507, 900 )
 }
 
-[sub_resource type="GDScript" id=47]
+[sub_resource type="GDScript" id=36]
 script/source = "extends Node2D
 
 func get_track_path():
 	return $Paths/PathTrack
 "
 
-[sub_resource type="GDScript" id=48]
+[sub_resource type="GDScript" id=37]
 script/source = "extends Area2D
 
 func get_track_path() -> Path2D:
@@ -352,27 +352,27 @@ func get_type():
 	return Enums.TRIGGER_TYPE.CHANGE_TRACK
 "
 
-[sub_resource type="RectangleShape2D" id=49]
+[sub_resource type="RectangleShape2D" id=38]
 extents = Vector2( 2.79376, 0.416122 )
 
-[sub_resource type="Curve2D" id=50]
+[sub_resource type="Curve2D" id=39]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, -25.133, -27.3666, 25.133, 27.3666, 360.661, 31.5537, 0, 0, 0, 0, 792.614, 546.336 )
 }
 
-[sub_resource type="Curve2D" id=51]
+[sub_resource type="Curve2D" id=40]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 14.6691, 0.898107, -14.6691, -0.898107, -512, 0, 0.299369, 19.459, -0.299369, -19.459, -544, -28, 0.428688, 28.2934, -0.428688, -28.2934, -544, -992, -13.2893, 0, 13.2893, 0, -512, -1024, 0, 0, 0, 0, -260, -1024, 0, 0, 0, 0, 256, -1024 )
 }
 
-[sub_resource type="GDScript" id=52]
+[sub_resource type="GDScript" id=41]
 script/source = "extends Node2D
 
 func get_track_path():
 	return $Paths/PathTrack
 "
 
-[sub_resource type="GDScript" id=53]
+[sub_resource type="GDScript" id=42]
 script/source = "extends Area2D
 
 func get_track_path() -> Path2D:
@@ -382,15 +382,15 @@ func get_type():
 	return Enums.TRIGGER_TYPE.CHANGE_TRACK
 "
 
-[sub_resource type="RectangleShape2D" id=54]
+[sub_resource type="RectangleShape2D" id=43]
 extents = Vector2( 2.79376, 0.416122 )
 
-[sub_resource type="Curve2D" id=55]
+[sub_resource type="Curve2D" id=44]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0.243805, 0, 0, 0, 0, -64, 0.243801 )
 }
 
-[sub_resource type="GDScript" id=56]
+[sub_resource type="GDScript" id=45]
 script/source = "extends Position2D
 
 
@@ -421,9 +421,13 @@ __meta__ = {
 
 [node name="YSort" type="YSort" parent="Misc"]
 
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+light_mask = 2
+color = Color( 0.6831, 0.6831, 0.69, 1 )
+
 [node name="Roofs" type="TileMap" parent="."]
 z_index = 10
-tile_set = SubResource( 16 )
+tile_set = SubResource( 5 )
 cell_tile_origin = 1
 format = 1
 tile_data = PoolIntArray( -1179638, 7, 0, -1179634, 6, 0, -1179628, 536870915, 0, -1179624, 2, 0, -1048548, 4, 0, -851976, 9, 0, -851972, 9, 0, -917504, 9, 0, -917500, 9, 0, -917486, 536870926, 0, -786424, 536870929, 0, -786394, 1, 0, -786390, 1, 0, -589834, 536870923, 0, -655324, 536870929, 0, -393178, 536870931, 0, -393174, 19, 0, -196596, 1, 0, -196592, 1, 0, -196588, 1, 0, -65540, 1, 0, -131072, 1, 0, -131048, 0, 0, -131044, 0, 0, 65532, 4, 0, 0, 4, 0, 12, 2, 0, 16, 4, 0, 20, 536870915, 0, 24, 4, 0, 28, -1610612720, 0, 131100, -1610612720, 0, 262172, -1610612720, 0, 917518, 4, 0, 917522, 1, 0, 1048570, 1, 0, 1048574, 0, 0, 983040, 1, 0, 983052, 0, 0, 983062, 0, 0, 983072, 1, 0, 983076, 1, 0, 1114106, 19, 0, 1114110, 536870925, 0, 1048576, 8, 0, 1048588, 0, 0, 1048590, 0, 0, 1048592, 0, 0, 1048594, 4, 0, 1048598, 536870925, 0, 1048608, 1, 0, 1048612, 1, 0, 1114126, 0, 0, 1114128, 0, 0, 1245182, 536870925, 0, 1179660, 536870923, 0, 1179662, 0, 0, 1179664, 0, 0, 1179670, 536870927, 0, 1245198, 0, 0, 1245200, 0, 0, 1376254, 536870926, 0, 1310734, 0, 0, 1310736, 0, 0, 1310742, 536870926, 0, 1310758, 0, 0, 1441814, 15, 0, 1441824, 0, 0, 1441826, 0, 0, 1441828, 0, 0, 1572896, 0, 0, 1572898, 0, 0, 1703934, 536870928, 0, 1638446, 0, 0, 1769466, 536870928, 0, 1769468, 536870928, 0, 1703968, 0, 0, 1769516, 0, 0, 1900538, 536870928, 0, 1835016, 1, 0, 1835020, 1, 0, 1835024, 1, 0, 1835028, 1, 0, 1900548, 1, 0, 1900586, 0, 0, 2031610, 536870928, 0, 2031656, 0, 0, 2162682, 536870928, 0, 2162726, 0, 0, 2228226, 536870920, 0, 2228230, 536870920, 0, 2228234, 536870920, 0, 2228238, 536870920, 0, 2228242, 0, 0, 2228246, 0, 0, 2293780, 0, 0, 2293796, 0, 0, 2359314, 0, 0, 2359316, 0, 0, 2424866, 0, 0, 2490386, 0, 0, 2555936, 0, 0, 2687004, 0, 0, 2687006, 0, 0, 2818074, 0, 0, 3014680, 0, 0, 3080212, 1, 0, 3276782, 1, 0, 3276786, 1, 0, 3276790, 1, 0, 3276794, 1, 0, 3276798, 1, 0, 3211266, 1, 0, 3211270, 1, 0, 3211274, 1, 0, 3211278, 1, 0, 3211282, 0, 0 )
@@ -431,12 +435,15 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="BackBufferCopy" type="BackBufferCopy" parent="Roofs"]
+copy_mode = 2
+
 [node name="Tracks" type="Node2D" parent="."]
 scale = Vector2( 2, 2 )
 
 [node name="TrackPath" type="Node2D" parent="Tracks"]
 position = Vector2( 320, 416 )
-script = SubResource( 17 )
+script = SubResource( 6 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath"]
 position = Vector2( -32, -96 )
@@ -444,22 +451,22 @@ scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
 collision_mask = 32
-script = SubResource( 18 )
+script = SubResource( 7 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath/Trigger"]
-shape = SubResource( 19 )
+shape = SubResource( 8 )
 one_way_collision = true
 one_way_collision_margin = 4.7
 
 [node name="Paths" type="Node2D" parent="Tracks/TrackPath"]
 
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath/Paths"]
-curve = SubResource( 20 )
+curve = SubResource( 9 )
 
 [node name="TrackPath2" type="Node2D" parent="Tracks"]
 position = Vector2( 287.208, 318.525 )
 rotation = 1.5708
-script = SubResource( 21 )
+script = SubResource( 10 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath2"]
 position = Vector2( 33.4753, 95.2079 )
@@ -468,17 +475,17 @@ scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
 collision_mask = 32
-script = SubResource( 22 )
+script = SubResource( 11 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath2/Trigger"]
-shape = SubResource( 23 )
+shape = SubResource( 12 )
 one_way_collision = true
 one_way_collision_margin = 4.7
 
 [node name="Paths" type="Node2D" parent="Tracks/TrackPath2"]
 
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath2/Paths"]
-curve = SubResource( 24 )
+curve = SubResource( 13 )
 
 [node name="CarPathFollower" parent="Tracks/TrackPath2/Paths/PathTrack" instance=ExtResource( 4 )]
 position = Vector2( -77.8993, 63.1517 )
@@ -488,7 +495,7 @@ init_speed = 120.0
 
 [node name="TrackPath3" type="Node2D" parent="Tracks"]
 position = Vector2( 192, 350.472 )
-script = SubResource( 21 )
+script = SubResource( 10 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath3"]
 position = Vector2( 32, 97.528 )
@@ -497,17 +504,17 @@ scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
 collision_mask = 32
-script = SubResource( 22 )
+script = SubResource( 11 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath3/Trigger"]
-shape = SubResource( 23 )
+shape = SubResource( 12 )
 one_way_collision = true
 one_way_collision_margin = 4.7
 
 [node name="Paths" type="Node2D" parent="Tracks/TrackPath3"]
 
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath3/Paths"]
-curve = SubResource( 25 )
+curve = SubResource( 14 )
 
 [node name="Cross" parent="Tracks" instance=ExtResource( 2 )]
 position = Vector2( 287.073, 446.472 )
@@ -529,7 +536,7 @@ position = Vector2( -32, 1216 )
 rotation = 3.14159
 
 [node name="TrackPath4" type="Node2D" parent="Tracks"]
-script = SubResource( 21 )
+script = SubResource( 10 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath4"]
 position = Vector2( -64, 1248 )
@@ -538,22 +545,22 @@ scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
 collision_mask = 32
-script = SubResource( 22 )
+script = SubResource( 11 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath4/Trigger"]
-shape = SubResource( 23 )
+shape = SubResource( 12 )
 one_way_collision = true
 one_way_collision_margin = 4.7
 
 [node name="Paths" type="Node2D" parent="Tracks/TrackPath4"]
 
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath4/Paths"]
-curve = SubResource( 26 )
+curve = SubResource( 15 )
 
 [node name="TrackPath5" type="Node2D" parent="Tracks"]
 position = Vector2( 320.308, 416 )
 rotation = 3.14159
-script = SubResource( 27 )
+script = SubResource( 16 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath5"]
 rotation = -1.5708
@@ -561,17 +568,17 @@ scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
 collision_mask = 32
-script = SubResource( 28 )
+script = SubResource( 17 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath5/Trigger"]
-shape = SubResource( 29 )
+shape = SubResource( 18 )
 one_way_collision = true
 one_way_collision_margin = 4.7
 
 [node name="Paths" type="Node2D" parent="Tracks/TrackPath5"]
 
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath5/Paths"]
-curve = SubResource( 30 )
+curve = SubResource( 19 )
 
 [node name="Cross6" parent="Tracks" instance=ExtResource( 3 )]
 position = Vector2( 832, 415.913 )
@@ -580,7 +587,7 @@ rotation = 1.5708
 [node name="TrackPath6" type="Node2D" parent="Tracks"]
 position = Vector2( 864, 448 )
 rotation = -1.5708
-script = SubResource( 31 )
+script = SubResource( 20 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath6"]
 rotation = -1.5708
@@ -588,22 +595,22 @@ scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
 collision_mask = 32
-script = SubResource( 32 )
+script = SubResource( 21 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath6/Trigger"]
-shape = SubResource( 33 )
+shape = SubResource( 22 )
 one_way_collision = true
 one_way_collision_margin = 4.7
 
 [node name="Paths" type="Node2D" parent="Tracks/TrackPath6"]
 
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath6/Paths"]
-curve = SubResource( 34 )
+curve = SubResource( 23 )
 
 [node name="TrackPath7" type="Node2D" parent="Tracks"]
 position = Vector2( 960, 415.913 )
 rotation = 3.14159
-script = SubResource( 35 )
+script = SubResource( 24 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath7"]
 rotation = -1.5708
@@ -611,17 +618,17 @@ scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
 collision_mask = 32
-script = SubResource( 36 )
+script = SubResource( 25 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath7/Trigger"]
-shape = SubResource( 37 )
+shape = SubResource( 26 )
 one_way_collision = true
 one_way_collision_margin = 4.7
 
 [node name="Paths" type="Node2D" parent="Tracks/TrackPath7"]
 
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath7/Paths"]
-curve = SubResource( 38 )
+curve = SubResource( 27 )
 
 [node name="Cross7" parent="Tracks" instance=ExtResource( 12 )]
 position = Vector2( 1024, 416 )
@@ -630,7 +637,7 @@ rotation = 1.5708
 [node name="TrackPath8" type="Node2D" parent="Tracks"]
 position = Vector2( 1152, 416 )
 rotation = 3.14159
-script = SubResource( 39 )
+script = SubResource( 28 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath8"]
 rotation = -1.5708
@@ -638,17 +645,17 @@ scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
 collision_mask = 32
-script = SubResource( 40 )
+script = SubResource( 29 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath8/Trigger"]
-shape = SubResource( 41 )
+shape = SubResource( 30 )
 one_way_collision = true
 one_way_collision_margin = 4.7
 
 [node name="Paths" type="Node2D" parent="Tracks/TrackPath8"]
 
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath8/Paths"]
-curve = SubResource( 42 )
+curve = SubResource( 31 )
 
 [node name="CarPathFollower" parent="Tracks/TrackPath8/Paths/PathTrack" instance=ExtResource( 4 )]
 rotation = 3.14159
@@ -658,7 +665,7 @@ driver_mood = 1
 [node name="TrackPath9" type="Node2D" parent="Tracks"]
 position = Vector2( 1120, 318.525 )
 rotation = 1.5708
-script = SubResource( 43 )
+script = SubResource( 32 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath9"]
 rotation = -1.5708
@@ -666,22 +673,22 @@ scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
 collision_mask = 32
-script = SubResource( 44 )
+script = SubResource( 33 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath9/Trigger"]
-shape = SubResource( 45 )
+shape = SubResource( 34 )
 one_way_collision = true
 one_way_collision_margin = 4.7
 
 [node name="Paths" type="Node2D" parent="Tracks/TrackPath9"]
 
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath9/Paths"]
-curve = SubResource( 46 )
+curve = SubResource( 35 )
 
 [node name="TrackPath10" type="Node2D" parent="Tracks"]
 position = Vector2( 864, 1184 )
 rotation = 2.26893
-script = SubResource( 47 )
+script = SubResource( 36 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath10"]
 rotation = -1.5708
@@ -689,21 +696,21 @@ scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
 collision_mask = 32
-script = SubResource( 48 )
+script = SubResource( 37 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath10/Trigger"]
-shape = SubResource( 49 )
+shape = SubResource( 38 )
 one_way_collision = true
 one_way_collision_margin = 4.7
 
 [node name="Paths" type="Node2D" parent="Tracks/TrackPath10"]
 
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath10/Paths"]
-curve = SubResource( 50 )
+curve = SubResource( 39 )
 
 [node name="TrackPath11" type="Node2D" parent="Tracks"]
 position = Vector2( -64, 1440 )
-script = SubResource( 47 )
+script = SubResource( 36 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath11"]
 rotation = -1.5708
@@ -711,17 +718,17 @@ scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
 collision_mask = 32
-script = SubResource( 48 )
+script = SubResource( 37 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath11/Trigger"]
-shape = SubResource( 49 )
+shape = SubResource( 38 )
 one_way_collision = true
 one_way_collision_margin = 4.7
 
 [node name="Paths" type="Node2D" parent="Tracks/TrackPath11"]
 
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath11/Paths"]
-curve = SubResource( 51 )
+curve = SubResource( 40 )
 
 [node name="CarPathFollower" parent="Tracks/TrackPath11/Paths/PathTrack" instance=ExtResource( 4 )]
 position = Vector2( -544.009, -359.531 )
@@ -733,7 +740,7 @@ driver_mood = 2
 [node name="TrackPath12" type="Node2D" parent="Tracks"]
 position = Vector2( -32.2438, 1344 )
 rotation = -1.5708
-script = SubResource( 52 )
+script = SubResource( 41 )
 
 [node name="Trigger" type="Area2D" parent="Tracks/TrackPath12"]
 rotation = -1.5708
@@ -741,17 +748,17 @@ scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
 collision_mask = 32
-script = SubResource( 53 )
+script = SubResource( 42 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Tracks/TrackPath12/Trigger"]
-shape = SubResource( 54 )
+shape = SubResource( 43 )
 one_way_collision = true
 one_way_collision_margin = 4.7
 
 [node name="Paths" type="Node2D" parent="Tracks/TrackPath12"]
 
 [node name="PathTrack" type="Path2D" parent="Tracks/TrackPath12/Paths"]
-curve = SubResource( 55 )
+curve = SubResource( 44 )
 
 [node name="Cross8" parent="Tracks" instance=ExtResource( 13 )]
 position = Vector2( -32.2438, 1408 )
@@ -765,4 +772,4 @@ position = Vector2( 2176, -456 )
 
 [node name="Starting" type="Position2D" parent="."]
 position = Vector2( 392, 2760 )
-script = SubResource( 56 )
+script = SubResource( 45 )
