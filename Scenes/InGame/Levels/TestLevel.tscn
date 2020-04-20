@@ -428,6 +428,7 @@ __meta__ = {
 [node name="Doggo" parent="Misc/YSort" instance=ExtResource( 14 )]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
+visible = false
 light_mask = 2
 color = Color( 0.6831, 0.6831, 0.69, 1 )
 
