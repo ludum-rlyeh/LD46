@@ -109,7 +109,7 @@ script/source = "extends ColorRect
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self.material.set_shader_param(\"ViewportTexture\", get_viewport().get_texture())
+	self.material.set_shader_param(\"ViewportTexture\", get_node(\"../../ViewportContainer/Viewport\").get_viewport().get_texture())
 "
 
 [sub_resource type="VisualShaderNodeInput" id=5]
@@ -191,7 +191,7 @@ script/source = "extends ColorRect
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	self.material.set_shader_param(\"ViewportTexture\", get_viewport().get_texture())
+	self.material.set_shader_param(\"ViewportTexture\", get_node(\"../../ViewportContainer/Viewport\").get_viewport().get_texture())
 "
 
 [node name="Game" type="Control"]
@@ -239,7 +239,6 @@ __meta__ = {
 }
 
 [node name="NightFilter" type="ColorRect" parent="PostProcesses"]
-visible = false
 material = SubResource( 3 )
 anchor_right = 1.0
 anchor_bottom = 1.0
