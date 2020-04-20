@@ -17,6 +17,7 @@ script/source = "extends Control
 func _ready():
 	VisualServer.set_default_clear_color(Color(0.0,0.0,0.0,1.0))
 	Events.connect(\"set_paused_signal\", self, \"on_active_gray_scale_post_process\")
+	Events.connect(\"game_over_signal\",self,\"on_active_gray_scale_post_process\")
 
 func on_active_gray_scale_post_process(var active : bool) -> void:
 	$PostProcesses/GrayScale.visible = active
@@ -184,6 +185,7 @@ transparent_bg = true
 handle_input_locally = false
 hdr = false
 render_target_update_mode = 3
+audio_listener_enable_2d = true
 
 [node name="Map0" parent="ViewportContainer/Viewport" instance=ExtResource( 1 )]
 
