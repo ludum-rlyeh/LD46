@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scenes/InGame/Levels/TestLevel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/InGame/HUD/HUD.tscn" type="PackedScene" id=3]
@@ -98,22 +98,18 @@ shader = SubResource( 2 )
 shader_param/blueNightColor = Vector3( 0.424, 0.4, 0.65 )
 
 [sub_resource type="VisualShaderNodeTexture" id=4]
-
-[sub_resource type="VisualShaderNodeInput" id=5]
 output_port_for_preview = 0
+source = 1
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeColorFunc" id=11]
+output_port_for_preview = 0
+
+[sub_resource type="VisualShaderNodeInput" id=12]
 input_name = "screen_uv"
-
-[sub_resource type="VisualShaderNodeVec3Constant" id=6]
-constant = Vector3( 0.21, 0.71, 0.07 )
-
-[sub_resource type="VisualShaderNodeDotProduct" id=7]
-
-[sub_resource type="VisualShaderNodeInput" id=8]
-input_name = "screen_texture"
 
 [sub_resource type="VisualShader" id=9]
 code = "shader_type canvas_item;
-uniform sampler2D tex_frg_10;
 
 
 
@@ -123,24 +119,30 @@ void vertex() {
 }
 
 void fragment() {
-// Input:3
-	vec3 n_out3p0 = vec3(SCREEN_UV, 0.0);
-
-// Input:9
+// Input:12
+	vec3 n_out12p0 = vec3(SCREEN_UV, 0.0);
 
 // Texture:10
-	vec4 tex_frg_10_read = texture(tex_frg_10, n_out3p0.xy);
-	vec3 n_out10p0 = tex_frg_10_read.rgb;
-	float n_out10p1 = tex_frg_10_read.a;
+	vec3 n_out10p0;
+	float n_out10p1;
+	{
+		vec4 _tex_read = textureLod(SCREEN_TEXTURE, n_out12p0.xy, 0.0);
+		n_out10p0 = _tex_read.rgb;
+		n_out10p1 = _tex_read.a;
+	}
 
-// Vector:6
-	vec3 n_out6p0 = vec3(0.210000, 0.710000, 0.070000);
-
-// DotProduct:8
-	float n_out8p0 = dot(n_out10p0, n_out6p0);
+// ColorFunc:11
+	vec3 n_out11p0;
+	{
+		vec3 c = n_out10p0;
+		float max1 = max(c.r, c.g);
+		float max2 = max(max1, c.b);
+		float max3 = max(max1, max2);
+		n_out11p0 = vec3(max3, max3, max3);
+	}
 
 // Output:0
-	COLOR.rgb = vec3(n_out8p0);
+	COLOR.rgb = n_out11p0;
 
 }
 
@@ -149,21 +151,17 @@ void light() {
 
 }
 "
-graph_offset = Vector2( 0, 19 )
+graph_offset = Vector2( 137.868, -77.28 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 960, 100 )
-nodes/fragment/3/node = SubResource( 5 )
-nodes/fragment/3/position = Vector2( 80, 160 )
-nodes/fragment/6/node = SubResource( 6 )
-nodes/fragment/6/position = Vector2( 280, 360 )
-nodes/fragment/8/node = SubResource( 7 )
-nodes/fragment/8/position = Vector2( 720, 240 )
-nodes/fragment/9/node = SubResource( 8 )
-nodes/fragment/9/position = Vector2( 80, 80 )
 nodes/fragment/10/node = SubResource( 4 )
-nodes/fragment/10/position = Vector2( 340, 40 )
-nodes/fragment/connections = PoolIntArray( 6, 0, 8, 1, 9, 0, 10, 2, 3, 0, 10, 0, 10, 0, 8, 0, 8, 0, 0, 0 )
+nodes/fragment/10/position = Vector2( 300, 60 )
+nodes/fragment/11/node = SubResource( 11 )
+nodes/fragment/11/position = Vector2( 640, 120 )
+nodes/fragment/12/node = SubResource( 12 )
+nodes/fragment/12/position = Vector2( 40, 60 )
+nodes/fragment/connections = PoolIntArray( 10, 0, 11, 0, 11, 0, 0, 0, 12, 0, 10, 0 )
 
 [sub_resource type="ShaderMaterial" id=10]
 shader = SubResource( 9 )
@@ -172,6 +170,8 @@ shader = SubResource( 9 )
 pause_mode = 1
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = 3.0
+margin_bottom = 3.0
 script = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -189,16 +189,21 @@ __meta__ = {
 }
 
 [node name="NightFilter" type="ColorRect" parent="PostProcesses"]
-visible = false
 material = SubResource( 3 )
 anchor_right = 1.0
 anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="GrayScale" type="ColorRect" parent="PostProcesses"]
 visible = false
 material = SubResource( 10 )
 anchor_right = 1.0
 anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )

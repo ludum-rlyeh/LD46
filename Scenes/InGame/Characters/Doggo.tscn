@@ -15,7 +15,7 @@ export (float) var offset_zoom = 0.01
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Events.connect(\"died_signal\",self,\"on_died_signal\")
-	Events.emit_signal(\"moved_signal\", self.position)
+	Events.emit_signal(\"moved_signal\", self.position, Vector2(0,0))
 	Events.connect(\"set_begin_position_signal\", self, \"_on_set_begin_position\")
 	
 	add_to_group(\"doggo\")
@@ -62,7 +62,7 @@ func _physics_process(delta):
 		# TODO: animation attracted
 	
 	if velocity != Vector2.ZERO:
-		Events.emit_signal(\"moved_signal\", self.position)
+		var old_position = position
 		var collision = self.move_and_collide(velocity * delta)
 		if collision :
 			if collision.collider.get_name() == \"BlindGuy\":
@@ -70,6 +70,7 @@ func _physics_process(delta):
 			else:
 				velocity = velocity.slide(collision.normal)
 				self.move_and_slide(velocity)
+		Events.emit_signal(\"moved_signal\", self.position, self.position - old_position)
 			
 		
 		if not $WalkAudioPlayer2D.playing:
@@ -224,7 +225,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="GDScript" id=30]
+[sub_resource type="GDScript" id=28]
 script/source = "extends AnimatedSprite
 
 
@@ -236,10 +237,10 @@ func _ready():
 
 "
 
-[sub_resource type="AudioStreamRandomPitch" id=28]
+[sub_resource type="AudioStreamRandomPitch" id=29]
 audio_stream = ExtResource( 2 )
 
-[sub_resource type="AudioStreamRandomPitch" id=29]
+[sub_resource type="AudioStreamRandomPitch" id=30]
 audio_stream = ExtResource( 3 )
 
 [node name="Doggo" type="KinematicBody2D"]
@@ -253,14 +254,15 @@ shape = SubResource( 2 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 27 )
 animation = "wait_up"
+frame = 1
 playing = true
-script = SubResource( 30 )
+script = SubResource( 28 )
 
 [node name="BarkAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource( 28 )
+stream = SubResource( 29 )
 
 [node name="WalkAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource( 29 )
+stream = SubResource( 30 )
 volume_db = 1.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
