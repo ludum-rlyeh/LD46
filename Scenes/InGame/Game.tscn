@@ -102,13 +102,13 @@ output_port_for_preview = 0
 source = 1
 texture_type = 1
 
-[sub_resource type="VisualShaderNodeColorFunc" id=11]
+[sub_resource type="VisualShaderNodeColorFunc" id=5]
 output_port_for_preview = 0
 
-[sub_resource type="VisualShaderNodeInput" id=12]
+[sub_resource type="VisualShaderNodeInput" id=6]
 input_name = "screen_uv"
 
-[sub_resource type="VisualShader" id=9]
+[sub_resource type="VisualShader" id=7]
 code = "shader_type canvas_item;
 
 
@@ -157,14 +157,14 @@ flags/light_only = false
 nodes/fragment/0/position = Vector2( 960, 100 )
 nodes/fragment/10/node = SubResource( 4 )
 nodes/fragment/10/position = Vector2( 300, 60 )
-nodes/fragment/11/node = SubResource( 11 )
+nodes/fragment/11/node = SubResource( 5 )
 nodes/fragment/11/position = Vector2( 640, 120 )
-nodes/fragment/12/node = SubResource( 12 )
+nodes/fragment/12/node = SubResource( 6 )
 nodes/fragment/12/position = Vector2( 40, 60 )
 nodes/fragment/connections = PoolIntArray( 10, 0, 11, 0, 11, 0, 0, 0, 12, 0, 10, 0 )
 
-[sub_resource type="ShaderMaterial" id=10]
-shader = SubResource( 9 )
+[sub_resource type="ShaderMaterial" id=8]
+shader = SubResource( 7 )
 
 [node name="Game" type="Control"]
 pause_mode = 1
@@ -198,7 +198,7 @@ __meta__ = {
 
 [node name="GrayScale" type="ColorRect" parent="PostProcesses"]
 visible = false
-material = SubResource( 10 )
+material = SubResource( 8 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
