@@ -30,10 +30,6 @@ Events="*res://Scripts/Events.gd"
 Enums="*res://Scripts/Enums.gd"
 Tools="*res://Scripts/Tools.gd"
 
-[display]
-
-window/size/resizable=false
-
 [importer_defaults]
 
 texture={
