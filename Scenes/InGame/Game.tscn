@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scenes/InGame/Levels/TestLevel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/InGame/HUD/HUD.tscn" type="PackedScene" id=3]
@@ -6,11 +6,6 @@
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control
-
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = \"text\"
 
 
 # Called when the node enters the scene tree for the first time.
@@ -51,14 +46,12 @@ vec3 when_gt(vec3 x, vec3 y) {
 }
 
 void fragment() {
-// Input:2
-	vec3 uv = vec3(SCREEN_UV, 0.0);
 
 // TextureUniform:3
 	vec3 n_out3p0;
 	float n_out3p1;
 	{
-		vec4 n_tex_read = texture(ViewportTexture, uv.xy);
+		vec4 n_tex_read = texture(SCREEN_TEXTURE, SCREEN_UV);
 		n_out3p0 = n_tex_read.rgb;
 		n_out3p1 = n_tex_read.a;
 	}
@@ -102,31 +95,25 @@ void light() {
 
 [sub_resource type="ShaderMaterial" id=3]
 shader = SubResource( 2 )
-shader_param/blueNightColor = Vector3( 0.4, 0.4, 0.65 )
+shader_param/blueNightColor = Vector3( 0.424, 0.4, 0.65 )
 
-[sub_resource type="GDScript" id=4]
-script/source = "extends ColorRect
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	self.material.set_shader_param(\"ViewportTexture\", get_viewport().get_texture())
-"
+[sub_resource type="VisualShaderNodeTexture" id=4]
 
 [sub_resource type="VisualShaderNodeInput" id=5]
 output_port_for_preview = 0
 input_name = "screen_uv"
 
-[sub_resource type="VisualShaderNodeTextureUniform" id=6]
-uniform_name = "ViewportTexture"
-
-[sub_resource type="VisualShaderNodeVec3Constant" id=7]
+[sub_resource type="VisualShaderNodeVec3Constant" id=6]
 constant = Vector3( 0.21, 0.71, 0.07 )
 
-[sub_resource type="VisualShaderNodeDotProduct" id=8]
+[sub_resource type="VisualShaderNodeDotProduct" id=7]
+
+[sub_resource type="VisualShaderNodeInput" id=8]
+input_name = "screen_texture"
 
 [sub_resource type="VisualShader" id=9]
 code = "shader_type canvas_item;
-uniform sampler2D ViewportTexture;
+uniform sampler2D tex_frg_10;
 
 
 
@@ -139,20 +126,18 @@ void fragment() {
 // Input:3
 	vec3 n_out3p0 = vec3(SCREEN_UV, 0.0);
 
-// TextureUniform:5
-	vec3 n_out5p0;
-	float n_out5p1;
-	{
-		vec4 n_tex_read = texture(ViewportTexture, n_out3p0.xy);
-		n_out5p0 = n_tex_read.rgb;
-		n_out5p1 = n_tex_read.a;
-	}
+// Input:9
+
+// Texture:10
+	vec4 tex_frg_10_read = texture(tex_frg_10, n_out3p0.xy);
+	vec3 n_out10p0 = tex_frg_10_read.rgb;
+	float n_out10p1 = tex_frg_10_read.a;
 
 // Vector:6
 	vec3 n_out6p0 = vec3(0.210000, 0.710000, 0.070000);
 
 // DotProduct:8
-	float n_out8p0 = dot(n_out5p0, n_out6p0);
+	float n_out8p0 = dot(n_out10p0, n_out6p0);
 
 // Output:0
 	COLOR.rgb = vec3(n_out8p0);
@@ -164,35 +149,24 @@ void light() {
 
 }
 "
+graph_offset = Vector2( 0, 19 )
 mode = 1
 flags/light_only = false
-nodes/fragment/0/position = Vector2( 1000, 80 )
+nodes/fragment/0/position = Vector2( 960, 100 )
 nodes/fragment/3/node = SubResource( 5 )
 nodes/fragment/3/position = Vector2( 80, 160 )
-nodes/fragment/5/node = SubResource( 6 )
-nodes/fragment/5/position = Vector2( 420, 140 )
-nodes/fragment/6/node = SubResource( 7 )
+nodes/fragment/6/node = SubResource( 6 )
 nodes/fragment/6/position = Vector2( 280, 360 )
-nodes/fragment/8/node = SubResource( 8 )
+nodes/fragment/8/node = SubResource( 7 )
 nodes/fragment/8/position = Vector2( 720, 240 )
-nodes/fragment/connections = PoolIntArray( 3, 0, 5, 0, 6, 0, 8, 1, 5, 0, 8, 0, 8, 0, 0, 0 )
+nodes/fragment/9/node = SubResource( 8 )
+nodes/fragment/9/position = Vector2( 80, 80 )
+nodes/fragment/10/node = SubResource( 4 )
+nodes/fragment/10/position = Vector2( 340, 40 )
+nodes/fragment/connections = PoolIntArray( 6, 0, 8, 1, 9, 0, 10, 2, 3, 0, 10, 0, 10, 0, 8, 0, 8, 0, 0, 0 )
 
 [sub_resource type="ShaderMaterial" id=10]
 shader = SubResource( 9 )
-
-[sub_resource type="GDScript" id=11]
-script/source = "extends ColorRect
-
-
-# Declare member variables here. Examples:
-# var a = 2
-# var b = \"text\"
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	self.material.set_shader_param(\"ViewportTexture\", get_viewport().get_texture())
-"
 
 [node name="Game" type="Control"]
 pause_mode = 1
@@ -203,53 +177,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ViewportContainer" type="ViewportContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-stretch = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Map0" parent="." instance=ExtResource( 1 )]
 
-[node name="Viewport" type="Viewport" parent="ViewportContainer"]
-size = Vector2( 1024, 600 )
-handle_input_locally = false
-hdr = false
-disable_3d = true
-usage = 0
-render_target_update_mode = 3
-audio_listener_enable_2d = true
-
-[node name="Map0" parent="ViewportContainer/Viewport" instance=ExtResource( 1 )]
-
-[node name="HUD" parent="ViewportContainer/Viewport" instance=ExtResource( 3 )]
+[node name="HUD" parent="." instance=ExtResource( 3 )]
 
 [node name="PostProcesses" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1.16638
-margin_right = 1.16638
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="NightFilter" type="ColorRect" parent="PostProcesses"]
+visible = false
 material = SubResource( 3 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = SubResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="GrayScale" type="ColorRect" parent="PostProcesses"]
+visible = false
 material = SubResource( 10 )
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = SubResource( 11 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )

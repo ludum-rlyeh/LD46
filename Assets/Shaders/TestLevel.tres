@@ -1,0 +1,125 @@
+[gd_resource type="ShaderMaterial" load_steps=12 format=2]
+
+[sub_resource type="VisualShaderNodeTextureUniform" id=1]
+uniform_name = "CameraViewport"
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeScalarClamp" id=2]
+
+[sub_resource type="VisualShaderNodeTextureUniform" id=6]
+uniform_name = "RoofViewport"
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeScalarClamp" id=8]
+
+[sub_resource type="VisualShaderNodeVectorScalarMix" id=15]
+
+[sub_resource type="VisualShaderNodeInput" id=9]
+input_name = "uv"
+
+[sub_resource type="VisualShaderNodeVectorDistance" id=10]
+
+[sub_resource type="VisualShaderNodeVec3Constant" id=11]
+constant = Vector3( 0.5, 0.5, 0 )
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=12]
+constant = 0.3
+
+[sub_resource type="VisualShaderNodeScalarOp" id=13]
+operator = 3
+
+[sub_resource type="VisualShader" id=14]
+code = "shader_type canvas_item;
+uniform sampler2D CameraViewport : hint_albedo;
+uniform sampler2D RoofViewport : hint_albedo;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:4
+	vec3 n_out4p0 = vec3(UV, 0.0);
+
+// TextureUniform:14
+	vec3 n_out14p0;
+	float n_out14p1;
+	{
+		vec4 n_tex_read = texture(CameraViewport, n_out4p0.xy);
+		n_out14p0 = n_tex_read.rgb;
+		n_out14p1 = n_tex_read.a;
+	}
+
+// TextureUniform:2
+	vec3 n_out2p0;
+	float n_out2p1;
+	{
+		vec4 n_tex_read = texture(RoofViewport, n_out4p0.xy);
+		n_out2p0 = n_tex_read.rgb;
+		n_out2p1 = n_tex_read.a;
+	}
+
+// Vector:7
+	vec3 n_out7p0 = vec3(0.500000, 0.500000, 0.000000);
+
+// Distance:6
+	float n_out6p0 = distance(n_out4p0, n_out7p0);
+
+// Scalar:8
+	float n_out8p0 = 0.300000;
+
+// ScalarClamp:16
+	float n_in16p1 = 0.00000;
+	float n_out16p0 = clamp(n_out6p0, n_in16p1, n_out8p0);
+
+// ScalarOp:9
+	float n_out9p0 = n_out16p0 / n_out8p0;
+
+// ScalarClamp:21
+	float n_in21p1 = 0.00000;
+	float n_out21p0 = clamp(n_out9p0, n_in21p1, n_out2p1);
+
+// VectorScalarMix:23
+	vec3 n_out23p0 = mix(n_out14p0, n_out2p0, n_out21p0);
+
+// Output:0
+	COLOR.rgb = n_out23p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( 327, 57.25 )
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2( 1080, 220 )
+nodes/fragment/2/node = SubResource( 6 )
+nodes/fragment/2/position = Vector2( 260, 260 )
+nodes/fragment/4/node = SubResource( 9 )
+nodes/fragment/4/position = Vector2( -280, 200 )
+nodes/fragment/6/node = SubResource( 10 )
+nodes/fragment/6/position = Vector2( 20, 480 )
+nodes/fragment/7/node = SubResource( 11 )
+nodes/fragment/7/position = Vector2( -340, 480 )
+nodes/fragment/8/node = SubResource( 12 )
+nodes/fragment/8/position = Vector2( -160, 600 )
+nodes/fragment/9/node = SubResource( 13 )
+nodes/fragment/9/position = Vector2( 400, 520 )
+nodes/fragment/14/node = SubResource( 1 )
+nodes/fragment/14/position = Vector2( 260, 60 )
+nodes/fragment/16/node = SubResource( 2 )
+nodes/fragment/16/position = Vector2( 200, 480 )
+nodes/fragment/21/node = SubResource( 8 )
+nodes/fragment/21/position = Vector2( 600, 480 )
+nodes/fragment/23/node = SubResource( 15 )
+nodes/fragment/23/position = Vector2( 820, 220 )
+nodes/fragment/connections = PoolIntArray( 4, 0, 2, 0, 4, 0, 6, 0, 7, 0, 6, 1, 8, 0, 9, 1, 4, 0, 14, 0, 6, 0, 16, 0, 8, 0, 16, 2, 16, 0, 9, 0, 9, 0, 21, 0, 2, 1, 21, 2, 23, 0, 0, 0, 14, 0, 23, 0, 2, 0, 23, 1, 21, 0, 23, 2 )
+
+[resource]
+shader = SubResource( 14 )

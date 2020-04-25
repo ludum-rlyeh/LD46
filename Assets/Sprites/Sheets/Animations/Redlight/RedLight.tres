@@ -1,14 +1,8 @@
-[gd_resource type="AnimatedTexture" load_steps=4 format=2]
+[gd_resource type="AnimatedTexture" load_steps=2 format=2]
 
 [ext_resource path="res://Assets/Sprites/Png/SLg.png" type="Texture" id=1]
-[ext_resource path="res://Assets/Sprites/Png/SLo.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Sprites/Png/SLr.png" type="Texture" id=3]
 
 [resource]
-frames = 3
+fps = 0.0
 frame_0/texture = ExtResource( 1 )
 frame_0/delay_sec = 5.01
-frame_1/texture = ExtResource( 2 )
-frame_1/delay_sec = 3.23
-frame_2/texture = ExtResource( 3 )
-frame_2/delay_sec = 5.01

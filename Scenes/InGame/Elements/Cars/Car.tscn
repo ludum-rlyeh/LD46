@@ -298,11 +298,11 @@ func enter(var params : Array) -> void:
 	if _path_follower.Debug : print(\"Car : Breaking or not!\")
 	match _path_follower.driver_mood:
 		Enums.DRIVER_MOOD.NORMAL:
-			_tween.interpolate_property(_path_follower, \"speed\", null, 0, 1, Tween.TRANS_LINEAR,  Tween.EASE_OUT)
+			_tween.interpolate_property(_path_follower, \"speed\", null, 0, 0.7, Tween.TRANS_LINEAR,  Tween.EASE_OUT)
 		Enums.DRIVER_MOOD.DRUNK:
-			_tween.interpolate_property(_path_follower, \"speed\", null, _path_follower.init_speed/2, 1, Tween.TRANS_LINEAR,  Tween.EASE_OUT)
+			_tween.interpolate_property(_path_follower, \"speed\", null, _path_follower.init_speed/2, 0.6, Tween.TRANS_LINEAR,  Tween.EASE_OUT)
 		Enums.DRIVER_MOOD.FAST:
-			_tween.interpolate_property(_path_follower, \"speed\", null, 0, 2, Tween.TRANS_LINEAR,  Tween.EASE_OUT)
+			_tween.interpolate_property(_path_follower, \"speed\", null, 0, 0.5, Tween.TRANS_LINEAR,  Tween.EASE_OUT)
 	_tween.start()
 	
 func exit(next_state : String, params : Array) -> void:
@@ -317,7 +317,7 @@ func process(delta):
 		
 func _is_inside_break_zone():
 	for area in _trigger.get_overlapping_areas():
-		if area.get_type() == Enums.TRIGGER_TYPE.BREAK_ZONE && area.monitorable:
+		if area.get_type() == Enums.TRIGGER_TYPE.BREAK_ZONE && area.get_child_count() && !area.get_children()[0].disabled:
 			return true
 	return false
 
@@ -649,6 +649,6 @@ scale = Vector2( 1, 0.6 )
 texture = ExtResource( 6 )
 texture_scale = 0.1
 color = Color( 0.866667, 0.12549, 0.12549, 1 )
-[connection signal="area_entered" from="Trigger" to="StateMachine/BreakZone" method="_on_CollisionArea_area_entered"]
 [connection signal="area_entered" from="Trigger" to="StateMachine/FollowPath" method="_on_CollisionArea_area_entered"]
+[connection signal="area_entered" from="Trigger" to="StateMachine/BreakZone" method="_on_CollisionArea_area_entered"]
 [connection signal="body_shape_entered" from="Collision" to="." method="_on_Collision_body_shape_entered"]
