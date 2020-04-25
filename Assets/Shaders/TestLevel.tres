@@ -4,51 +4,51 @@
 uniform_name = "CameraViewport"
 texture_type = 1
 
-[sub_resource type="VisualShaderNodeTextureUniform" id=3]
+[sub_resource type="VisualShaderNodeTextureUniform" id=2]
 uniform_name = "ForegroundViewport"
 texture_type = 1
 color_default = 1
 
-[sub_resource type="VisualShaderNodeVectorScalarMix" id=5]
+[sub_resource type="VisualShaderNodeVectorScalarMix" id=3]
 output_port_for_preview = 0
 
-[sub_resource type="VisualShaderNodeScalarOp" id=14]
+[sub_resource type="VisualShaderNodeScalarOp" id=4]
 output_port_for_preview = 0
 default_input_values = [ 0, 0.3, 1, 0.3 ]
 operator = 9
 
-[sub_resource type="VisualShaderNodeScalarConstant" id=15]
+[sub_resource type="VisualShaderNodeScalarConstant" id=5]
 constant = 0.3
 
-[sub_resource type="VisualShaderNodeScalarOp" id=16]
+[sub_resource type="VisualShaderNodeScalarOp" id=6]
 default_input_values = [ 0, 1.0, 1, 0.0 ]
 operator = 1
 
-[sub_resource type="VisualShaderNodeScalarOp" id=17]
+[sub_resource type="VisualShaderNodeScalarOp" id=7]
 output_port_for_preview = 0
 operator = 2
 
-[sub_resource type="VisualShaderNodeScalarOp" id=18]
+[sub_resource type="VisualShaderNodeScalarOp" id=8]
 output_port_for_preview = 0
 operator = 2
 
-[sub_resource type="VisualShaderNodeInput" id=6]
+[sub_resource type="VisualShaderNodeInput" id=9]
 input_name = "uv"
 
-[sub_resource type="VisualShaderNodeVectorDistance" id=7]
+[sub_resource type="VisualShaderNodeVectorDistance" id=10]
 output_port_for_preview = 0
 
-[sub_resource type="VisualShaderNodeVec3Constant" id=8]
+[sub_resource type="VisualShaderNodeVec3Constant" id=11]
 constant = Vector3( 0.5, 0.5, 0 )
 
-[sub_resource type="VisualShaderNodeScalarConstant" id=9]
+[sub_resource type="VisualShaderNodeScalarConstant" id=12]
 constant = 0.5
 
-[sub_resource type="VisualShaderNodeScalarOp" id=10]
+[sub_resource type="VisualShaderNodeScalarOp" id=13]
 output_port_for_preview = 0
 operator = 3
 
-[sub_resource type="VisualShader" id=11]
+[sub_resource type="VisualShader" id=14]
 code = "shader_type canvas_item;
 uniform sampler2D CameraViewport : hint_albedo;
 uniform sampler2D ForegroundViewport : hint_black_albedo;
@@ -127,33 +127,33 @@ graph_offset = Vector2( 100.384, -2.5 )
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2( 1260, 200 )
-nodes/fragment/2/node = SubResource( 3 )
+nodes/fragment/2/node = SubResource( 2 )
 nodes/fragment/2/position = Vector2( 100, 220 )
-nodes/fragment/4/node = SubResource( 6 )
+nodes/fragment/4/node = SubResource( 9 )
 nodes/fragment/4/position = Vector2( -280, 200 )
-nodes/fragment/6/node = SubResource( 7 )
+nodes/fragment/6/node = SubResource( 10 )
 nodes/fragment/6/position = Vector2( 20, 480 )
-nodes/fragment/7/node = SubResource( 8 )
+nodes/fragment/7/node = SubResource( 11 )
 nodes/fragment/7/position = Vector2( -340, 480 )
-nodes/fragment/8/node = SubResource( 9 )
+nodes/fragment/8/node = SubResource( 12 )
 nodes/fragment/8/position = Vector2( 600, 740 )
-nodes/fragment/9/node = SubResource( 10 )
+nodes/fragment/9/node = SubResource( 13 )
 nodes/fragment/9/position = Vector2( 860, 560 )
 nodes/fragment/14/node = SubResource( 1 )
 nodes/fragment/14/position = Vector2( 100, 20 )
-nodes/fragment/23/node = SubResource( 5 )
+nodes/fragment/23/node = SubResource( 3 )
 nodes/fragment/23/position = Vector2( 940, 200 )
-nodes/fragment/26/node = SubResource( 14 )
+nodes/fragment/26/node = SubResource( 4 )
 nodes/fragment/26/position = Vector2( 240, 460 )
-nodes/fragment/27/node = SubResource( 15 )
+nodes/fragment/27/node = SubResource( 5 )
 nodes/fragment/27/position = Vector2( 20, 680 )
-nodes/fragment/28/node = SubResource( 16 )
+nodes/fragment/28/node = SubResource( 6 )
 nodes/fragment/28/position = Vector2( 420, 460 )
-nodes/fragment/29/node = SubResource( 17 )
+nodes/fragment/29/node = SubResource( 7 )
 nodes/fragment/29/position = Vector2( 620, 500 )
-nodes/fragment/30/node = SubResource( 18 )
+nodes/fragment/30/node = SubResource( 8 )
 nodes/fragment/30/position = Vector2( 520, 260 )
 nodes/fragment/connections = PoolIntArray( 4, 0, 2, 0, 4, 0, 6, 0, 7, 0, 6, 1, 4, 0, 14, 0, 14, 0, 23, 0, 2, 0, 23, 1, 23, 0, 0, 0, 6, 0, 26, 0, 27, 0, 26, 1, 26, 0, 28, 1, 28, 0, 29, 0, 6, 0, 29, 1, 29, 0, 9, 0, 8, 0, 9, 1, 30, 0, 23, 2, 2, 1, 30, 0, 9, 0, 30, 1 )
 
 [resource]
-shader = SubResource( 11 )
+shader = SubResource( 14 )
