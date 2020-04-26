@@ -1,4 +1,4 @@
-[gd_scene load_steps=67 format=2]
+[gd_scene load_steps=68 format=2]
 
 [ext_resource path="res://Assets/Sprites/TileMap/FG.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/Cross.tscn" type="PackedScene" id=2]
@@ -19,6 +19,7 @@
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Redlight/Signals.tres" type="TileSet" id=17]
 [ext_resource path="res://icon.png" type="Texture" id=18]
 [ext_resource path="res://Assets/Shaders/TestLevel.tres" type="Material" id=19]
+[ext_resource path="res://Scenes/InGame/Elements/Cars/RedLight.tscn" type="PackedScene" id=20]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
@@ -83,9 +84,11 @@ func _init_viewports():
 	get_viewport().emit_signal(\"size_changed\")
 	
 func _on_size_changed():
-	var size = get_viewport().get_visible_rect().size
-	$CameraViewport.size = size
-	$ForegroundViewport.size = size
+	var viewport = get_viewport()
+	if viewport :
+		var size = viewport.get_visible_rect().size
+		$CameraViewport.size = size
+		$ForegroundViewport.size = size
 	
 func _init_opened_seekers() -> void:
 	var opened_seeker = _misc.get_used_cells_by_id(4)
@@ -473,7 +476,9 @@ func _ready():
 	get_tree().get_root().get_viewport().connect(\"size_changed\", self, \"_on_viewport_size_changed\")
 	
 func _on_viewport_size_changed() -> void :
-	self.rect_size = get_viewport().get_visible_rect().size
+	var viewport = get_viewport()
+	if viewport :
+		self.rect_size = viewport.get_visible_rect().size
 "
 
 [node name="Map0" type="Node2D"]
@@ -510,6 +515,38 @@ __meta__ = {
 
 [node name="RedLightCross" parent="CameraPart/Misc/YSort" instance=ExtResource( 5 )]
 position = Vector2( 440, 472 )
+
+[node name="RedLight" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone1" index="1" instance=ExtResource( 20 )]
+position = Vector2( -96, 32 )
+
+[node name="RedLight2" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone1" index="2" instance=ExtResource( 20 )]
+position = Vector2( 240, 40 )
+
+[node name="RedLight3" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone1" index="3" instance=ExtResource( 20 )]
+position = Vector2( 256, 496 )
+animation = "face"
+
+[node name="RedLight4" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone1" index="4" instance=ExtResource( 20 )]
+position = Vector2( -104, 488 )
+animation = "face"
+
+[node name="RedLight5" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone2" index="1" instance=ExtResource( 20 )]
+position = Vector2( 304, 80 )
+animation = "side"
+
+[node name="RedLight6" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone2" index="2" instance=ExtResource( 20 )]
+position = Vector2( 304, 408 )
+animation = "side"
+
+[node name="RedLight7" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone2" index="3" instance=ExtResource( 20 )]
+position = Vector2( -152, 416 )
+animation = "side"
+flip_h = true
+
+[node name="RedLight8" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone2" index="4" instance=ExtResource( 20 )]
+position = Vector2( -152, 80 )
+animation = "side"
+flip_h = true
 
 [node name="Signals" type="TileMap" parent="CameraPart"]
 tile_set = ExtResource( 17 )
@@ -880,3 +917,5 @@ script = SubResource( 47 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[editable path="CameraPart/Misc/YSort/RedLightCross"]
