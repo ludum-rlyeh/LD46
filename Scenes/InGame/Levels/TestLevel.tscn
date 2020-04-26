@@ -19,7 +19,6 @@
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Redlight/Signals.tres" type="TileSet" id=17]
 [ext_resource path="res://icon.png" type="Texture" id=18]
 [ext_resource path="res://Assets/Shaders/TestLevel.tres" type="Material" id=19]
-[ext_resource path="res://Scenes/InGame/Elements/Cars/RedLight.tscn" type="PackedScene" id=20]
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Tree/tree.tres" type="Texture" id=20]
 [ext_resource path="res://Assets/Sprites/Sheets/Banc.png" type="Texture" id=21]
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Tree/TreeAlt/treealt.tres" type="Texture" id=22]
@@ -91,7 +90,7 @@ func _init_viewports():
 	
 func _on_size_changed():
 	var viewport = get_viewport()
-	if viewport :
+	if viewport:
 		var size = viewport.get_visible_rect().size
 		$CameraViewport.size = size
 		$ForegroundViewport.size = size
@@ -682,7 +681,7 @@ func _ready():
 	
 func _on_viewport_size_changed() -> void :
 	var viewport = get_viewport()
-	if viewport :
+	if viewport:
 		self.rect_size = viewport.get_visible_rect().size
 "
 
@@ -731,38 +730,6 @@ tile_data = PoolIntArray( -917488, 76, 0, -786442, 76, 0, -786440, 76, 0, -85195
 __meta__ = {
 "_edit_lock_": true
 }
-
-[node name="RedLight" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone1" index="1" instance=ExtResource( 20 )]
-position = Vector2( -96, 32 )
-
-[node name="RedLight2" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone1" index="2" instance=ExtResource( 20 )]
-position = Vector2( 240, 40 )
-
-[node name="RedLight3" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone1" index="3" instance=ExtResource( 20 )]
-position = Vector2( 256, 496 )
-animation = "face"
-
-[node name="RedLight4" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone1" index="4" instance=ExtResource( 20 )]
-position = Vector2( -104, 488 )
-animation = "face"
-
-[node name="RedLight5" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone2" index="1" instance=ExtResource( 20 )]
-position = Vector2( 304, 80 )
-animation = "side"
-
-[node name="RedLight6" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone2" index="2" instance=ExtResource( 20 )]
-position = Vector2( 304, 408 )
-animation = "side"
-
-[node name="RedLight7" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone2" index="3" instance=ExtResource( 20 )]
-position = Vector2( -152, 416 )
-animation = "side"
-flip_h = true
-
-[node name="RedLight8" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone2" index="4" instance=ExtResource( 20 )]
-position = Vector2( -152, 80 )
-animation = "side"
-flip_h = true
 
 [node name="Signals" type="TileMap" parent="CameraPart"]
 tile_set = ExtResource( 17 )
@@ -1133,5 +1100,3 @@ script = SubResource( 55 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[editable path="CameraPart/Misc/YSort/RedLightCross"]

@@ -72,7 +72,7 @@ func _physics_process(delta):
 				else:
 					velocity = velocity.slide(collision.normal)
 					self.move_and_slide(velocity)
-			Events.emit_signal(\"moved_signal\", self.position, self.position - old_position)
+			Events.emit_signal(\"moved_signal\", self.position)
 				
 			
 			if not $WalkAudioPlayer2D.playing:
@@ -80,18 +80,12 @@ func _physics_process(delta):
 		else:
 			if not $AnimatedSprite.animation.begins_with(\"wait_\"):
 				$AnimatedSprite.animation = \"wait_\" + $AnimatedSprite.animation
-		if not $WalkAudioPlayer2D.playing:
-			$WalkAudioPlayer2D.play()
-	else:
-		if not $AnimatedSprite.animation.begins_with(\"wait_\"):
-			$AnimatedSprite.animation = \"wait_\" + $AnimatedSprite.animation
-	
-	_update_zoom()
-	
-	
-func _update_zoom() -> void:
+				
+		_get_zoom_input()
+			
+func _get_zoom_input():
 	if Input.is_action_pressed(\"ui_zoom_in\"):
-		$Camera2D.zoom -= Vector2(offset_zoom, offset_zoom)
+			$Camera2D.zoom -= Vector2(offset_zoom, offset_zoom)
 	elif Input.is_action_pressed(\"ui_zoom_out\"):
 		$Camera2D.zoom += Vector2(offset_zoom, offset_zoom)
 
@@ -113,45 +107,53 @@ func on_died_signal(var body_id, var type):
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 27.1442, 30.0128 )
 
-[sub_resource type="AtlasTexture" id=5]
+[sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 0, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=6]
+[sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 1 )
 region = Rect2( 128, 0, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=7]
+[sub_resource type="AtlasTexture" id=5]
 atlas = ExtResource( 1 )
 region = Rect2( 256, 0, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=8]
+[sub_resource type="AtlasTexture" id=6]
 atlas = ExtResource( 1 )
 region = Rect2( 384, 0, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=9]
+[sub_resource type="AtlasTexture" id=7]
 atlas = ExtResource( 1 )
 region = Rect2( 384, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=10]
+[sub_resource type="AtlasTexture" id=8]
 atlas = ExtResource( 1 )
 region = Rect2( 512, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=11]
+[sub_resource type="AtlasTexture" id=9]
 atlas = ExtResource( 1 )
 region = Rect2( 0, 256, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=12]
+[sub_resource type="AtlasTexture" id=10]
 atlas = ExtResource( 1 )
 region = Rect2( 128, 256, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=13]
+[sub_resource type="AtlasTexture" id=11]
 atlas = ExtResource( 1 )
 region = Rect2( 128, 384, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=14]
+[sub_resource type="AtlasTexture" id=12]
 atlas = ExtResource( 1 )
 region = Rect2( 256, 384, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=13]
+atlas = ExtResource( 1 )
+region = Rect2( 384, 384, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=14]
+atlas = ExtResource( 1 )
+region = Rect2( 512, 384, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=15]
 atlas = ExtResource( 1 )
@@ -171,19 +173,19 @@ region = Rect2( 0, 384, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=19]
 atlas = ExtResource( 1 )
-region = Rect2( 256, 512, 128, 128 )
+region = Rect2( 512, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=20]
 atlas = ExtResource( 1 )
-region = Rect2( 384, 512, 128, 128 )
+region = Rect2( 0, 128, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=21]
 atlas = ExtResource( 1 )
-region = Rect2( 256, 256, 128, 128 )
+region = Rect2( 128, 128, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=22]
 atlas = ExtResource( 1 )
-region = Rect2( 384, 256, 128, 128 )
+region = Rect2( 256, 128, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=23]
 atlas = ExtResource( 1 )
@@ -201,40 +203,40 @@ region = Rect2( 256, 512, 128, 128 )
 atlas = ExtResource( 1 )
 region = Rect2( 384, 512, 128, 128 )
 
-[sub_resource type="SpriteFrames" id=29]
+[sub_resource type="SpriteFrames" id=27]
 animations = [ {
-"frames": [ SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ) ],
+"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ) ],
 "loop": true,
 "name": "right",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ) ],
+"frames": [ SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ) ],
 "loop": true,
 "name": "up",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 13 ), SubResource( 14 ), SubResource( 15 ), SubResource( 16 ) ],
+"frames": [ SubResource( 11 ), SubResource( 12 ), SubResource( 13 ), SubResource( 14 ) ],
 "loop": true,
 "name": "wait_down",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ) ],
+"frames": [ SubResource( 15 ), SubResource( 16 ), SubResource( 17 ), SubResource( 18 ) ],
 "loop": true,
 "name": "wait_right",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ) ],
+"frames": [ SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ) ],
 "loop": true,
-"name": "wait_right",
+"name": "down",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ) ],
+"frames": [ SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ) ],
 "loop": true,
 "name": "wait_up",
 "speed": 5.0
 } ]
 
-[sub_resource type="GDScript" id=30]
+[sub_resource type="GDScript" id=28]
 script/source = "extends AnimatedSprite
 
 
@@ -246,10 +248,10 @@ func _ready():
 
 "
 
-[sub_resource type="AudioStreamRandomPitch" id=31]
+[sub_resource type="AudioStreamRandomPitch" id=29]
 audio_stream = ExtResource( 2 )
 
-[sub_resource type="AudioStreamRandomPitch" id=32]
+[sub_resource type="AudioStreamRandomPitch" id=30]
 audio_stream = ExtResource( 3 )
 
 [node name="Doggo" type="KinematicBody2D"]
@@ -261,16 +263,17 @@ script = SubResource( 1 )
 shape = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-frames = SubResource( 29 )
+frames = SubResource( 27 )
 animation = "wait_up"
+frame = 1
 playing = true
-script = SubResource( 30 )
+script = SubResource( 28 )
 
 [node name="BarkAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource( 31 )
+stream = SubResource( 29 )
 
 [node name="WalkAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource( 32 )
+stream = SubResource( 30 )
 volume_db = 1.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
