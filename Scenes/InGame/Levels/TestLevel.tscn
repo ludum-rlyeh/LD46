@@ -1,4 +1,4 @@
-[gd_scene load_steps=81 format=2]
+[gd_scene load_steps=82 format=2]
 
 [ext_resource path="res://Assets/Sprites/TileMap/FG.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/Cross.tscn" type="PackedScene" id=2]
@@ -25,6 +25,7 @@
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Tree/Tree256/treealt256/treealt256.tres" type="Texture" id=23]
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Tree/Tree256/tree256.tres" type="Texture" id=24]
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Streetlight128/Streetligth128.tres" type="Texture" id=25]
+[ext_resource path="res://Scenes/InGame/Elements/Cars/RedLight.tscn" type="PackedScene" id=26]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
@@ -704,6 +705,38 @@ __meta__ = {
 [node name="RedLightCross" parent="CameraPart/Misc/YSort" instance=ExtResource( 5 )]
 position = Vector2( 440, 472 )
 
+[node name="RedLight" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone1" index="1" instance=ExtResource( 26 )]
+position = Vector2( 248, 40 )
+
+[node name="RedLight2" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone1" index="2" instance=ExtResource( 26 )]
+position = Vector2( -120, 40 )
+
+[node name="RedLight3" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone1" index="3" instance=ExtResource( 26 )]
+position = Vector2( -112, 464 )
+animation = "face"
+
+[node name="RedLight4" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone1" index="4" instance=ExtResource( 26 )]
+position = Vector2( 224, 464 )
+animation = "face"
+
+[node name="RedLight5" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone2" index="1" instance=ExtResource( 26 )]
+position = Vector2( 304, 408 )
+animation = "side"
+
+[node name="RedLight6" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone2" index="2" instance=ExtResource( 26 )]
+position = Vector2( 296, 88 )
+animation = "side"
+
+[node name="RedLight7" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone2" index="3" instance=ExtResource( 26 )]
+position = Vector2( -168, 80 )
+animation = "side"
+flip_h = true
+
+[node name="RedLight8" parent="CameraPart/Misc/YSort/RedLightCross/BreakZone2" index="4" instance=ExtResource( 26 )]
+position = Vector2( -176, 408 )
+animation = "side"
+flip_h = true
+
 [node name="Misc2" type="TileMap" parent="CameraPart"]
 tile_set = SubResource( 13 )
 cell_size = Vector2( 128, 128 )
@@ -1084,3 +1117,5 @@ script = SubResource( 55 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[editable path="CameraPart/Misc/YSort/RedLightCross"]
