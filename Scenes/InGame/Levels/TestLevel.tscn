@@ -661,7 +661,14 @@ func _on_character_moved(charac_position : Vector2):
 [sub_resource type="GDScript" id=55]
 script/source = "extends TextureRect
 
+export (float, 1) var min_radius = 0.2
+export (float, 1) var max_radius = 0.4
+export (float, 1) var transparency = 0.3
+
 func _ready():
+	material.set_shader_param(\"min_radius\", min_radius)
+	material.set_shader_param(\"max_radius\", max_radius)
+	material.set_shader_param(\"transparency\", transparency)
 	get_tree().get_root().get_viewport().connect(\"size_changed\", self, \"_on_viewport_size_changed\")
 	
 func _on_viewport_size_changed() -> void :

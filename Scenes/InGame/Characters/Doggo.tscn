@@ -303,14 +303,14 @@ position = Vector2( 21.0153, 19.1292 )
 rotation = 2.01411
 frames = SubResource( 29 )
 animation = "wait_up"
-frame = 3
+frame = 2
 playing = true
 script = SubResource( 30 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 29 )
 animation = "wait_up"
-frame = 3
+frame = 2
 playing = true
 script = SubResource( 30 )
 
