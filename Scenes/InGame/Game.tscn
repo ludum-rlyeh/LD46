@@ -10,16 +10,11 @@ script/source = "extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	VisualServer.set_default_clear_color(Color(0.0,0.0,0.0,1.0))
 	Events.connect(\"set_paused_signal\", self, \"on_active_gray_scale_post_process\")
 	Events.connect(\"set_game_over_signal\",self,\"on_active_gray_scale_post_process\")
-
+	
 func on_active_gray_scale_post_process(var active : bool) -> void:
 	$PostProcesses/GrayScale.visible = active
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
 "
 
 [sub_resource type="Shader" id=2]
@@ -68,7 +63,11 @@ void fragment() {
 	vec3(0.658824,0.4,0.117647),
 	vec3(0.12549,0.65098,0.321569),
 	vec3(0.596078,0.415686,0.560784),
-	vec3(0.219608,0.188235,0.411765)};
+	vec3(0.219608,0.188235,0.411765),
+	vec3(0.984314, 0.121569, 0.003922),
+	vec3(0.905882, 0.560784, 0.172549),
+	vec3(0.968627, 0.72549, 0),
+	vec3(0.976471, 0.870588, 0.560784)};
 	
 	vec3 color = vec3(0.0);
 	float a = 0.0;
