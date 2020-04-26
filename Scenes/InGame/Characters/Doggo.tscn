@@ -10,6 +10,7 @@ script/source = "extends KinematicBody2D
 const SPEED = 200.0
 
 var attract = Vector2.ZERO
+var dead = 0
 export (float) var offset_zoom = 0.01
 
 # Called when the node enters the scene tree for the first time.
@@ -17,6 +18,7 @@ func _ready():
 	Events.connect(\"died_signal\",self,\"on_died_signal\")
 	Events.emit_signal(\"moved_signal\", self.position, Vector2(0,0))
 	Events.connect(\"set_begin_position_signal\", self, \"_on_set_begin_position\")
+	Events.connect(\"stop_signal\",self,\"on_stop_signal\")
 	
 	add_to_group(\"doggo\")
 	
@@ -29,50 +31,55 @@ func _input(event):
 		$BarkAudioPlayer2D.play()
 
 func _physics_process(delta):
-	
-	var velocity = Vector2.ZERO
-	if Input.is_action_pressed(\"ui_right\") or Input.is_action_pressed(\"ui_left\")\\
-		or Input.is_action_pressed(\"ui_down\") or Input.is_action_pressed(\"ui_up\"):
-		
-		if Input.is_action_pressed(\"ui_right\"):
-			if not (Input.is_action_pressed(\"ui_down\") or Input.is_action_pressed(\"ui_up\")):
-				if $AnimatedSprite.animation != \"right\": $AnimatedSprite.animation = \"right\"
-				if $AnimatedSprite.flip_h: $AnimatedSprite.flip_h = false
-			velocity.x += 1.0
-		elif Input.is_action_pressed(\"ui_left\"):
-			if not (Input.is_action_pressed(\"ui_down\") or Input.is_action_pressed(\"ui_up\")):
-				if $AnimatedSprite.animation != \"right\": $AnimatedSprite.animation = \"right\"
-				if not $AnimatedSprite.flip_h: $AnimatedSprite.flip_h = true
-			velocity.x -= 1.0
-
-		if Input.is_action_pressed(\"ui_down\"):
-			if $AnimatedSprite.animation != \"down\": $AnimatedSprite.animation = \"down\"
-			if $AnimatedSprite.flip_h: $AnimatedSprite.flip_h = false
-			velocity.y += 1.0
-		elif Input.is_action_pressed(\"ui_up\"):
-			if $AnimatedSprite.animation != \"up\": $AnimatedSprite.animation = \"up\"
-			if $AnimatedSprite.flip_h: $AnimatedSprite.flip_h = false
-			velocity.y -= 1.0
-
-		velocity = velocity.normalized() * SPEED
-		
-	# Doggo tracted by the human
-	if attract != Vector2.ZERO :
-		velocity += attract
-		# TODO: animation attracted
-	
-	if velocity != Vector2.ZERO:
-		var old_position = position
-		var collision = self.move_and_collide(velocity * delta)
-		if collision :
-			if collision.collider.get_name() == \"BlindGuy\":
-				collision.collider.move_and_collide(velocity.normalized())
-			else:
-				velocity = velocity.slide(collision.normal)
-				self.move_and_slide(velocity)
-		Events.emit_signal(\"moved_signal\", self.position, self.position - old_position)
+	if dead != 1:
+		var velocity = Vector2.ZERO
+		if Input.is_action_pressed(\"ui_right\") or Input.is_action_pressed(\"ui_left\")\\
+			or Input.is_action_pressed(\"ui_down\") or Input.is_action_pressed(\"ui_up\"):
 			
+			if Input.is_action_pressed(\"ui_right\"):
+				if not (Input.is_action_pressed(\"ui_down\") or Input.is_action_pressed(\"ui_up\")):
+					if $AnimatedSprite.animation != \"right\": $AnimatedSprite.animation = \"right\"
+					if $AnimatedSprite.flip_h: $AnimatedSprite.flip_h = false
+				velocity.x += 1.0
+			elif Input.is_action_pressed(\"ui_left\"):
+				if not (Input.is_action_pressed(\"ui_down\") or Input.is_action_pressed(\"ui_up\")):
+					if $AnimatedSprite.animation != \"right\": $AnimatedSprite.animation = \"right\"
+					if not $AnimatedSprite.flip_h: $AnimatedSprite.flip_h = true
+				velocity.x -= 1.0
+	
+			if Input.is_action_pressed(\"ui_down\"):
+				if $AnimatedSprite.animation != \"down\": $AnimatedSprite.animation = \"down\"
+				if $AnimatedSprite.flip_h: $AnimatedSprite.flip_h = false
+				velocity.y += 1.0
+			elif Input.is_action_pressed(\"ui_up\"):
+				if $AnimatedSprite.animation != \"up\": $AnimatedSprite.animation = \"up\"
+				if $AnimatedSprite.flip_h: $AnimatedSprite.flip_h = false
+				velocity.y -= 1.0
+	
+			velocity = velocity.normalized() * SPEED
+			
+		# Doggo tracted by the human
+		if attract != Vector2.ZERO :
+			velocity += attract
+			# TODO: animation attracted
 		
+		if velocity != Vector2.ZERO:
+			var old_position = position
+			var collision = self.move_and_collide(velocity * delta)
+			if collision :
+				if collision.collider.get_name() == \"BlindGuy\":
+					collision.collider.move_and_collide(velocity.normalized())
+				else:
+					velocity = velocity.slide(collision.normal)
+					self.move_and_slide(velocity)
+			Events.emit_signal(\"moved_signal\", self.position, self.position - old_position)
+				
+			
+			if not $WalkAudioPlayer2D.playing:
+				$WalkAudioPlayer2D.play()
+		else:
+			if not $AnimatedSprite.animation.begins_with(\"wait_\"):
+				$AnimatedSprite.animation = \"wait_\" + $AnimatedSprite.animation
 		if not $WalkAudioPlayer2D.playing:
 			$WalkAudioPlayer2D.play()
 	else:
@@ -90,7 +97,13 @@ func _update_zoom() -> void:
 
 func set_attract(var attract):
 	self.attract = attract
-
+	
+func on_stop_signal(var body_id):
+	
+		dead = 1
+		print(dead)
+		
+		
 func on_died_signal(var body_id, var type):
 	if body_id == self.get_instance_id():
 		# TODO: Animation
@@ -142,19 +155,19 @@ region = Rect2( 256, 384, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=15]
 atlas = ExtResource( 1 )
-region = Rect2( 384, 384, 128, 128 )
+region = Rect2( 256, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=16]
 atlas = ExtResource( 1 )
-region = Rect2( 512, 384, 128, 128 )
+region = Rect2( 384, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=17]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 512, 128, 128 )
+region = Rect2( 512, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=18]
 atlas = ExtResource( 1 )
-region = Rect2( 128, 512, 128, 128 )
+region = Rect2( 0, 384, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=19]
 atlas = ExtResource( 1 )
@@ -174,27 +187,19 @@ region = Rect2( 384, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=23]
 atlas = ExtResource( 1 )
-region = Rect2( 512, 256, 128, 128 )
+region = Rect2( 0, 512, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=24]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 384, 128, 128 )
+region = Rect2( 128, 512, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=25]
 atlas = ExtResource( 1 )
-region = Rect2( 512, 0, 128, 128 )
+region = Rect2( 256, 512, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=26]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 128, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=27]
-atlas = ExtResource( 1 )
-region = Rect2( 128, 128, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=28]
-atlas = ExtResource( 1 )
-region = Rect2( 256, 128, 128, 128 )
+region = Rect2( 384, 512, 128, 128 )
 
 [sub_resource type="SpriteFrames" id=29]
 animations = [ {
@@ -215,7 +220,7 @@ animations = [ {
 }, {
 "frames": [ SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ) ],
 "loop": true,
-"name": "wait_up",
+"name": "wait_right",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ) ],
@@ -225,7 +230,7 @@ animations = [ {
 }, {
 "frames": [ SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ) ],
 "loop": true,
-"name": "down",
+"name": "wait_up",
 "speed": 5.0
 } ]
 
@@ -258,7 +263,6 @@ shape = SubResource( 2 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 29 )
 animation = "wait_up"
-frame = 3
 playing = true
 script = SubResource( 30 )
 

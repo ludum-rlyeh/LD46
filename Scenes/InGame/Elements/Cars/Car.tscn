@@ -36,6 +36,7 @@ func change_path(path : Path2D) -> void:
 func _on_Collision_body_shape_entered(body_id, body, body_shape, area_shape):
 	if Debug : print(\"Crushed by a car : \", body)
 	if not crashed :
+		Events.emit_signal(\"stop_signal\", body_id)
 		self.crashed = true
 		body.visible=false
 		$AnimationPlayer.play(\"crash_\"+$AnimatedSprite.animation+\"_\"+body.get_name())

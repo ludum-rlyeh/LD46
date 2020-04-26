@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Assets/Fonts/ka1.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/Fonts/ARCADE.TTF" type="DynamicFontData" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://Assets/Sprites/Png/Keyboard_White_Space.png" type="Texture" id=13]
 [ext_resource path="res://Assets/Sprites/Png/Keyboard_White_Minus.png" type="Texture" id=14]
 [ext_resource path="res://Assets/Sprites/Png/Keyboard_White_Plus.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Sprites/Sheets/Animations/Tree/tree.tres" type="Texture" id=16]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control
@@ -49,8 +50,15 @@ func _on_GotItButton_pressed():
 	$ControlElements.visible = false
 "
 
-[sub_resource type="Animation" id=2]
-resource_name = "street"
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 16 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=3]
 length = 15.0
 loop = true
 tracks/0/type = "bezier"
@@ -93,18 +101,32 @@ tracks/3/keys = {
 "points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0 ),
 "times": PoolRealArray( 0, 15 )
 }
+tracks/4/type = "bezier"
+tracks/4/path = NodePath("Tree1:position:x")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"points": PoolRealArray( 1300.23, -0.25, 0, 0.25, 0, -180, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 15 )
+}
+tracks/5/type = "bezier"
+tracks/5/path = NodePath("Tree1:position:y")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"points": PoolRealArray( 470.456, -0.25, 0, 0.25, 0, 480.456, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 15 )
+}
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=4]
 size = 48
 outline_size = 7
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 1 )
-
-[sub_resource type="DynamicFont" id=4]
-size = 40
-outline_size = 3
-outline_color = Color( 0, 0, 0, 1 )
-font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=5]
 size = 40
@@ -125,15 +147,21 @@ outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=8]
+size = 40
+outline_size = 3
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=9]
 size = 30
 outline_size = 3
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 2 )
 
-[sub_resource type="AudioStreamRandomPitch" id=9]
+[sub_resource type="AudioStreamRandomPitch" id=10]
 audio_stream = ExtResource( 7 )
 
-[sub_resource type="AudioStreamRandomPitch" id=10]
+[sub_resource type="AudioStreamRandomPitch" id=11]
 audio_stream = ExtResource( 6 )
 
 [node name="MainMenu" type="Control"]
@@ -154,12 +182,12 @@ __meta__ = {
 }
 
 [node name="BuildingSprite" type="Sprite" parent="BackgroundAnimation"]
-position = Vector2( -309.134, 0 )
+position = Vector2( -56.763, 0 )
 texture = ExtResource( 5 )
 centered = false
 
 [node name="BuildingSprite2" type="Sprite" parent="BackgroundAnimation"]
-position = Vector2( 708.866, 0 )
+position = Vector2( 961.237, 0 )
 texture = ExtResource( 5 )
 centered = false
 
@@ -172,19 +200,26 @@ default_color = Color( 1, 0, 0, 1 )
 position = Vector2( 536.097, 537.217 )
 frames = ExtResource( 3 )
 animation = "right"
-frame = 2
+frame = 1
 playing = true
 
 [node name="BlindGuySprite" type="AnimatedSprite" parent="BackgroundAnimation"]
 position = Vector2( 453.961, 499.207 )
 frames = ExtResource( 4 )
 animation = "right"
-frame = 4
+frame = 7
 playing = true
+
+[node name="Tree1" type="AnimatedSprite" parent="BackgroundAnimation"]
+visible = false
+modulate = Color( 1, 1, 1, 0.890196 )
+position = Vector2( 1344.74, 499.902 )
+scale = Vector2( 1.08413, 1.08549 )
+frames = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundAnimation"]
 method_call_mode = 1
-anims/street = SubResource( 2 )
+anims/street = SubResource( 3 )
 
 [node name="Label" type="Label" parent="."]
 anchor_left = 0.5
@@ -192,7 +227,7 @@ anchor_right = 0.5
 margin_left = -403.0
 margin_right = 403.0
 margin_bottom = 200.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 4 )
 text = "Guide
 Ur Human"
 align = 1
@@ -215,7 +250,7 @@ margin_left = 412.0
 margin_top = 219.0
 margin_right = 100.0
 margin_bottom = -35.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
 text = "Start"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -226,7 +261,7 @@ margin_left = 411.0
 margin_top = 288.0
 margin_right = 611.0
 margin_bottom = 327.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 6 )
 text = "Controls"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -239,7 +274,7 @@ margin_left = 411.0
 margin_top = 357.0
 margin_right = 99.0
 margin_bottom = -47.6
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 7 )
 text = "Quit"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -344,7 +379,7 @@ margin_left = 118.583
 margin_top = 389.832
 margin_right = 299.583
 margin_bottom = 429.832
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 text = "Movements"
 align = 1
 valign = 1
@@ -357,7 +392,7 @@ margin_left = 424.0
 margin_top = 208.0
 margin_right = 605.0
 margin_bottom = 248.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 text = "Bark"
 align = 1
 valign = 1
@@ -370,7 +405,7 @@ margin_left = 761.0
 margin_top = 235.0
 margin_right = 942.0
 margin_bottom = 275.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 text = "Zoom Out"
 align = 1
 valign = 1
@@ -383,7 +418,7 @@ margin_left = 753.0
 margin_top = 315.0
 margin_right = 934.0
 margin_bottom = 355.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 8 )
 text = "Zoom In"
 align = 1
 valign = 1
@@ -400,14 +435,14 @@ margin_left = -64.6396
 margin_top = 52.0
 margin_right = 67.3604
 margin_bottom = 88.0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 9 )
 text = "Got It !"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 9 )
+stream = SubResource( 10 )
 
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
-stream = SubResource( 10 )
+stream = SubResource( 11 )
 
 [node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )

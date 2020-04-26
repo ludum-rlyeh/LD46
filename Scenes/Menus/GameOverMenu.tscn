@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Assets/Sounds/menu_select.wav" type="AudioStream" id=1]
 [ext_resource path="res://Assets/Fonts/ka1.ttf" type="DynamicFontData" id=2]
@@ -6,6 +6,14 @@
 [ext_resource path="res://Assets/Sounds/Click.wav" type="AudioStream" id=4]
 [ext_resource path="res://Assets/Sounds/Funk_Loop_-_Funk_Loop_-_Funk_n_Roll.ogg" type="AudioStream" id=5]
 [ext_resource path="res://Assets/Sounds/Funkafè_-_Ciassa_Brin.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Assets/Sprites/Sheets/Animations/DogMenu/Dead/DogDead.tres" type="Texture" id=7]
+[ext_resource path="res://Assets/Sprites/Sheets/Animations/DogMenu/Cry/DogCry.tres" type="Texture" id=8]
+[ext_resource path="res://Assets/Sprites/Sheets/Animations/GuyMenu/Sad/guycry.tres" type="Texture" id=9]
+[ext_resource path="res://Assets/Sprites/Sheets/Animations/GuyMenu/Dead/guydead.tres" type="Texture" id=10]
+[ext_resource path="res://Assets/Sprites/Sheets/Animations/DogMenu/Pause/pause.tres" type="Texture" id=11]
+[ext_resource path="res://Assets/Sprites/Sheets/Animations/DogMenu/Hap/hap.tres" type="Texture" id=12]
+[ext_resource path="res://Assets/Sprites/Sheets/Animations/GuyMenu/Hap/guyhap.tres" type="Texture" id=13]
+[ext_resource path="res://Assets/Sprites/Sheets/Animations/GuyMenu/Pause/guypause.tres" type="Texture" id=14]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends CanvasLayer
@@ -24,8 +32,16 @@ func end_game(var type):
 	# Set element visible
 	if type == Enums.GAME_OVER_TYPE.VICTORY:
 		$Elements/VictoryLabel.visible = true
+		$Elements/Dog.animation = \"hap\"
+		$Elements/Guy.animation = \"hap\"
 	else:
 		$Elements/GameOverLabel.visible = true
+		if type== Enums.GAME_OVER_TYPE.HUMAN_DIED:
+			$Elements/Dog.animation = \"sad\"
+			$Elements/Guy.animation = \"dead\"
+		else:
+			$Elements/Dog.animation = \"dead\"
+			$Elements/Guy.animation = \"sad\"
 	$Elements.visible = true
 	
 	# Play animation
@@ -67,18 +83,63 @@ font_data = ExtResource( 2 )
 size = 40
 font_data = ExtResource( 2 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ ExtResource( 11 ) ],
+"loop": true,
+"name": "pause",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "dead",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 12 ) ],
+"loop": true,
+"name": "hap",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 8 ) ],
+"loop": true,
+"name": "sad",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=5]
 size = 30
 font_data = ExtResource( 3 )
 
-[sub_resource type="AudioStreamRandomPitch" id=5]
+[sub_resource type="AudioStreamRandomPitch" id=6]
 audio_stream = ExtResource( 1 )
 
-[sub_resource type="AudioStreamRandomPitch" id=6]
+[sub_resource type="AudioStreamRandomPitch" id=7]
 audio_stream = ExtResource( 4 )
 
-[sub_resource type="Animation" id=7]
-resource_name = "game over"
+[sub_resource type="SpriteFrames" id=8]
+animations = [ {
+"frames": [ ExtResource( 14 ) ],
+"loop": true,
+"name": "pause",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 10 ) ],
+"loop": true,
+"name": "dead",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 13 ) ],
+"loop": true,
+"name": "hap",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 9 ) ],
+"loop": true,
+"name": "sad",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=9]
 length = 0.5
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Elements/Shadow1:rect_position:x")
@@ -184,6 +245,46 @@ tracks/9/keys = {
 "update": 1,
 "values": [ false, true ]
 }
+tracks/10/type = "bezier"
+tracks/10/path = NodePath("Elements/Dog:position:x")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"points": PoolRealArray( -900, -0.25, 0, 0.25, 0, 800.442, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5 )
+}
+tracks/11/type = "bezier"
+tracks/11/path = NodePath("Elements/Dog:position:y")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"points": PoolRealArray( 399.45, -0.25, 0, 0.25, 0, 399.45, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5 )
+}
+tracks/12/type = "bezier"
+tracks/12/path = NodePath("Elements/Guy:position:x")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"points": PoolRealArray( -794.695, -0.25, 0, 0.25, 0, 250.695, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5 )
+}
+tracks/13/type = "bezier"
+tracks/13/path = NodePath("Elements/Guy:position:y")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"points": PoolRealArray( 428.883, -0.25, 0, 0.25, 0, 428.883, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.5 )
+}
 
 [node name="GameOverMenu" type="CanvasLayer"]
 pause_mode = 2
@@ -199,7 +300,7 @@ __meta__ = {
 [node name="Shadow1" type="ColorRect" parent="Elements"]
 margin_left = 54.0
 margin_top = 98.0
-margin_right = 1042.0
+margin_right = 1041.99
 margin_bottom = 192.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
@@ -278,6 +379,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Dog" type="AnimatedSprite" parent="Elements"]
+position = Vector2( 800.442, 399.45 )
+frames = SubResource( 4 )
+animation = "hap"
+
 [node name="RestartButton" type="Button" parent="Elements"]
 anchor_left = 0.5
 anchor_top = 0.5
@@ -287,7 +393,7 @@ margin_left = -75.0
 margin_top = -42.0
 margin_right = 75.0
 margin_bottom = -6.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
 text = "Restart"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -302,14 +408,19 @@ margin_left = -75.0
 margin_top = 39.0
 margin_right = 75.0
 margin_bottom = 75.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 5 )
 text = "Quit"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Elements"]
-stream = SubResource( 5 )
+stream = SubResource( 6 )
 
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Elements"]
-stream = SubResource( 6 )
+stream = SubResource( 7 )
+
+[node name="Guy" type="AnimatedSprite" parent="Elements"]
+position = Vector2( 250.695, 428.883 )
+frames = SubResource( 8 )
+animation = "sad"
 
 [node name="VictoryAudioPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )
@@ -319,7 +430,7 @@ volume_db = -15.0
 stream = ExtResource( 6 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-"anims/game over" = SubResource( 7 )
+"anims/game over" = SubResource( 9 )
 [connection signal="mouse_entered" from="Elements/RestartButton" to="." method="_on_button_mouse_entered"]
 [connection signal="pressed" from="Elements/RestartButton" to="." method="_on_RestartButton_pressed"]
 [connection signal="mouse_entered" from="Elements/QuitButton" to="." method="_on_button_mouse_entered"]
