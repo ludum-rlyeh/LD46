@@ -31,23 +31,33 @@ func _ready():
 	for x in range(width) :
 		for y in range(height) :
 			var tile = $Input.get_cell(x,y)
-			
 			if tile != TileMap.INVALID_CELL: # just in case
+				
+				var x_flip = $Input.is_cell_x_flipped(x,y)
+				var y_flip = $Input.is_cell_y_flipped(x,y)
+				var transposed = $Input.is_cell_transposed(x,y)
+				var cell = [tile, x_flip, y_flip, transposed]
+				
 				# Update weights
-				if not tile in weights :
-					weights[tile] = 0
-				weights[tile] += 1
+				if not cell in weights :
+					weights[cell] = 0
+				weights[cell] += 1
 				
 				# Update compatibilities
 				for dir in DIRS:
 					var pos = Vector2(x,y) + dir
+					
 					# Check if possible pos
 					if pos.x >= 0 and pos.x < width and pos.y >= 0 and pos.y < height:
 						var pos_tile = $Input.get_cell(pos.x,pos.y)
 						if pos_tile != TileMap.INVALID_CELL: # just in case
-							var compatibility = [tile,pos_tile,dir]
+							var pos_x_flip = $Input.is_cell_x_flipped(pos.x,pos.y)
+							var pos_y_flip = $Input.is_cell_y_flipped(pos.x,pos.y)
+							var pos_transposed = $Input.is_cell_transposed(pos.x,pos.y)
+							var pos_cell = [pos_tile, pos_x_flip, pos_y_flip, pos_transposed]
+							var compatibility = [cell,pos_cell,dir]
 							if not compatibility in compatibilities:
-								compatibilities.append([tile,pos_tile,dir])
+								compatibilities.append(compatibility)
 	
 	# Init output matrix
 	possible_tiles = weights.keys()
@@ -57,6 +67,7 @@ func _ready():
 		for y in range(output_size.y):
 			output_matrix[x].append([])
 			output_matrix[x][y] = possible_tiles.duplicate()
+	
 
 func _process(delta):
 	update_output()
@@ -124,6 +135,7 @@ func propagate(var pos):
 		# Check each directions
 		for dir in DIRS :
 			var o_pos = c_pos + dir
+			
 			# If pos is valid
 			if o_pos.x >= 0 and o_pos.x < output_size.x and o_pos.y >= 0 and o_pos.y < output_size.y:
 				# Check possibilities at o_pos
@@ -172,23 +184,24 @@ func is_fully_collapsed():
 func update_output():
 	for x in range(output_size.x):
 		for y in range(output_size.y):
-			var tile = -1
+			var cell = [-1,false,false,false]
 			if output_matrix[x][y].size() == 1:
-				tile = output_matrix[x][y][0]
-			$Output.set_cell(x,y,tile)
+				cell = output_matrix[x][y][0]
+			$Output.set_cell(x,y,cell[0],cell[1],cell[2],cell[3])
 "
 
 [node name="TestWaveCollapse" type="Node2D"]
 script = SubResource( 1 )
 
 [node name="Input" type="TileMap" parent="."]
+visible = false
+position = Vector2( -1, 0 )
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 128, 128 )
 format = 1
-tile_data = PoolIntArray( 0, 103, 0, 1, 103, 0, 2, 103, 0, 3, 103, 0, 65536, 103, 0, 65537, 103, 0, 65538, 103, 0, 65539, 103, 0, 131072, 103, 0, 131073, 103, 0, 131074, 103, 0, 131075, 103, 0, 196608, 103, 0, 196609, 110, 0, 196610, 110, 0, 196611, 103, 0, 262144, 110, 0, 262145, 105, 0, 262146, 105, 0, 262147, 110, 0, 327680, 105, 0, 327681, 105, 0, 327682, 105, 0, 327683, 105, 0, 393216, 105, 0, 393217, 105, 0, 393218, 105, 0, 393219, 105, 0 )
+tile_data = PoolIntArray( 0, 30, 0, 1, 30, 0, 2, 30, 0, 3, 30, 0, 65536, 30, 0, 65537, 30, 0, 65538, 30, 0, 65539, 30, 0, 131072, 30, 0, 131073, 30, 0, 131074, 30, 0, 131075, 30, 0, 196608, 30, 0, 196609, 1610612766, 0, 196610, 1610612766, 0, 196611, 30, 0, 262144, 1610612766, 0, 262145, -1610612706, 0, 262146, -1610612706, 0, 262147, 1610612766, 0, 327680, -1610612706, 0, 327681, -1610612706, 0, 327682, -1610612706, 0, 327683, -1610612706, 0, 393216, -1610612706, 0, 393217, -1610612706, 0, 393218, -1610612706, 0, 393219, -1610612706, 0 )
 
 [node name="Output" type="TileMap" parent="."]
-visible = false
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 128, 128 )
 format = 1
