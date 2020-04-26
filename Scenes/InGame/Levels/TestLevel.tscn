@@ -652,10 +652,10 @@ script/source = "extends Node2D
 
 
 func _ready():
-	Events.connect(\"moved_signal\", self, \"_on_character_moved\")
+	Events.connect(\"camera_moved_signal\", self, \"_on_character_moved\")
 
-func _on_character_moved(pos : Vector2, displacement : Vector2):
-	self.position = -pos + Vector2(512,300)
+func _on_character_moved(charac_position : Vector2):
+	self.position = -charac_position# + Vector2(512,300)
 "
 
 [sub_resource type="GDScript" id=55]
