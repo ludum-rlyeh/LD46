@@ -14,13 +14,17 @@ const DIRS = [UP, DOWN, LEFT, RIGHT]
 var compatibilities = []
 var weights = {}
 
-const output_size = Vector2(10,10)
+const output_size = Vector2(32,19)
 var possible_tiles
 var output_matrix = []
 
+var rng = RandomNumberGenerator.new()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	randomize()
+	# Set seed
+	#rng.randomize() # generate a time-based seed
+	rng.seed = 42
 	
 	# Get Input info
 	var rect = $Input.get_used_rect()
@@ -93,7 +97,7 @@ func get_min_entropy_pos():
 				# Get entropy
 				var entropy = shannon_entropy(x,y)
 				# Add some noise?
-				entropy = entropy - (randf() / 1000)
+				entropy = entropy - (rng.randf() / 1000)
 				if entropy < min_entropy:
 					min_entropy = entropy
 					min_entropy_pos = Vector2(x,y)
@@ -111,7 +115,7 @@ func collapse(var pos):
 		sum_weights += weights[tile]
 	
 	# Choose a tile
-	var rand = randf() * sum_weights
+	var rand = rng.randf() * sum_weights
 	var chosen = null
 	for tile in possibilities:
 		rand -= weights[tile]
@@ -138,25 +142,30 @@ func propagate(var pos):
 			
 			# If pos is valid
 			if o_pos.x >= 0 and o_pos.x < output_size.x and o_pos.y >= 0 and o_pos.y < output_size.y:
-				# Check possibilities at o_pos
+				
+				# Check possibilities at o_pos (if many)
 				var o_possibilities = output_matrix[o_pos.x][o_pos.y].duplicate()
-				for o_tile in o_possibilities:
-					# check if o_tile compatible with any tile at c_pos
-					var o_tile_possible = false
-					for c_tile in c_possibilities:
-						if [c_tile, o_tile, dir] in compatibilities:
-							o_tile_possible = true
-							break
-					
-					# If no compatibility found
-					if not o_tile_possible:
-						# We collapse possibilities of o_pos
-						output_matrix[o_pos.x][o_pos.y].erase(o_tile)
+				if o_possibilities.size() > 1:
+					for o_tile in o_possibilities:
+						# check if o_tile compatible with any tile at c_pos
+						var o_tile_possible = false
+						for c_tile in c_possibilities:
+							if [c_tile, o_tile, dir] in compatibilities:
+								o_tile_possible = true
+								break
 						
-						# And we add o_pos to the stack for propagation
-						if o_pos in stack:
-							stack.erase(o_pos)
-						stack.append(o_pos)
+						# If no compatibility found
+						if not o_tile_possible:
+							# We collapse possibilities of o_pos
+							if output_matrix[o_pos.x][o_pos.y].size() > 1:
+								output_matrix[o_pos.x][o_pos.y].erase(o_tile)
+								
+								# And we add o_pos to the stack for propagation
+								if o_pos in stack:
+									stack.erase(o_pos)
+								stack.append(o_pos)
+							else :
+								print_debug(\"ERROR: tried to remove last possibility of pos \" + String(o_pos) + \", please rethink your Input\")
 
 # Compute shannon entropy
 func shannon_entropy(var x, var y):
@@ -191,17 +200,18 @@ func update_output():
 "
 
 [node name="TestWaveCollapse" type="Node2D"]
+scale = Vector2( 0.25, 0.25 )
 script = SubResource( 1 )
 
 [node name="Input" type="TileMap" parent="."]
-visible = false
 position = Vector2( -1, 0 )
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 128, 128 )
 format = 1
-tile_data = PoolIntArray( 0, 30, 0, 1, 30, 0, 2, 30, 0, 3, 30, 0, 65536, 30, 0, 65537, 30, 0, 65538, 30, 0, 65539, 30, 0, 131072, 30, 0, 131073, 30, 0, 131074, 30, 0, 131075, 30, 0, 196608, 30, 0, 196609, 1610612766, 0, 196610, 1610612766, 0, 196611, 30, 0, 262144, 1610612766, 0, 262145, -1610612706, 0, 262146, -1610612706, 0, 262147, 1610612766, 0, 327680, -1610612706, 0, 327681, -1610612706, 0, 327682, -1610612706, 0, 327683, -1610612706, 0, 393216, -1610612706, 0, 393217, -1610612706, 0, 393218, -1610612706, 0, 393219, -1610612706, 0 )
+tile_data = PoolIntArray( 0, 106, 0, 1, 106, 0, 2, 106, 0, 3, 103, 0, 4, 105, 0, 5, 103, 0, 6, 106, 0, 7, 105, 0, 8, 103, 0, 9, 106, 0, 10, 103, 0, 11, 103, 0, 12, 105, 0, 13, 103, 0, 14, 106, 0, 65536, 103, 0, 65537, 129, 0, 65538, 27, 0, 65539, 27, 0, 65540, 28, 0, 65541, 27, 0, 65542, 27, 0, 65543, 27, 0, 65544, 27, 0, 65545, 27, 0, 65546, 28, 0, 65547, 27, 0, 65548, 27, 0, 65549, 129, 0, 65550, 103, 0, 131072, 105, 0, 131073, 29, 0, 131074, 126, 0, 131075, -1610612625, 0, 131076, -1610612625, 0, 131077, -1610612625, 0, 131078, -1610612625, 0, 131079, -1610612625, 0, 131080, -1610612625, 0, 131081, -1610612625, 0, 131082, -1610612625, 0, 131083, -1610612625, 0, 131084, -1610612610, 0, 131085, 536870941, 0, 131086, 105, 0, 196608, 103, 0, 196609, 29, 0, 196610, 111, 0, 196611, -1073741708, 0, 196612, -1073741713, 0, 196613, -1073741713, 0, 196614, -1073741713, 0, 196615, 116, 0, 196616, -1073741708, 0, 196617, -1073741713, 0, 196618, -1073741713, 0, 196619, 116, 0, 196620, 1610612847, 0, 196621, 536870941, 0, 196622, 106, 0, 262144, 105, 0, 262145, 29, 0, 262146, 111, 0, 262147, 1610612847, 0, 262148, 1610612767, 0, 262149, -1073741795, 0, 262150, -1073741793, 0, 262151, 111, 0, 262152, 536871023, 0, 262153, 1610612767, 0, 262154, -1073741793, 0, 262155, 111, 0, 262156, 1610612847, 0, 262157, 536870941, 0, 262158, 103, 0, 327680, 103, 0, 327681, 29, 0, 327682, 111, 0, 327683, 1610612847, 0, 327684, 1610612765, 0, 327685, 103, 0, 327686, 29, 0, 327687, 111, 0, 327688, 536871023, 0, 327689, 536870941, 0, 327690, 29, 0, 327691, 111, 0, 327692, 1610612847, 0, 327693, 536870941, 0, 327694, 105, 0, 393216, 106, 0, 393217, 29, 0, 393218, 111, 0, 393219, 1610612847, 0, 393220, 1610612765, 0, 393221, 106, 0, 393222, 29, 0, 393223, 111, 0, 393224, 536871023, 0, 393225, 536870941, 0, 393226, 29, 0, 393227, 111, 0, 393228, 1610612847, 0, 393229, 536870941, 0, 393230, 103, 0, 458752, 103, 0, 458753, 29, 0, 458754, 111, 0, 458755, 1610612847, 0, 458756, 1610612765, 0, 458757, 129, 0, 458758, 29, 0, 458759, 111, 0, 458760, 536871023, 0, 458761, 536870941, 0, 458762, 29, 0, 458763, 111, 0, 458764, 1610612847, 0, 458765, 536870941, 0, 458766, 105, 0, 524288, 105, 0, 524289, 29, 0, 524290, 111, 0, 524291, 1610612847, 0, 524292, 536870942, 0, 524293, 28, 0, 524294, 30, 0, 524295, 111, 0, 524296, 536871023, 0, 524297, 536870942, 0, 524298, 30, 0, 524299, 111, 0, 524300, 1610612847, 0, 524301, 536870941, 0, 524302, 106, 0, 589824, 103, 0, 589825, 29, 0, 589826, 111, 0, 589827, 1610612852, 0, 589828, -1610612625, 0, 589829, -1610612625, 0, 589830, -1610612625, 0, 589831, -1610612620, 0, 589832, 1610612852, 0, 589833, -1610612625, 0, 589834, -1610612625, 0, 589835, -1610612620, 0, 589836, 1610612847, 0, 589837, 536870941, 0, 589838, 103, 0, 655360, 106, 0, 655361, 29, 0, 655362, -1073741698, 0, 655363, -1073741713, 0, 655364, -1073741713, 0, 655365, -1073741713, 0, 655366, -1073741713, 0, 655367, -1073741713, 0, 655368, -1073741713, 0, 655369, -1073741713, 0, 655370, -1073741713, 0, 655371, -1073741713, 0, 655372, 1610612862, 0, 655373, 536870941, 0, 655374, 105, 0, 720896, 106, 0, 720897, 129, 0, 720898, -1073741795, 0, 720899, -1073741795, 0, 720900, -1073741795, 0, 720901, -1073741795, 0, 720902, -1073741795, 0, 720903, -1073741795, 0, 720904, -1073741795, 0, 720905, -1073741795, 0, 720906, -1073741795, 0, 720907, -1073741795, 0, 720908, -1073741795, 0, 720909, 129, 0, 720910, 106, 0, 786432, 103, 0, 786433, 106, 0, 786434, 105, 0, 786435, 103, 0, 786436, 103, 0, 786437, 105, 0, 786438, 103, 0, 786439, 106, 0, 786440, 105, 0, 786441, 106, 0, 786442, 103, 0, 786443, 105, 0, 786444, 103, 0, 786445, 103, 0, 786446, 106, 0 )
 
 [node name="Output" type="TileMap" parent="."]
+visible = false
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 128, 128 )
 format = 1
