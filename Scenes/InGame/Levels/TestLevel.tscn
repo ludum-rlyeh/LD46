@@ -35,60 +35,44 @@ onready var _misc = $CameraPart/Misc
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	_init_map()
+	
+func _init_map():
 	_init_opened_seekers()
 	_init_street_lights()
 	_init_viewports()
 	
 func _init_viewports():
 	var cameraViewport = Viewport.new()
+	cameraViewport.name = \"CameraViewport\"	
+	cameraViewport.hdr = false
+	cameraViewport.disable_3d = true
+	cameraViewport.usage = cameraViewport.USAGE_2D_NO_SAMPLING
+	cameraViewport.render_target_update_mode = cameraViewport.UPDATE_ALWAYS
+	cameraViewport.audio_listener_enable_2d = true 
+	
+	var foregroundViewport = cameraViewport.duplicate()
+	foregroundViewport.name = \"ForegroundViewport\"
+	foregroundViewport.transparent_bg = true
+	
+	var foregroundPart = $ForegroundPart
 	var cameraPart = $CameraPart
-	cameraViewport.name = \"CameraViewport\"
-#	var children = $CameraViewport.get_children()
-#	for i in range(0, children.size()):
-#		var j = children.size() - i - 1
-#		var child = children[j]
-#		$CameraViewport.remove_child(child)
-#		cameraViewport.add_child(child)
-#		cameraViewport.move_child(child, 0)
-#	remove_child($CameraViewport)
+	
 	remove_child(cameraPart)
 	cameraViewport.add_child(cameraPart)
 	add_child(cameraViewport)
 	
-	var foregroundViewport = Viewport.new()
-	var foregroundPart = $ForegroundPart
-	foregroundViewport.name = \"ForegroundViewport\"
-#	children = $RoofViewport.get_children()
-#	for i in range(0, children.size()):
-#		var j = children.size() - i - 1
-#		var child = children[j]
-#		$RoofViewport.remove_child(child)
-#		roofViewport.add_child(child)
-#		roofViewport.move_child(child, 0)
-#	remove_child($RoofViewport)
-#	add_child(roofViewport)
-	
 	remove_child(foregroundPart)
 	foregroundViewport.add_child(foregroundPart)
 	add_child(foregroundViewport)
-	
-	cameraViewport.hdr = false
-	foregroundViewport.hdr = false
-	cameraViewport.disable_3d = true
-	foregroundViewport.disable_3d = true
-	cameraViewport.usage = cameraViewport.USAGE_2D_NO_SAMPLING
-	foregroundViewport.usage = foregroundViewport.USAGE_2D_NO_SAMPLING
-	cameraViewport.render_target_update_mode = cameraViewport.UPDATE_ALWAYS
-	foregroundViewport.render_target_update_mode = foregroundViewport.UPDATE_ALWAYS
-	foregroundViewport.transparent_bg = true
-	
+
 	$FinalRendering.material.call_deferred(\"set_shader_param\", \"ForegroundViewport\", foregroundViewport.get_texture())
 	$FinalRendering.material.call_deferred(\"set_shader_param\", \"CameraViewport\", cameraViewport.get_texture())
 	
 	get_viewport().connect(\"size_changed\", self, \"_on_size_changed\")
 	get_viewport().emit_signal(\"size_changed\")
 	
-func _on_size_changed():
+func _on_size_changed() -> void:
 	var viewport = get_viewport()
 	if viewport:
 		var size = viewport.get_visible_rect().size
@@ -102,7 +86,7 @@ func _init_opened_seekers() -> void:
 		seeker.position = _misc.cell_size * tile + Vector2(0.23,0.58) * _misc.cell_size
 		_misc.add_child(seeker)
 
-func _init_street_lights():
+func _init_street_lights() -> void:
 	var street_lights = _misc.get_used_cells_by_id(9)
 	for tile in street_lights:
 		var street_light = StreetLight.instance()
