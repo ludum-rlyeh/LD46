@@ -1,10 +1,12 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Assets/Fonts/ka1.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/Fonts/ARCADE.TTF" type="DynamicFontData" id=2]
 [ext_resource path="res://Assets/Sounds/menu_select.wav" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Sounds/Click.wav" type="AudioStream" id=4]
 [ext_resource path="res://Assets/Sounds/Funkafè_-_Funk_e_Tony.ogg" type="AudioStream" id=5]
+[ext_resource path="res://Assets/Sprites/Sheets/Animations/GuyMenu/Pause/guypause.tres" type="Texture" id=6]
+[ext_resource path="res://Assets/Sprites/Sheets/Animations/DogMenu/Pause/pause.tres" type="Texture" id=7]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends CanvasLayer
@@ -81,6 +83,22 @@ font_data = ExtResource( 2 )
 [sub_resource type="DynamicFont" id=5]
 size = 30
 font_data = ExtResource( 2 )
+
+[sub_resource type="SpriteFrames" id=10]
+animations = [ {
+"frames": [ ExtResource( 7 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="SpriteFrames" id=11]
+animations = [ {
+"frames": [ ExtResource( 6 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
 
 [sub_resource type="AudioStreamRandomPitch" id=6]
 audio_stream = ExtResource( 3 )
@@ -186,6 +204,46 @@ tracks/8/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ false, true ]
+}
+tracks/9/type = "bezier"
+tracks/9/path = NodePath("Elements/Dog:position:x")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"points": PoolRealArray( -878.79, -0.25, 0, 0.25, 0, 800.442, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6 )
+}
+tracks/10/type = "bezier"
+tracks/10/path = NodePath("Elements/Dog:position:y")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"points": PoolRealArray(  ),
+"times": PoolRealArray(  )
+}
+tracks/11/type = "bezier"
+tracks/11/path = NodePath("Elements/Guy:position:x")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"points": PoolRealArray( -882.995, -0.25, 0, 0.25, 0, 250, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.6 )
+}
+tracks/12/type = "bezier"
+tracks/12/path = NodePath("Elements/Guy:position:y")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"points": PoolRealArray(  ),
+"times": PoolRealArray(  )
 }
 
 [sub_resource type="Animation" id=9]
@@ -306,9 +364,9 @@ __meta__ = {
 }
 
 [node name="Shadow1" type="ColorRect" parent="Elements"]
-margin_left = 1043.0
+margin_left = 54.0
 margin_top = 103.0
-margin_right = 2031.0
+margin_right = 1042.0
 margin_bottom = 197.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
@@ -330,9 +388,9 @@ __meta__ = {
 }
 
 [node name="Shadow2" type="ColorRect" parent="Elements"]
-margin_left = -1019.0
+margin_left = -62.0
 margin_top = 495.0
-margin_right = -31.0
+margin_right = 926.0
 margin_bottom = 589.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
@@ -356,9 +414,9 @@ __meta__ = {
 [node name="Label" type="Label" parent="Elements"]
 anchor_right = 0.5
 anchor_bottom = 0.233
-margin_left = 1393.77
+margin_left = 404.767
 margin_top = 111.0
-margin_right = 1613.77
+margin_right = 624.767
 margin_bottom = 168.0
 custom_fonts/font = SubResource( 2 )
 text = "Pause"
@@ -369,7 +427,6 @@ __meta__ = {
 }
 
 [node name="ResumeButton" type="Button" parent="Elements"]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -385,7 +442,6 @@ __meta__ = {
 }
 
 [node name="RestartButton" type="Button" parent="Elements"]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -401,7 +457,6 @@ __meta__ = {
 }
 
 [node name="QuitButton" type="Button" parent="Elements"]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -416,6 +471,14 @@ clip_text = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Dog" type="AnimatedSprite" parent="Elements"]
+position = Vector2( 800.442, 403.655 )
+frames = SubResource( 10 )
+
+[node name="Guy" type="AnimatedSprite" parent="Elements"]
+position = Vector2( 250, 441.497 )
+frames = SubResource( 11 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Elements"]
 stream = SubResource( 6 )

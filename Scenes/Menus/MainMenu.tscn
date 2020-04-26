@@ -50,7 +50,7 @@ func _on_GotItButton_pressed():
 	$ControlElements.visible = false
 "
 
-[sub_resource type="SpriteFrames" id=12]
+[sub_resource type="SpriteFrames" id=2]
 animations = [ {
 "frames": [ ExtResource( 16 ) ],
 "loop": true,
@@ -200,14 +200,14 @@ default_color = Color( 1, 0, 0, 1 )
 position = Vector2( 536.097, 537.217 )
 frames = ExtResource( 3 )
 animation = "right"
-frame = 3
+frame = 1
 playing = true
 
 [node name="BlindGuySprite" type="AnimatedSprite" parent="BackgroundAnimation"]
 position = Vector2( 453.961, 499.207 )
 frames = ExtResource( 4 )
 animation = "right"
-frame = 1
+frame = 7
 playing = true
 
 [node name="Tree1" type="AnimatedSprite" parent="BackgroundAnimation"]
@@ -215,7 +215,7 @@ visible = false
 modulate = Color( 1, 1, 1, 0.890196 )
 position = Vector2( 1344.74, 499.902 )
 scale = Vector2( 1.08413, 1.08549 )
-frames = SubResource( 12 )
+frames = SubResource( 2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="BackgroundAnimation"]
 method_call_mode = 1
