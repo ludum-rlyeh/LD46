@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=2]
+[gd_scene load_steps=60 format=2]
 
 [ext_resource path="res://Assets/Sprites/Sheets/Car_b.png" type="Texture" id=1]
 [ext_resource path="res://Scripts/StateMachine.gd" type="Script" id=2]
@@ -17,9 +17,9 @@ script/source = "extends PathFollow2D
 export (bool) var Debug = false
 export (float) var init_speed = 40;
 export (Enums.DRIVER_MOOD) var driver_mood
+const CRITICAL_DEAD_SPEED = 10
 
 var speed : float
-var crashed = false
 
 func set_speed(value):
 	speed = value
@@ -34,10 +34,9 @@ func change_path(path : Path2D) -> void:
 	offset = 0
 
 func _on_Collision_body_shape_entered(body_id, body, body_shape, area_shape):
-	if Debug : print(\"Crushed by a car : \", body)
-	if not crashed :
+	if speed > CRITICAL_DEAD_SPEED:
+		if Debug : print(\"Crushed by a car : \", body)
 		Events.emit_signal(\"stop_signal\", body_id)
-		self.crashed = true
 		body.visible = false
 		$AnimationPlayer.play(\"crash_\"+$AnimatedSprite.animation+\"_\"+body.get_name())
 		yield($AnimationPlayer,\"animation_finished\")
@@ -334,6 +333,9 @@ func _on_CollisionArea_area_entered(area : Area2D) -> void:
 [sub_resource type="RectangleShape2D" id=43]
 extents = Vector2( 6.3989, 2.36384 )
 
+[sub_resource type="RectangleShape2D" id=49]
+extents = Vector2( 15.9143, 36.0754 )
+
 [sub_resource type="RectangleShape2D" id=44]
 extents = Vector2( 15.9143, 36.9403 )
 
@@ -593,6 +595,16 @@ collision_mask = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Trigger"]
 shape = SubResource( 43 )
 
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 0
+collision_mask = 12
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2( 4.16087, 0.429287 )
+rotation = 1.5708
+shape = SubResource( 49 )
+one_way_collision_margin = 4.9
+
 [node name="Collision" type="Area2D" parent="."]
 monitorable = false
 collision_layer = 0
@@ -649,6 +661,6 @@ scale = Vector2( 1, 0.6 )
 texture = ExtResource( 6 )
 texture_scale = 0.1
 color = Color( 0.866667, 0.12549, 0.12549, 1 )
-[connection signal="area_entered" from="Trigger" to="StateMachine/FollowPath" method="_on_CollisionArea_area_entered"]
 [connection signal="area_entered" from="Trigger" to="StateMachine/BreakZone" method="_on_CollisionArea_area_entered"]
+[connection signal="area_entered" from="Trigger" to="StateMachine/FollowPath" method="_on_CollisionArea_area_entered"]
 [connection signal="body_shape_entered" from="Collision" to="." method="_on_Collision_body_shape_entered"]
