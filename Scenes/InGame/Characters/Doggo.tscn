@@ -201,35 +201,35 @@ region = Rect2( 0, 384, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=21]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 512, 128, 128 )
+region = Rect2( 512, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=22]
 atlas = ExtResource( 1 )
-region = Rect2( 128, 512, 128, 128 )
+region = Rect2( 0, 128, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=23]
 atlas = ExtResource( 1 )
-region = Rect2( 256, 512, 128, 128 )
+region = Rect2( 128, 128, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=24]
 atlas = ExtResource( 1 )
-region = Rect2( 384, 512, 128, 128 )
+region = Rect2( 256, 128, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=25]
 atlas = ExtResource( 1 )
-region = Rect2( 512, 0, 128, 128 )
+region = Rect2( 0, 512, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=26]
 atlas = ExtResource( 1 )
-region = Rect2( 0, 128, 128, 128 )
+region = Rect2( 128, 512, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=27]
 atlas = ExtResource( 1 )
-region = Rect2( 128, 128, 128, 128 )
+region = Rect2( 256, 512, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=28]
 atlas = ExtResource( 1 )
-region = Rect2( 256, 128, 128, 128 )
+region = Rect2( 384, 512, 128, 128 )
 
 [sub_resource type="SpriteFrames" id=29]
 animations = [ {
@@ -255,12 +255,12 @@ animations = [ {
 }, {
 "frames": [ SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ) ],
 "loop": true,
-"name": "wait_up",
+"name": "down",
 "speed": 5.0
 }, {
 "frames": [ SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ) ],
 "loop": true,
-"name": "down",
+"name": "wait_up",
 "speed": 5.0
 } ]
 
@@ -287,7 +287,7 @@ script/source = "extends Camera2D
 
 export (float) var offset_zoom = 0.01
 
-func _get_zoom_input() -> void:
+func get_zoom_input() -> void:
 	if Input.is_action_pressed(\"ui_zoom_in\"):
 		zoom -= Vector2(offset_zoom, offset_zoom)
 	elif Input.is_action_pressed(\"ui_zoom_out\"):
@@ -310,14 +310,14 @@ position = Vector2( 21.0153, 19.1292 )
 rotation = 2.01411
 frames = SubResource( 29 )
 animation = "wait_up"
-frame = 3
+frame = 2
 playing = true
 script = SubResource( 30 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 29 )
 animation = "wait_up"
-frame = 3
+frame = 2
 playing = true
 script = SubResource( 30 )
 
