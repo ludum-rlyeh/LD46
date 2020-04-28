@@ -46,7 +46,7 @@ func _init_map():
 	
 func _init_viewports():
 	var cameraViewport = Viewport.new()
-	cameraViewport.name = \"CameraViewport\"	
+	cameraViewport.name = \"CameraViewport\"
 	cameraViewport.hdr = false
 	cameraViewport.disable_3d = true
 	cameraViewport.usage = cameraViewport.USAGE_2D_NO_SAMPLING
