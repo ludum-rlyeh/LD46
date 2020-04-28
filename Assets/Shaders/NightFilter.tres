@@ -1,0 +1,87 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+uniform vec3 blueNightColor;
+
+
+void vertex() {
+// Output:0
+
+}
+
+float when_eq(float  x, float  y) {
+  return 1.0 - abs(sign(x - y));
+}
+
+vec3 when_lt(vec3 x, vec3 y) {
+  return max(sign(y - x), 0.0);
+}
+
+vec3 when_gt(vec3 x, vec3 y) {
+  return max(sign(x - y), 0.0);
+}
+
+void fragment() {
+
+// TextureUniform:3
+	vec3 n_out3p0;
+	float n_out3p1;
+	{
+		vec4 n_tex_read = texture(TEXTURE, UV);
+		n_out3p0 = n_tex_read.rgb;
+		n_out3p1 = n_tex_read.a;
+	}
+
+
+	vec3 colors[] = {
+	vec3(0.94902,0.117647,0.705882),
+	vec3(0.94902,0.580392,0.54901),
+	vec3(0.64705,0.32941,0.29803),
+	vec3(0.3137,0.39607,0.63137),
+	vec3(0.6196,0.717,0.9529),
+	vec3(0.14902,0.470588,1.113726),
+	vec3(0.941176,0.172549,0.141176),
+	vec3(0.627451,0.129412,0.65098),
+	vec3(0.658824,0.129412,0.129412),
+	vec3(0.164706,0.92549,0.117647),
+	vec3(0.117647,0.643137,0.670588),
+	vec3(0.666667,0.670588,0.090196),
+	vec3(0.658824,0.4,0.117647),
+	vec3(0.12549,0.65098,0.321569),
+	vec3(0.596078,0.415686,0.560784),
+	vec3(0.219608,0.188235,0.411765),
+	// house
+	vec3(1.0, 0.53, 0),
+	vec3(0.96, 0.63, 0.26),
+	vec3(0.94, 0.56, 0.14),
+	// street light
+	vec3(0.968627, 0.72549, 0),
+	vec3(0.976471, 0.870588, 0.560784)};
+	
+	vec3 color = vec3(0.0);
+	float a = 0.0;
+	for(int i = 0; i < 12; i++)
+	{
+		vec3 offset = colors[i] - n_out3p0;
+		vec3 result = when_lt(offset, vec3(0.01)) * when_gt(offset, vec3(-0.01));
+		float r = when_eq(result.x, result.y) *  when_eq(result.z, result.y) * when_eq(result.z, 1.0);
+		a += r;
+		color += r * colors[i];
+	}
+	
+	// Output:0
+	COLOR.rgb = color + (1.0-a) * blueNightColor * n_out3p0;
+	COLOR.a = n_out3p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+
+[resource]
+shader = SubResource( 1 )
+shader_param/blueNightColor = Vector3( 0.424, 0.4, 0.65 )

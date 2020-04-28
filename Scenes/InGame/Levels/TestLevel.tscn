@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=2]
+[gd_scene load_steps=75 format=2]
 
 [ext_resource path="res://Assets/Sprites/TileMap/FG.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/Cross.tscn" type="PackedScene" id=2]
@@ -26,6 +26,7 @@
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Tree/Tree256/tree256.tres" type="Texture" id=24]
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Streetlight128/Streetligth128.tres" type="Texture" id=25]
 [ext_resource path="res://Scenes/InGame/Elements/Cars/RedLight.tscn" type="PackedScene" id=26]
+[ext_resource path="res://Assets/Shaders/NightFilter.tres" type="Material" id=27]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Node2D
@@ -632,6 +633,7 @@ script = SubResource( 1 )
 [node name="CameraPart" type="Node2D" parent="."]
 
 [node name="BG" type="TileMap" parent="CameraPart"]
+material = ExtResource( 27 )
 tile_set = ExtResource( 16 )
 cell_size = Vector2( 128, 128 )
 cell_custom_transform = Transform2D( 64, 64, 128, 128, 0, 0 )
@@ -1047,13 +1049,15 @@ rotation = 3.14159
 position = Vector2( 2176, -456 )
 
 [node name="Starting" type="Position2D" parent="CameraPart"]
-position = Vector2( 8, 1504 )
+position = Vector2( 424, 2752 )
 script = SubResource( 45 )
 
 [node name="ForegroundPart" type="Node2D" parent="."]
 script = SubResource( 46 )
 
 [node name="FG" type="TileMap" parent="ForegroundPart"]
+material = ExtResource( 27 )
+z_index = 1
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 128, 128 )
 cell_custom_transform = Transform2D( 0, 0, 0, 0, 0, 0 )
