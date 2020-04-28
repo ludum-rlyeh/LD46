@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Assets/Animations/Doggo.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://Assets/Sounds/dog_barking.wav" type="AudioStream" id=2]
 [ext_resource path="res://Assets/Sounds/mud02.wav" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Animations/Doggo_shadow.tres" type="SpriteFrames" id=4]
+[ext_resource path="res://Assets/Animations/Doggo.anim" type="Animation" id=5]
+[ext_resource path="res://Scripts/AnimationPlayer.gd" type="Script" id=6]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends KinematicBody2D
@@ -11,6 +13,8 @@ script/source = "extends KinematicBody2D
 export (float) var speed = 200.0
 
 var attract = Vector2.ZERO
+
+var _last_orientation = \"right\"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,7 +24,6 @@ func _ready():
 	Events.connect(\"stop_signal\",self,\"on_stop_signal\")
 	
 	add_to_group(\"doggo\")
-	
 	
 func _on_set_begin_position(pos : Vector2) -> void:
 	position = pos + Vector2(50.0,0.0)
@@ -36,8 +39,6 @@ func _physics_process(delta : float):
 	
 	_update_displacement(velocity, delta)
 	
-	_update_sounds(velocity)
-	
 	$Camera2D.get_zoom_input()
 	
 	Events.emit_signal(\"moved_signal\", self.position)
@@ -45,33 +46,29 @@ func _physics_process(delta : float):
 	
 func _update_animation_and_velocity() -> Vector2:
 	var velocity = Vector2.ZERO
-		
+	
 	if Input.is_action_pressed(\"ui_down\"):
-		$AnimatedSprite.animation = \"down\"
-		$Shadow.animation = \"down\"
-		$AnimatedSprite.flip_h = false
-		$Shadow.flip_h = false
+		_last_orientation = \"down\"
+		$AnimationPlayer.play_animation(\"Walk_down\")
 		velocity.y += 1.0
 	elif Input.is_action_pressed(\"ui_up\"):
-		$AnimatedSprite.animation = \"up\"
-		$Shadow.animation = \"up\"
-		$AnimatedSprite.flip_h = false
-		$Shadow.flip_h = false
-		velocity.y -= 1.0			
+		_last_orientation = \"up\"
+		$AnimationPlayer.play_animation(\"Walk_up\")
+		velocity.y -= 1.0
 	if Input.is_action_pressed(\"ui_right\"):
-		if not (Input.is_action_pressed(\"ui_down\") or Input.is_action_pressed(\"ui_up\")):
-			$AnimatedSprite.animation = \"right\"
-			$Shadow.animation = \"right\"
-			$AnimatedSprite.flip_h = false
-			$Shadow.flip_h = false
+		if velocity.y == 0:
+			_last_orientation = \"right\"
+			$AnimationPlayer.play_animation(\"Walk_right\")
 		velocity.x += 1.0
 	elif Input.is_action_pressed(\"ui_left\"):
-		if not (Input.is_action_pressed(\"ui_down\") or Input.is_action_pressed(\"ui_up\")):
-			$AnimatedSprite.animation = \"right\"
-			$Shadow.animation = \"right\"
-			$AnimatedSprite.flip_h = true
-			$Shadow.flip_h = true
+		if velocity.y == 0:
+			_last_orientation = \"left\"
+			$AnimationPlayer.play_animation(\"Walk_left\")
 		velocity.x -= 1.0
+	
+		
+	if velocity == Vector2.ZERO:
+		$AnimationPlayer.play_animation(\"Idle_\" + _last_orientation)
 
 	return velocity.normalized() * speed
 		
@@ -92,14 +89,6 @@ func _update_displacement(velocity : Vector2, delta : float) -> void:
 		else:
 			self.move_and_slide(velocity.slide(collision.normal))
 		
-func _update_sounds(velocity : Vector2):
-	if velocity != Vector2.ZERO:
-		if not $WalkAudioPlayer2D.playing:
-			$WalkAudioPlayer2D.play()
-	else:
-		if not $AnimatedSprite.animation.begins_with(\"wait_\"):
-			$AnimatedSprite.animation = \"wait_\" + $AnimatedSprite.animation
-			
 
 
 func set_attract(var attract) -> void:
@@ -115,10 +104,9 @@ func on_died_signal(var body_id, var type):
 		Events.emit_signal(\"game_over_signal\", Enums.GAME_OVER_TYPE.DOGGO_DIED)
 "
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 27.1442, 30.0128 )
+[sub_resource type="CapsuleShape2D" id=2]
 
-[sub_resource type="GDScript" id=30]
+[sub_resource type="GDScript" id=3]
 script/source = "extends AnimatedSprite
 
 
@@ -130,13 +118,13 @@ func _ready():
 
 "
 
-[sub_resource type="AudioStreamRandomPitch" id=31]
+[sub_resource type="AudioStreamRandomPitch" id=4]
 audio_stream = ExtResource( 2 )
 
-[sub_resource type="AudioStreamRandomPitch" id=32]
+[sub_resource type="AudioStreamRandomPitch" id=5]
 audio_stream = ExtResource( 3 )
 
-[sub_resource type="GDScript" id=33]
+[sub_resource type="GDScript" id=6]
 script/source = "extends Camera2D
 
 export (float) var offset_zoom = 0.01
@@ -148,35 +136,778 @@ func get_zoom_input() -> void:
 		zoom += Vector2(offset_zoom, offset_zoom)
 "
 
+[sub_resource type="Animation" id=7]
+resource_name = "Idle_down"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_down" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_down" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Shadow:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("CollisionShape2D:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -0.825432, 14.6412 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CollisionShape2D:rotation_degrees")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "Idle_left"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_right" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_right" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Shadow:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("CollisionShape2D:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 2.60879, 14.2119 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CollisionShape2D:rotation_degrees")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "Idle_right"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_right" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_right" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Shadow:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("CollisionShape2D:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -2.54254, 14.6412 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CollisionShape2D:rotation_degrees")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+
+[sub_resource type="Animation" id=10]
+resource_name = "Idle_up"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_up" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_up" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Shadow:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("CollisionShape2D:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 2.82341, 4.98249 ) ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "Walk_down"
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "down" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "down" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Shadow:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("WalkAudioPlayer2D:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CollisionShape2D:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -1.46935, 13.9973 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("CollisionShape2D:rotation_degrees")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=12]
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "right" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "right" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Shadow:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("WalkAudioPlayer2D:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CollisionShape2D:rotation_degrees")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("CollisionShape2D:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 3.25269, 13.7827 ) ]
+}
+
+[sub_resource type="Animation" id=13]
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "right" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "right" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Shadow:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("AnimatedSprite:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("WalkAudioPlayer2D:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CollisionShape2D:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -3.40111, 15.2851 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("CollisionShape2D:rotation_degrees")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+
 [node name="Doggo" type="KinematicBody2D"]
 collision_layer = 10
 collision_mask = 7
 script = SubResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 3.25269, 13.7827 )
+rotation = 1.5708
 shape = SubResource( 2 )
 
 [node name="Shadow" type="AnimatedSprite" parent="."]
 frames = ExtResource( 4 )
-animation = "wait_up"
+animation = "right"
 frame = 3
-playing = true
-script = SubResource( 30 )
+flip_h = true
+script = SubResource( 3 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -1.13759 )
 frames = ExtResource( 1 )
-animation = "wait_up"
-frame = 1
-playing = true
-script = SubResource( 30 )
+animation = "right"
+frame = 3
+flip_h = true
+script = SubResource( 3 )
 
 [node name="BarkAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource( 31 )
+stream = SubResource( 4 )
 
 [node name="WalkAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource( 32 )
+stream = SubResource( 5 )
 volume_db = 1.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-script = SubResource( 33 )
+script = SubResource( 6 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Idle_down = SubResource( 7 )
+anims/Idle_left = SubResource( 8 )
+anims/Idle_right = SubResource( 9 )
+anims/Idle_up = SubResource( 10 )
+anims/Walk_down = SubResource( 11 )
+anims/Walk_left = SubResource( 12 )
+anims/Walk_right = SubResource( 13 )
+anims/Walk_up = ExtResource( 5 )
+script = ExtResource( 6 )
