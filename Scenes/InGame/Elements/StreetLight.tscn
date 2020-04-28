@@ -22,12 +22,14 @@ position = Vector2( 0, 29.8449 )
 texture = ExtResource( 1 )
 
 [node name="Light2D" type="Light2D" parent="."]
-position = Vector2( 0, 77.8449 )
-scale = Vector2( 0.823833, 0.705375 )
+position = Vector2( 0.557465, 60.6221 )
+scale = Vector2( 1.15084, 0.629616 )
 texture = ExtResource( 2 )
 texture_scale = 1.5
-color = Color( 0.65098, 0.65098, 0.345098, 1 )
-energy = 4.16
+color = Color( 0.729412, 0.509804, 0.278431, 1 )
+energy = 4.62
 mode = 2
-shadow_color = Color( 0.184314, 0.172549, 0.172549, 1 )
-shadow_filter = 1
+shadow_enabled = true
+shadow_color = Color( 0.054902, 0.0431373, 0.054902, 0.00392157 )
+shadow_filter = 5
+shadow_filter_smooth = 6.1
