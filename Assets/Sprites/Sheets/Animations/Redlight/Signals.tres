@@ -1,8 +1,17 @@
-[gd_resource type="TileSet" load_steps=4 format=2]
+[gd_resource type="TileSet" load_steps=7 format=2]
 
 [ext_resource path="res://Assets/Sprites/Png/SLB.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Redlight/RedLight.tres" type="Texture" id=6]
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Redlight/RedLightSide.tres" type="Texture" id=7]
+
+[sub_resource type="OccluderPolygon2D" id=1]
+polygon = PoolVector2Array( 29, 97, 17, 97, 18, 87, 27, 90 )
+
+[sub_resource type="OccluderPolygon2D" id=2]
+polygon = PoolVector2Array( 27, 100, 14, 100, 14, 87, 29, 91 )
+
+[sub_resource type="OccluderPolygon2D" id=3]
+polygon = PoolVector2Array( 31, 106, 16, 108, 18, 96, 32, 94 )
 
 [resource]
 6/name = "RedLight.tres 6"
@@ -12,6 +21,7 @@
 6/region = Rect2( 40, 15, 45, 103 )
 6/tile_mode = 0
 6/occluder_offset = Vector2( 0, 0 )
+6/occluder = SubResource( 1 )
 6/navigation_offset = Vector2( 0, 0 )
 6/shape_offset = Vector2( 0, 0 )
 6/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
@@ -26,6 +36,7 @@
 7/region = Rect2( 43, 15, 46, 104 )
 7/tile_mode = 0
 7/occluder_offset = Vector2( 0, 0 )
+7/occluder = SubResource( 2 )
 7/navigation_offset = Vector2( 0, 0 )
 7/shape_offset = Vector2( 0, 0 )
 7/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
@@ -40,6 +51,7 @@
 8/region = Rect2( 40, 12, 50, 108 )
 8/tile_mode = 0
 8/occluder_offset = Vector2( 0, 0 )
+8/occluder = SubResource( 3 )
 8/navigation_offset = Vector2( 0, 0 )
 8/shape_offset = Vector2( 0, 0 )
 8/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
