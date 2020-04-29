@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Animations/Doggo_shadow.tres" type="SpriteFrames" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends AnimatedSprite
+
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	self.play(\"wait_down\")
+
+
+"
+
+[node name="Shadow" type="AnimatedSprite"]
+frames = ExtResource( 1 )
+animation = "right"
+frame = 3
+flip_h = true
+script = SubResource( 1 )

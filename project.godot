@@ -39,6 +39,7 @@ Tools="*res://Scripts/Tools.gd"
 [display]
 
 window/size/resizable=false
+window/stretch/mode="2d"
 
 [importer_defaults]
 
