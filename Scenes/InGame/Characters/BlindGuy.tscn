@@ -1,11 +1,9 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Assets/Animations/BlindGuy.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://Assets/Sounds/wihelm.wav" type="AudioStream" id=2]
 [ext_resource path="res://Assets/Sounds/wood01.wav" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Sounds/take_damage02.wav" type="AudioStream" id=4]
-[ext_resource path="res://AnimationPlayerGuy.tscn" type="PackedScene" id=5]
-[ext_resource path="res://CollisionShape2DGuy.tscn" type="PackedScene" id=6]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends KinematicBody2D
@@ -15,8 +13,6 @@ const MAX_DOGGO_DIST = 100.0
 
 var follow = false
 var attract = Vector2.ZERO
-
-var _last_orientation = \"right\"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -64,7 +60,8 @@ func _physics_process(delta):
 						$HitAudioPlayer2D.play()
 					attract_doggo(Vector2(10.0,0.0),doggo)
 		else:
-			$AnimationPlayer.play_animation(\"Idle_\" + _last_orientation)
+			if not $AnimatedSprite.animation.begins_with(\"wait_\"):
+				$AnimatedSprite.animation = \"wait_\" + $AnimatedSprite.animation
 		
 		update()
 	
@@ -72,17 +69,34 @@ func _physics_process(delta):
 func set_animation(var velocity):
 	var angle = velocity.angle()
 	if  angle >= -PI/4.0 and angle < PI/4.0: # go right
-		_last_orientation = \"right\"
-		$AnimationPlayer.play_animation(\"Walk_right\")
+		if $AnimatedSprite.animation != \"right\": 
+			$AnimatedSprite.animation = \"right\"
+			$AnimatedSprite/LightOccluderBack.visible = false
+			$AnimatedSprite/LightOccluderFront.visible = false
+			$AnimatedSprite/LightOccluderRightSide.visible = true
+			$AnimatedSprite/LightOccluderLeftSide.visible = false
 	elif angle >= PI/4.0 and angle < 3.0*PI/4.0 : # go down
-		_last_orientation = \"down\"
-		$AnimationPlayer.play_animation(\"Walk_down\")
+		if $AnimatedSprite.animation != \"down\": 
+			$AnimatedSprite.animation = \"down\"
+			$AnimatedSprite/LightOccluderBack.visible = false
+			$AnimatedSprite/LightOccluderFront.visible = true
+			$AnimatedSprite/LightOccluderRightSide.visible = false
+			$AnimatedSprite/LightOccluderLeftSide.visible = false
 	elif (angle >= 3.0*PI/4.0 and angle < PI) or  (angle < -3.0*PI/4.0 and angle > -PI) : # go left
-		_last_orientation = \"left\"
-		$AnimationPlayer.play_animation(\"Walk_left\")
+		if $AnimatedSprite.animation != \"left\": 
+			$AnimatedSprite.animation = \"left\"
+			$AnimatedSprite/LightOccluderBack.visible = false
+			$AnimatedSprite/LightOccluderFront.visible = false
+			$AnimatedSprite/LightOccluderRightSide.visible = false
+			$AnimatedSprite/LightOccluderLeftSide.visible = true
+			
 	else : # go up
-		_last_orientation = \"up\"
-		$AnimationPlayer.play_animation(\"Walk_up\")
+		if $AnimatedSprite.animation != \"up\": 
+			$AnimatedSprite.animation = \"up\"
+			$AnimatedSprite/LightOccluderBack.visible = true
+			$AnimatedSprite/LightOccluderFront.visible = false
+			$AnimatedSprite/LightOccluderRightSide.visible = false
+			$AnimatedSprite/LightOccluderLeftSide.visible = false
 
 func set_attract(var attract):
 	self.attract = attract 
@@ -116,14 +130,116 @@ func _draw():
 		draw_line(Vector2.ZERO, doggo.position - self.position, Color(1.0, 0.0, 0.0))
 "
 
-[sub_resource type="AudioStreamRandomPitch" id=2]
+[sub_resource type="GDScript" id=2]
+script/source = "extends AnimatedSprite
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	self.play(\"wait_down\")
+	self.visible = true
+
+"
+
+[sub_resource type="OccluderPolygon2D" id=3]
+closed = false
+cull_mode = 1
+polygon = PoolVector2Array( -8.23193, -22.5855, -5.91228, -23.6843, -8.55647, -15.4847, -6.92256, -10.4929, -6.62424, -8.80242, -4.83432, -8.90186, -4.83432, -0.151115, -5.23208, 7.00859, -5.39423, 12.1849, 2.7749, 14.2931, -7.12144, 13.9694, -6.0276, 4.8209, -6.62424, -2.43824, -6.22649, -7.90746, -7.98775, -7.6687, -8.35401, -9.25582, -9.08653, -11.3313, -9.57487, -16.7031, -10.6737, -23.318 )
+
+[sub_resource type="OccluderPolygon2D" id=4]
+closed = false
+cull_mode = 1
+polygon = PoolVector2Array( -6.40063, -24.0283, -4.8135, -30.8652, -5.54602, -39.6554, -2.9822, -39.4112, -3.95889, -36.9695, -2.73802, -35.3824, -0.418381, -35.1382, -3.34846, -31.9639, -3.95889, -26.9584, -1.76133, -23.4179, -1.88342, -23.4179, -2.12759, -21.5866, -3.59263, -19.7553, -2.73802, -16.581, -3.47054, -12.1859, -1.63924, -9.98834, -2.24968, -7.54661, -2.24968, -3.39566, -1.76133, -1.32019, -0.17421, 4.17371, -0.296295, 7.34796, -0.906723, 10.1559, -0.662552, 12.4756, 1.41292, 15.2836, -0.296295, 18.4578, -0.296295, 20.045, 1.6571, 21.51, -3.22637, 21.3879, -2.12759, 19.8008, -2.00551, 18.2137, -2.12759, 15.2836, -1.88342, 12.3535, -2.37177, 10.278, -2.00551, 6.9817, -1.76133, 4.29579, -3.22637, -1.07602, -3.83681, -3.0294, -3.22637, -7.6687, -3.10429, -10.2325, -4.69141, -12.0638, -3.2339, -15.0696, -3.71472, -17.6798, -4.8135, -21.2203 )
+
+[sub_resource type="OccluderPolygon2D" id=5]
+closed = false
+cull_mode = 1
+polygon = PoolVector2Array( -11.0399, -28.6676, -11.0399, -11.4534, -12.9933, -25.8596, -13.2375, -29.6443, -12.0166, -30.9872, -10.7957, -31.3535, -9.57487, -31.5977, -9.08653, -29.7664, -7.13314, -26.7142, -6.03436, -27.2026, -1.64143, -27.5143, 1.88443, -27.1837, -2.30254, -22.5561, -3.184, -17.3774, -4.61638, -14.1821, -6.15645, -11.8196, -7.48114, -6.57949, -6.59968, -4.37583, -6.26913, -2.72308, -4.39601, 0.362049, -0.17421, 1.24363, -2.61594, 1.24363, -1.27299, 5.76083, -1.27299, 8.44674, -3.34846, 9.30135, -2.9822, 13.8186, -1.27299, 18.3358, -0.418381, 26.6376, -4.08098, 26.6376, -4.08098, 17.237, -5.54602, 13.3302, -6.52271, 9.05717, -4.56932, 7.10379, -2.9822, 6.005, -4.08098, 2.34241, -6.40063, 1.36572, -7.25523, -2.90732, -9.0237, -5.25729, -8.84235, -8.5233, -8.14224, -9.99517, -7.74358, -11.8196, -7.25523, -13.8951, -6.03436, -17.924, -5.17976, -23.0516, -9.94114, -28.0572 )
+
+[sub_resource type="OccluderPolygon2D" id=6]
+closed = false
+cull_mode = 1
+polygon = PoolVector2Array( 4.343, -34.6498, 7.15099, -33.6731, 8.92565, -33.9516, 9.98118, -34.9411, 11.1687, -34.2814, 8.37186, -29.7664, 10.6915, -27.4467, 13.4995, -24.3946, 11.5461, -7.6687, 11.3019, -24.8829, 9.71481, -26.2259, 8.49394, -22.197, 9.22646, -19.2669, 9.71481, -14.9939, 9.71481, -11.2092, 9.34855, -7.05826, 9.47063, -4.25027, 9.59272, -1.07602, 8.0056, -0.831844, 6.54056, -0.0993271, 6.78473, 1.85406, 8.49394, 3.3191, 8.49394, 6.37127, 7.63934, 8.813, 6.66264, 11.0106, 6.90681, 13.4523, 6.54056, 15.7719, 4.58717, 17.1149, 6.29639, 23.7076, 5.56387, 26.6376, 3.85465, 27.2481, 3.73257, 23.2192, 3.97674, 20.1671, 2.5117, 16.6265, 5.31969, 14.429, 5.68595, 9.91178, 6.1743, 6.37127, 6.1743, 3.07492, 4.343, -2.54106, 8.37186, -4.25027, 8.12769, -8.27913, 8.61603, -11.6976, 7.88351, -15.6043, 7.51725, -18.9007, 7.15099, -21.0982, 6.90681, -24.6387, 7.76142, -27.0805, 7.02891, -29.278 )
+
+[sub_resource type="OccluderPolygon2D" id=7]
+polygon = PoolVector2Array( 4.08809, 4.21846, 5.18993, 7.96469, 4.52882, 5.98139, 2.87608, 10.1684, 1.99461, 13.2535, 3.31681, 16.7793, 4.30846, 20.9663, 4.30846, 23.6107, 3.53718, 29.23, 1.55388, 29.1199, 3.09644, 22.5089, 1.55388, 16.1182, -1.31088, 12.2618, 0.341866, 9.28688, 3.53718, 6.53231, 2.43534, 6.86285, 0.892776, 8.07487, 1.4437, 6.64249 )
+
+[sub_resource type="OccluderPolygon2D" id=8]
+polygon = PoolVector2Array( -1.2007, 0.692596, 0.672417, 2.34534, 0.892776, 4.87956, -0.319237, 9.06652, -2.08217, 12.0415, -0.980331, 16.3386, 1.11314, 16.1182, 2.1048, 21.2969, 2.43534, 25.8144, -0.209053, 27.9078, -1.8618, 28.6791, -3.51455, 25.2634, -1.31088, 22.0681, -1.75162, 17.8812, -3.29418, 13.584, -3.8451, 9.72762, -1.09052, 6.64249, -1.75162, 2.78608, -3.184, 1.35369 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 23.9719, 30.2642 )
+
+[sub_resource type="AudioStreamRandomPitch" id=10]
 audio_stream = ExtResource( 3 )
 
-[sub_resource type="AudioStreamRandomPitch" id=3]
+[sub_resource type="AudioStreamRandomPitch" id=11]
 audio_stream = ExtResource( 4 )
 
-[sub_resource type="AudioStreamRandomPitch" id=4]
+[sub_resource type="AudioStreamRandomPitch" id=12]
 audio_stream = ExtResource( 2 )
+
+[sub_resource type="Animation" id=13]
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "fall" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("AnimatedSprite:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 4, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.4 )
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("AnimatedSprite:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("FallAudioPlayer2D")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ 0.0 ],
+"method": "play"
+} ]
+}
 
 [node name="BlindGuy" type="KinematicBody2D"]
 collision_layer = 6
@@ -132,19 +248,45 @@ script = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
-animation = "wait_down"
+animation = "wait_right"
+script = SubResource( 2 )
 
-[node name="CollisionShape2D" parent="." instance=ExtResource( 6 )]
+[node name="LightOccluderFront" type="LightOccluder2D" parent="AnimatedSprite"]
+occluder = SubResource( 3 )
+
+[node name="LightOccluderBack" type="LightOccluder2D" parent="AnimatedSprite"]
+visible = false
+occluder = SubResource( 4 )
+
+[node name="LightOccluderRightSideBackup" type="LightOccluder2D" parent="AnimatedSprite"]
+visible = false
+occluder = SubResource( 5 )
+
+[node name="LightOccluderLeftSideBackup" type="LightOccluder2D" parent="AnimatedSprite"]
+visible = false
+occluder = SubResource( 6 )
+
+[node name="LightOccluderLeftSide" type="LightOccluder2D" parent="AnimatedSprite"]
+occluder = SubResource( 7 )
+
+[node name="LightOccluderRightSide" type="LightOccluder2D" parent="AnimatedSprite"]
+occluder = SubResource( 8 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -4.31708, -6.6537 )
+shape = SubResource( 9 )
 
 [node name="StepAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource( 2 )
+stream = SubResource( 10 )
 volume_db = 1.0
 
 [node name="HitAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource( 3 )
+stream = SubResource( 11 )
 
 [node name="FallAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
-stream = SubResource( 4 )
+position = Vector2( 0.663422, 1.32684 )
+stream = SubResource( 12 )
 volume_db = -2.0
 
-[node name="AnimationPlayer" parent="." instance=ExtResource( 5 )]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/fall = SubResource( 13 )
