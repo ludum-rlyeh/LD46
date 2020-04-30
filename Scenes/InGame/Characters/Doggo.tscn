@@ -1,9 +1,11 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Assets/Animations/Doggo.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://Assets/Sounds/dog_barking.wav" type="AudioStream" id=2]
 [ext_resource path="res://Assets/Sounds/mud02.wav" type="AudioStream" id=3]
 [ext_resource path="res://Assets/Animations/Doggo_shadow.tres" type="SpriteFrames" id=4]
+[ext_resource path="res://Scripts/AnimationPlayer.gd" type="Script" id=5]
+[ext_resource path="res://Assets/Animations/Doggo.anim" type="Animation" id=6]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends KinematicBody2D
@@ -11,6 +13,8 @@ script/source = "extends KinematicBody2D
 export (float) var speed = 200.0
 
 var attract = Vector2.ZERO
+
+var _last_orientation = \"right\"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,7 +24,6 @@ func _ready():
 	Events.connect(\"stop_signal\",self,\"on_stop_signal\")
 	
 	add_to_group(\"doggo\")
-	
 	
 func _on_set_begin_position(pos : Vector2) -> void:
 	position = pos + Vector2(50.0,0.0)
@@ -36,8 +39,6 @@ func _physics_process(delta : float):
 	
 	_update_displacement(velocity, delta)
 	
-	_update_sounds(velocity)
-	
 	$Camera2D.get_zoom_input()
 	
 	Events.emit_signal(\"moved_signal\", self.position)
@@ -45,41 +46,29 @@ func _physics_process(delta : float):
 	
 func _update_animation_and_velocity() -> Vector2:
 	var velocity = Vector2.ZERO
-		
+	
 	if Input.is_action_pressed(\"ui_down\"):
-		$AnimatedSprite.animation = \"down\"
-		$AnimatedSprite/LightOccluderBack.visible = false
-		$AnimatedSprite/LightOccluderFront.visible = true
-		$AnimatedSprite/LightOccluderLeftSide.visible = false
-		$AnimatedSprite/LightOccluderRightSide.visible = false
-		if $AnimatedSprite.flip_h: $AnimatedSprite.flip_h = false
+		_last_orientation = \"down\"
+		$AnimationPlayer.play_animation(\"Walk_down\")
 		velocity.y += 1.0
 	elif Input.is_action_pressed(\"ui_up\"):
-		$AnimatedSprite.animation = \"up\"
-		$AnimatedSprite/LightOccluderBack.visible = true
-		$AnimatedSprite/LightOccluderFront.visible = false
-		$AnimatedSprite/LightOccluderRightSide.visible = false
-		$AnimatedSprite/LightOccluderLeftSide.visible = false
-		if $AnimatedSprite.flip_h: $AnimatedSprite.flip_h = false
-		velocity.y -= 1.0			
+		_last_orientation = \"up\"
+		$AnimationPlayer.play_animation(\"Walk_up\")
+		velocity.y -= 1.0
 	if Input.is_action_pressed(\"ui_right\"):
-		if not (Input.is_action_pressed(\"ui_down\") or Input.is_action_pressed(\"ui_up\")):
-			$AnimatedSprite.animation = \"right\"
-			$AnimatedSprite/LightOccluderBack.visible = false
-			$AnimatedSprite/LightOccluderFront.visible = false
-			$AnimatedSprite/LightOccluderRightSide.visible = true
-			$AnimatedSprite/LightOccluderLeftSide.visible = false
-			if $AnimatedSprite.flip_h: $AnimatedSprite.flip_h = false
+		if velocity.y == 0:
+			_last_orientation = \"right\"
+			$AnimationPlayer.play_animation(\"Walk_right\")
 		velocity.x += 1.0
 	elif Input.is_action_pressed(\"ui_left\"):
-		if not (Input.is_action_pressed(\"ui_down\") or Input.is_action_pressed(\"ui_up\")):
-			$AnimatedSprite.animation = \"right\"
-			$AnimatedSprite/LightOccluderBack.visible = false
-			$AnimatedSprite/LightOccluderFront.visible = false
-			$AnimatedSprite/LightOccluderRightSide.visible = false
-			$AnimatedSprite/LightOccluderLeftSide.visible = true
-			if not $AnimatedSprite.flip_h: $AnimatedSprite.flip_h = true
+		if velocity.y == 0:
+			_last_orientation = \"left\"
+			$AnimationPlayer.play_animation(\"Walk_left\")
 		velocity.x -= 1.0
+	
+		
+	if velocity == Vector2.ZERO:
+		$AnimationPlayer.play_animation(\"Idle_\" + _last_orientation)
 
 	return velocity.normalized() * speed
 		
@@ -100,14 +89,6 @@ func _update_displacement(velocity : Vector2, delta : float) -> void:
 		else:
 			self.move_and_slide(velocity.slide(collision.normal))
 		
-func _update_sounds(velocity : Vector2):
-	if velocity != Vector2.ZERO:
-		if not $WalkAudioPlayer2D.playing:
-			$WalkAudioPlayer2D.play()
-	else:
-		if not $AnimatedSprite.animation.begins_with(\"wait_\"):
-			$AnimatedSprite.animation = \"wait_\" + $AnimatedSprite.animation
-			
 
 
 func set_attract(var attract) -> void:
@@ -123,10 +104,7 @@ func on_died_signal(var body_id, var type):
 		Events.emit_signal(\"game_over_signal\", Enums.GAME_OVER_TYPE.DOGGO_DIED)
 "
 
-[sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 27.1442, 30.0128 )
-
-[sub_resource type="GDScript" id=5]
+[sub_resource type="GDScript" id=2]
 script/source = "extends AnimatedSprite
 
 
@@ -143,16 +121,16 @@ closed = false
 cull_mode = 1
 polygon = PoolVector2Array( -3.39989, 21.3354, 1.83243, 21.9314, 1.83243, 16.0181, -0.818359, 15.8142, -0.849251, 9.90475, 0.378838, 6.40942, 1.0168, 3.17199, -0.410553, 1.54074, -0.00273132, -2.33349, 2.64806, -3.76084, -1.02228, -7.43116, -1.43008, -11.1015, 1.22905, -12.0119, 2.83501, -15.2238, 0.851173, -13.9957, -0.187973, -14.0902, -0.754784, -12.5787, -1.605, -12.5787, -2.07734, -9.36677, -1.98287, -7.00507, -1.13265, -5.02123, -1.03819, -1.99825, -1.8884, 0.17452, -2.07734, 2.34729, -1.79393, 4.61453, -0.943718, 6.40942, -1.22713, 9.05453, -1.69946, 13.6835, -3.39989, 16.612 )
 
-[sub_resource type="OccluderPolygon2D" id=10]
+[sub_resource type="OccluderPolygon2D" id=4]
 closed = false
 cull_mode = 2
 polygon = PoolVector2Array( -1.02228, -14.5679, 2.85196, -9.06242, 3.66759, -5.7999, 1.62851, -3.96474, 2.64806, 2.96809, 4.68712, 7.04622, 5.91055, 11.7361, 4.68712, 15.2025, 3.05586, 18.2611, 4.07539, 29.8838, -0.614456, 29.8838, -0.614456, 17.8533, 2.44414, 14.5908, 4.2793, 8.88138, 0.201172, 4.19153, 1.0168, -9.47023, -3.06134, -13.7523 )
 
-[sub_resource type="OccluderPolygon2D" id=11]
+[sub_resource type="OccluderPolygon2D" id=5]
 closed = false
 polygon = PoolVector2Array( -17.0978, -6.53272, -16.1531, -7.66634, -14.5471, -8.04422, -12.9412, -8.13869, -12.091, -7.28847, -8.97352, -6.34379, -3.96671, -7.85528, 0.28437, -8.04422, 3.02395, -8.70549, 2.07926, -10.217, 3.96863, -11.1617, 5.19672, -12.4842, 7.84183, -9.55571, 11.1482, -7.194, 12.9723, -8.19725, 14.9269, -9.2723, 17.6665, -12.5787, 19.4614, -16.5464, 20.9729, -17.3021, 22.1065, -16.7353, 24.0904, -16.1685, 25.6019, -15.7906, 28.1525, -12.7676, 33.2538, -13.9957, 35.3321, -11.634, 33.5372, -10.4059, 28.3414, -11.2561, 24.4682, -14.7515, 19.367, -14.0902, 18.2333, -11.5395, 16.4384, -5.02123, 10.8648, -5.21017, 12.6597, -3.0374, 10.0444, -1.83872, 6.99162, 17.1788, 6.23586, -2.47059, 7.18055, -5.21017, 7.08608, -6.9106, -13.1301, -4.54889, -15.0195, -6.06038, -17.7591, -5.21017, -19.4595, -4.07655, -20.0263, 16.8009, -21.6323, -0.864632, -21.6323, -4.54889, -20.0263, -6.24932, -18.5148, -6.06038 )
 
-[sub_resource type="OccluderPolygon2D" id=12]
+[sub_resource type="OccluderPolygon2D" id=6]
 closed = false
 polygon = PoolVector2Array( -36.5021, -14.1601, -30.9966, -13.7523, -30.3848, -11.5093, -25.695, -11.7132, -18.5583, -10.4898, -19.17, -6.00381, -16.5192, -4.78037, -9.99417, -4.16866, -6.42288, -9.65018, -0.660316, -7.94975, 6.13417, -6.23311, 10.9593, -5.68251, 15.4942, -7.02335, 17.0997, -7.76081, 17.8555, -10.028, 20.2172, -7.76081, 22.1065, -5.21017, 21.4453, -0.0144176, 21.8231, 3.29197, 20.0282, 18.4069, 19.9338, 14.2503, 20.595, 4.80346, 19.9338, 2.72516, 19.5559, -1.43144, 17.4776, -4.35995, 13.321, -4.64336, 10.2035, -3.88762, 5.85799, -4.45442, 1.60693, -5.77698, -1.79393, -7.09953, -5.00585, -6.72166, -7.17862, -5.02123, -8.21777, -0.486757, -7.08416, 18.5958, -9.54033, -0.297821, -11.7131, -0.0144176, -13.9803, -1.2425, -16.1531, 0.835798, -16.1531, -3.0374, -19.2706, -3.60421, -20.4986, -7.00507, -22.6364, -10.8976, -24.6755, -9.67413, -31.8122, -9.67413 )
 
@@ -174,30 +152,934 @@ func get_zoom_input() -> void:
 		zoom += Vector2(offset_zoom, offset_zoom)
 "
 
+[sub_resource type="CapsuleShape2D" id=10]
+
+[sub_resource type="OccluderPolygon2D" id=11]
+polygon = PoolVector2Array( -0.884354, 30.2719, 7.2719, 27.4172, 6.86409, 4.78362, -0.47654, -0.517948, -8.22498, 4.1719, -8.22498, 26.1938 )
+
+[sub_resource type="Animation" id=12]
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_down" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_down" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Shadow:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("CollisionShape2D:rotation_degrees")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CollisionShape2D:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -0.825443, 13.5788 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("LightOccluder2D:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("LightOccluder2D:rotation_degrees")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=13]
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_right" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_right" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Shadow:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("LightOccluder2D:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 17.9438, 15.293 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CollisionShape2D:rotation_degrees")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("CollisionShape2D:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 1.62143, 14.3944 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("LightOccluder2D:rotation_degrees")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+
+[sub_resource type="Animation" id=14]
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_right" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_right" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Shadow:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("LightOccluder2D:rotation_degrees")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("LightOccluder2D:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 12.8461, 12.2344 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("CollisionShape2D:rotation_degrees")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("CollisionShape2D:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -3.27232, 13.5788 ) ]
+}
+
+[sub_resource type="Animation" id=15]
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_up" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "wait_up" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Shadow:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("LightOccluder2D:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 2.85469, -4.89375 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("LightOccluder2D:rotation_degrees")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("CollisionShape2D:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 3.25268, 7.46159 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("CollisionShape2D:rotation_degrees")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=16]
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "down" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "down" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Shadow:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("WalkAudioPlayer2D:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CollisionShape2D:rotation_degrees")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("CollisionShape2D:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -1.02935, 12.3553 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("LightOccluder2D:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -0.611717, 1.63125 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("LightOccluder2D:rotation_degrees")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
+
+[sub_resource type="Animation" id=17]
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "right" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "right" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("AnimatedSprite:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("Shadow:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("WalkAudioPlayer2D:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CollisionShape2D:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0.805806, 14.3944 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("CollisionShape2D:rotation_degrees")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("LightOccluder2D:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 18.3516, 14.0695 ) ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("LightOccluder2D:rotation_degrees")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+
+[sub_resource type="Animation" id=18]
+length = 0.4
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "right" ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Shadow:animation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ "right" ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:frame")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Shadow:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3 ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Shadow:flip_h")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("AnimatedSprite:flip_h")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("WalkAudioPlayer2D:playing")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("CollisionShape2D:rotation_degrees")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("CollisionShape2D:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -2.25279, 13.9866 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("LightOccluder2D:rotation_degrees")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 90.0 ]
+}
+tracks/10/type = "value"
+tracks/10/path = NodePath("LightOccluder2D:position")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 13.05, 14.2734 ) ]
+}
+
 [node name="Doggo" type="KinematicBody2D"]
 collision_layer = 10
 collision_mask = 7
 script = SubResource( 1 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource( 4 )
-
 [node name="Shadow" type="AnimatedSprite" parent="."]
 visible = false
 frames = ExtResource( 4 )
-animation = "wait_up"
-frame = 3
+animation = "right"
 playing = true
-script = SubResource( 5 )
+flip_h = true
+script = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 z_index = 2
 frames = ExtResource( 1 )
 animation = "right"
-frame = 1
 playing = true
 flip_h = true
-script = SubResource( 5 )
 
 [node name="LightOccluderBack" type="LightOccluder2D" parent="AnimatedSprite"]
 visible = false
@@ -207,23 +1089,24 @@ show_behind_parent = true
 occluder = SubResource( 3 )
 
 [node name="LightOccluderFront" type="LightOccluder2D" parent="AnimatedSprite"]
+visible = false
 modulate = Color( 1, 1, 1, 0 )
 self_modulate = Color( 1, 1, 1, 0 )
 show_behind_parent = true
-occluder = SubResource( 10 )
+occluder = SubResource( 4 )
 
 [node name="LightOccluderRightSide" type="LightOccluder2D" parent="AnimatedSprite"]
 visible = false
 modulate = Color( 1, 1, 1, 0 )
 self_modulate = Color( 1, 1, 1, 0 )
 show_behind_parent = true
-occluder = SubResource( 11 )
+occluder = SubResource( 5 )
 
 [node name="LightOccluderLeftSide" type="LightOccluder2D" parent="AnimatedSprite"]
 visible = false
 modulate = Color( 1, 1, 1, 0 )
 self_modulate = Color( 1, 1, 1, 0 )
-occluder = SubResource( 12 )
+occluder = SubResource( 6 )
 
 [node name="BarkAudioPlayer2D" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource( 7 )
@@ -235,3 +1118,24 @@ volume_db = 1.0
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 script = SubResource( 9 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0.805806, 14.3944 )
+rotation = 1.5708
+shape = SubResource( 10 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+position = Vector2( 18.3516, 14.0695 )
+rotation = 1.5708
+occluder = SubResource( 11 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Idle_down = SubResource( 12 )
+anims/Idle_left = SubResource( 13 )
+anims/Idle_right = SubResource( 14 )
+anims/Idle_up = SubResource( 15 )
+anims/Walk_down = SubResource( 16 )
+anims/Walk_left = SubResource( 17 )
+anims/Walk_right = SubResource( 18 )
+anims/Walk_up = ExtResource( 6 )
+script = ExtResource( 5 )

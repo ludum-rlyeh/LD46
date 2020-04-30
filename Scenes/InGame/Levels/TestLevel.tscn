@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=2]
+[gd_scene load_steps=79 format=2]
 
 [ext_resource path="res://Assets/Sprites/TileMap/FG.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/InGame/Elements/Cars/PathTemplate/Cross.tscn" type="PackedScene" id=2]
@@ -27,6 +27,7 @@
 [ext_resource path="res://Assets/Sprites/Sheets/Animations/Streetlight128/Streetligth128.tres" type="Texture" id=25]
 [ext_resource path="res://Scenes/InGame/Elements/Cars/RedLight.tscn" type="PackedScene" id=26]
 [ext_resource path="res://Assets/Shaders/NightFilter.tres" type="Material" id=27]
+[ext_resource path="res://Scenes/InGame/Elements/Leash.tscn" type="PackedScene" id=28]
 [ext_resource path="res://Assets/Sprites/Sheets/Town.png" type="Texture" id=29]
 
 [sub_resource type="GDScript" id=1]
@@ -34,7 +35,7 @@ script/source = "extends Node2D
 
 var Seeker = preload(\"res://Scenes/InGame/Elements/Sewer.tscn\")
 var StreetLight = preload(\"res://Scenes/InGame/Elements/StreetLight.tscn\")
-var Ad = preload(\"res://Scenes/InGame/Elements/Ad.tscn\")
+
 onready var _misc = $CameraPart/Misc
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -720,6 +721,10 @@ __meta__ = {
 
 [node name="Doggo" parent="CameraPart/Misc/YSort" instance=ExtResource( 14 )]
 
+[node name="Leash" parent="CameraPart/Misc/YSort" instance=ExtResource( 28 )]
+target0_path = NodePath("../BlindGuy/Center")
+target1_path = NodePath("../Doggo")
+
 [node name="RedLightCross" parent="CameraPart/Misc/YSort" instance=ExtResource( 5 )]
 position = Vector2( 440, 472 )
 
@@ -1138,5 +1143,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 transparency = 0.1
+
+[editable path="CameraPart/Misc/YSort/BlindGuy"]
 
 [editable path="CameraPart/Misc/YSort/RedLightCross"]

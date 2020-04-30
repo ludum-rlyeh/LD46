@@ -1,0 +1,74 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Node2D
+
+export (NodePath) var target0_path = null
+export (NodePath) var target1_path = null
+
+export (float) var max_distance = 100.0
+export (int) var resolution = 10
+export (Color) var color = Color.red
+export (float) var thickness = 2.0
+
+var _target0 : Node2D = null
+var _target1 : Node2D = null
+
+var _points : PoolVector2Array
+var _step : float
+
+func _ready():
+	if target0_path && target1_path:
+		_target0 = get_node(target0_path)
+		_target1 = get_node(target1_path)
+		
+		for i in range(resolution):
+			_points.push_back(Vector2.ZERO)
+		
+		_step = 1.0 / (resolution-1)
+				
+	else:
+		set_process(false)
+
+func _process(delta):
+	var position0 = _target0.global_position
+	var position1 = _target1.global_position
+	
+	var distance_vec = position1 - position0
+	var ortho_vec = Vector2(-distance_vec.y, distance_vec.x)
+	if ortho_vec.dot(Vector2.UP) > 0.5:
+		ortho_vec = -ortho_vec
+	
+	var next_step = 0
+	
+	if distance_vec.length() >= max_distance:
+		for i in range(_points.size()):
+			_points[i] = position0 + next_step * distance_vec
+			next_step += _step
+	else:
+		for i in range(_points.size()):
+			_points[i] = position0 + _function(next_step) * _amplitude_orientation_vec(distance_vec, ortho_vec) + next_step * distance_vec
+			next_step += _step
+		
+	update()
+				
+func _amplitude_orientation_vec(distance_vec : Vector2, ortho_vec : Vector2) -> Vector2:
+	# More the two characters avec aligned vertically, more the ortho vector has a weak amplitude
+	return _get_orientation(distance_vec) * _get_ratio_distance(distance_vec) * ortho_vec
+		
+func _get_orientation(distance_vec : Vector2) -> float:
+	return 1.0 - abs(distance_vec.normalized().dot(Vector2.DOWN))
+	
+func _get_ratio_distance(distance_vec : Vector2) -> float: 
+	return 1.0 - distance_vec.length() / max_distance
+	
+func _function(offset : float) -> float:
+	offset = (offset * 2 - 1) * PI * 0.5
+	return cos(offset)
+	
+func _draw():
+	draw_polyline(_points, color, thickness)
+"
+
+[node name="Leash" type="Node2D"]
+script = SubResource( 1 )

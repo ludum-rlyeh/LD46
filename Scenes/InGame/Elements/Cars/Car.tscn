@@ -112,83 +112,83 @@ atlas = ExtResource( 7 )
 region = Rect2( 256, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=19]
-atlas = ExtResource( 10 )
+atlas = ExtResource( 9 )
 region = Rect2( 0, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=20]
-atlas = ExtResource( 10 )
+atlas = ExtResource( 9 )
 region = Rect2( 128, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=21]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=22]
+atlas = ExtResource( 9 )
+region = Rect2( 128, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=23]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 256, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=24]
+atlas = ExtResource( 9 )
+region = Rect2( 128, 256, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=25]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=26]
+atlas = ExtResource( 8 )
+region = Rect2( 128, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=27]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=28]
+atlas = ExtResource( 8 )
+region = Rect2( 128, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=29]
+atlas = ExtResource( 8 )
+region = Rect2( 0, 256, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=30]
+atlas = ExtResource( 8 )
+region = Rect2( 128, 256, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=31]
+atlas = ExtResource( 10 )
+region = Rect2( 0, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=32]
+atlas = ExtResource( 10 )
+region = Rect2( 128, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=33]
 atlas = ExtResource( 10 )
 region = Rect2( 256, 0, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=22]
+[sub_resource type="AtlasTexture" id=34]
 atlas = ExtResource( 10 )
 region = Rect2( 0, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=23]
+[sub_resource type="AtlasTexture" id=35]
 atlas = ExtResource( 10 )
 region = Rect2( 128, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=24]
+[sub_resource type="AtlasTexture" id=36]
 atlas = ExtResource( 10 )
 region = Rect2( 256, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=25]
-atlas = ExtResource( 10 )
-region = Rect2( 0, 256, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=26]
-atlas = ExtResource( 10 )
-region = Rect2( 128, 256, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=27]
-atlas = ExtResource( 9 )
-region = Rect2( 0, 0, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=28]
-atlas = ExtResource( 9 )
-region = Rect2( 128, 0, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=29]
-atlas = ExtResource( 9 )
-region = Rect2( 0, 128, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=30]
-atlas = ExtResource( 9 )
-region = Rect2( 128, 128, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=31]
-atlas = ExtResource( 9 )
-region = Rect2( 0, 256, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=32]
-atlas = ExtResource( 9 )
-region = Rect2( 128, 256, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=33]
-atlas = ExtResource( 8 )
-region = Rect2( 0, 0, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=34]
-atlas = ExtResource( 8 )
-region = Rect2( 128, 0, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=35]
-atlas = ExtResource( 8 )
-region = Rect2( 0, 128, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=36]
-atlas = ExtResource( 8 )
-region = Rect2( 128, 128, 128, 128 )
-
 [sub_resource type="AtlasTexture" id=37]
-atlas = ExtResource( 8 )
+atlas = ExtResource( 10 )
 region = Rect2( 0, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=38]
-atlas = ExtResource( 8 )
+atlas = ExtResource( 10 )
 region = Rect2( 128, 256, 128, 128 )
 
 [sub_resource type="SpriteFrames" id=39]
@@ -208,19 +208,19 @@ animations = [ {
 "name": "crash_blue_guy",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ), SubResource( 25 ), SubResource( 26 ) ],
-"loop": true,
-"name": "crash_orange_guy",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ), SubResource( 31 ), SubResource( 32 ) ],
+"frames": [ SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ) ],
 "loop": true,
 "name": "crash_orange_doggo",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ) ],
+"frames": [ SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ) ],
 "loop": true,
 "name": "crash_blue_doggo",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ) ],
+"loop": true,
+"name": "crash_orange_guy",
 "speed": 5.0
 } ]
 
@@ -333,13 +333,13 @@ func _on_CollisionArea_area_entered(area : Area2D) -> void:
 [sub_resource type="RectangleShape2D" id=43]
 extents = Vector2( 6.3989, 2.36384 )
 
-[sub_resource type="RectangleShape2D" id=49]
+[sub_resource type="RectangleShape2D" id=44]
 extents = Vector2( 15.9143, 36.0754 )
 
-[sub_resource type="RectangleShape2D" id=44]
+[sub_resource type="RectangleShape2D" id=45]
 extents = Vector2( 15.9143, 36.9403 )
 
-[sub_resource type="Animation" id=45]
+[sub_resource type="Animation" id=46]
 length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimatedSprite:animation")
@@ -395,7 +395,7 @@ tracks/3/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=46]
+[sub_resource type="Animation" id=47]
 length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimatedSprite:animation")
@@ -451,8 +451,7 @@ tracks/3/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=47]
-resource_name = "crash_orange_BlindGuy"
+[sub_resource type="Animation" id=48]
 length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimatedSprite:animation")
@@ -508,7 +507,7 @@ tracks/3/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=48]
+[sub_resource type="Animation" id=49]
 length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimatedSprite:animation")
@@ -602,7 +601,7 @@ collision_mask = 12
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2( 4.16087, 0.429287 )
 rotation = 1.5708
-shape = SubResource( 49 )
+shape = SubResource( 44 )
 one_way_collision_margin = 4.9
 
 [node name="Collision" type="Area2D" parent="."]
@@ -613,7 +612,7 @@ collision_mask = 12
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision"]
 position = Vector2( 4.72208, 0.429279 )
 rotation = 1.5708
-shape = SubResource( 44 )
+shape = SubResource( 45 )
 one_way_collision = true
 one_way_collision_margin = 4.9
 
@@ -627,10 +626,10 @@ max_distance = 1000.0
 stream = ExtResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/crash_blue_BlindGuy = SubResource( 45 )
-anims/crash_blue_Doggo = SubResource( 46 )
-anims/crash_orange_BlindGuy = SubResource( 47 )
-anims/crash_orange_Doggo = SubResource( 48 )
+anims/crash_blue_BlindGuy = SubResource( 46 )
+anims/crash_blue_Doggo = SubResource( 47 )
+anims/crash_orange_BlindGuy = SubResource( 48 )
+anims/crash_orange_Doggo = SubResource( 49 )
 
 [node name="front_right" type="Light2D" parent="."]
 position = Vector2( 62.6748, -10.732 )
@@ -661,6 +660,6 @@ scale = Vector2( 1, 0.6 )
 texture = ExtResource( 6 )
 texture_scale = 0.1
 color = Color( 0.866667, 0.12549, 0.12549, 1 )
-[connection signal="area_entered" from="Trigger" to="StateMachine/BreakZone" method="_on_CollisionArea_area_entered"]
 [connection signal="area_entered" from="Trigger" to="StateMachine/FollowPath" method="_on_CollisionArea_area_entered"]
+[connection signal="area_entered" from="Trigger" to="StateMachine/BreakZone" method="_on_CollisionArea_area_entered"]
 [connection signal="body_shape_entered" from="Collision" to="." method="_on_Collision_body_shape_entered"]
