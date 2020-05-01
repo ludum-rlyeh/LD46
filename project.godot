@@ -84,7 +84,8 @@ ui_zoom_out={
 2d_physics/layer_3="blindguy"
 2d_physics/layer_4="doggo"
 2d_physics/layer_5="activables"
-2d_physics/layer_6="car"
+2d_physics/layer_6="traffic"
+2d_physics/layer_7="car"
 
 [rendering]
 
