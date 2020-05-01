@@ -95,7 +95,7 @@ func _init_street_lights() -> void:
 	for tile in street_lights:
 		var street_light = StreetLight.instance()
 #		street_light.position = _misc.cell_size * tile + Vector2(0.23,0.58) * _misc.cell_size
-		street_light.position = _misc.cell_size * tile + Vector2(1.35,1.35) * _misc.cell_size
+		street_light.position = _misc.cell_size * tile + Vector2(1.35,1.35) * _misc.cell_size + Vector2(0,50)
 		_misc.get_node(\"YSort\").add_child(street_light)
 		_misc.set_cellv(tile, -1)
 		

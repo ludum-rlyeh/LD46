@@ -1062,6 +1062,7 @@ tracks/10/keys = {
 }
 
 [node name="Doggo" type="KinematicBody2D"]
+position = Vector2( -0.858559, -14.5954 )
 collision_layer = 10
 collision_mask = 7
 script = SubResource( 1 )
@@ -1070,14 +1071,15 @@ script = SubResource( 1 )
 visible = false
 frames = ExtResource( 4 )
 animation = "right"
+frame = 3
 playing = true
 flip_h = true
 script = SubResource( 2 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-z_index = 2
 frames = ExtResource( 1 )
 animation = "right"
+frame = 3
 playing = true
 flip_h = true
 
