@@ -806,6 +806,12 @@ one_way_collision_margin = 4.7
 [node name="PathTrack" type="Path2D" parent="CameraPart/Tracks/TrackPath/Paths"]
 curve = SubResource( 19 )
 
+[node name="CarPathFollower" parent="CameraPart/Tracks/TrackPath/Paths/PathTrack" instance=ExtResource( 4 )]
+position = Vector2( -32, -92 )
+rotation = -1.57026
+init_speed = 200.0
+driver_mood = 2
+
 [node name="TrackPath2" type="Node2D" parent="CameraPart/Tracks"]
 position = Vector2( 287.208, 318.525 )
 rotation = 1.5708
@@ -830,7 +836,6 @@ one_way_collision_margin = 4.7
 curve = SubResource( 22 )
 
 [node name="CarPathFollower" parent="CameraPart/Tracks/TrackPath2/Paths/PathTrack" instance=ExtResource( 4 )]
-visible = false
 position = Vector2( -77.899, 63.1517 )
 rotation = 0.000571566
 offset = 1617.99
@@ -1082,6 +1087,7 @@ curve = SubResource( 43 )
 position = Vector2( -543.939, -539.971 )
 rotation = -1.57042
 offset = 1072.93
+init_speed = 120.0
 
 [node name="CarPathFollower" parent="CameraPart/Tracks/TrackPath11/Paths/PathTrack" instance=ExtResource( 4 )]
 position = Vector2( -544.009, -359.532 )
