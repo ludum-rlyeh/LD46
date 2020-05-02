@@ -200,14 +200,13 @@ default_color = Color( 1, 0, 0, 1 )
 position = Vector2( 536.097, 537.217 )
 frames = ExtResource( 3 )
 animation = "right"
-frame = 3
 playing = true
 
 [node name="BlindGuySprite" type="AnimatedSprite" parent="BackgroundAnimation"]
 position = Vector2( 453.961, 499.207 )
 frames = ExtResource( 4 )
 animation = "right"
-frame = 1
+frame = 6
 playing = true
 
 [node name="Tree1" type="AnimatedSprite" parent="BackgroundAnimation"]
