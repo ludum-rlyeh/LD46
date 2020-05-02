@@ -17,55 +17,81 @@ var attract = Vector2.ZERO
 
 var _last_orientation = \"right\"
 
+var rand_velocity = Vector2.ZERO
+var nb_step = 0
+const MAX_STEP = 100.0
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	self.add_to_group(\"human\")
+	randomize()
 	Events.connect(\"died_signal\",self,\"on_died_signal\")
 	Events.connect(\"set_begin_position_signal\", self, \"_on_set_begin_position\")
-	
+	Events.connect(\"stop_signal\",self,\"on_stop_signal\")
+
 func _on_set_begin_position(pos):
 	position = pos
-	
+
+
 func _physics_process(delta):
-	var doggos = get_tree().get_nodes_in_group(\"doggo\")
-	if doggos and doggos.size() > 0:
-		var doggo = doggos[0]
+	# Define random behavior
+	self.nb_step -= 1.0
+	if self.nb_step <= 0:
+		self.rand_velocity = Vector2(randf()*2.0-1.0,randf()*2.0-1.0).normalized()
+		self.nb_step = randf() * MAX_STEP
+	var velocity = rand_velocity * 2.5
 	
+	# If attracted
+	if self.attract != Vector2.ZERO :
+		velocity += self.attract
+	
+	# Get doggo if exists 
+	var doggos = get_tree().get_nodes_in_group(\"doggo\")
+	var doggo = null
+	var dist_doggo = null
+	if doggos and doggos.size() > 0:
+		doggo = doggos[0]
+	
+	# Follow doggo if necessary
+	if doggo:
+		dist_doggo = self.position.distance_to(doggo.position)
 		attract_doggo(Vector2(0.0,0.0),doggo)
-		if self.position.distance_to(doggo.position) >= MAX_DOGGO_DIST:
+		
+		if dist_doggo >= MAX_DOGGO_DIST:
 			follow = true
 		
-		var velocity = Vector2.ZERO
+		# Init with random vector
 		if follow :
-			var mid_pos = self.position.linear_interpolate(doggo.position, delta*FOLLOW_SPEED)
-			velocity = mid_pos - self.position
-		
-		if attract != Vector2.ZERO :
-			velocity += attract
-			attract_doggo(attract,doggo)
-		
-		if velocity != Vector2.ZERO:
-			var collision_info = self.move_and_collide(velocity)
-			set_animation(velocity)
-			
-			if not $StepAudioPlayer2D.playing :
-				$StepAudioPlayer2D.play()
-			
-			# If collide dogo
-			if collision_info :
-				
-				velocity = velocity.bounce(collision_info.normal)
-				self.move_and_slide(velocity)
-				if collision_info.collider_id == doggo.get_instance_id():
-					follow = false
-				else: # attract dog if locked on wall
-					if not $HitAudioPlayer2D.playing :
-						$HitAudioPlayer2D.play()
-					attract_doggo(Vector2(10.0,0.0),doggo)
-		else:
-			$AnimationPlayer.play_animation(\"Idle_\" + _last_orientation)
-		
-		update()
+			velocity += (doggo.position - self.position).normalized()*delta*dist_doggo*FOLLOW_SPEED
 	
+	# Move and stuff
+	if velocity != Vector2.ZERO:
+		
+		var collision_info = self.move_and_collide(velocity)
+		set_animation(velocity)
+		
+		if not $StepAudioPlayer2D.playing :
+			$StepAudioPlayer2D.play()
+		
+		# If collide doggo
+		if collision_info :
+			
+			velocity = velocity.bounce(collision_info.normal)
+			self.move_and_slide(velocity)
+			
+			if doggo and collision_info.collider_id == doggo.get_instance_id():
+				follow = false
+			else: # hit wall
+				if not $HitAudioPlayer2D.playing :
+					$HitAudioPlayer2D.play()
+		
+		# Attract doggo
+		if dist_doggo and dist_doggo > MAX_DOGGO_DIST:
+			attract_doggo(Vector2(10.0,0.0),doggo)
+		
+	else:
+		$AnimationPlayer.play_animation(\"Idle_\" + _last_orientation)
+		
 
 func set_animation(var velocity):
 	var angle = velocity.angle()
@@ -98,14 +124,19 @@ func attract_doggo(var attract, var doggo):
 		attract_bis = (self.position - doggo.position).normalized() * attract.length() * 20.0
 	doggo.set_attract(attract_bis)
 
+
 func on_died_signal(var body_id, var type):
 	if body_id == self.get_instance_id():
 		if type == Enums.DIE_TYPE.FELL_IN_SEEKER:
-			set_physics_process(false)
 			$AnimationPlayer.play(\"fall\")
 			yield($AnimationPlayer,\"animation_finished\")
 		
 		Events.emit_signal(\"game_over_signal\", Enums.GAME_OVER_TYPE.HUMAN_DIED)
+
+func on_stop_signal(var body_id) -> void:
+	self.set_physics_process(false)
+	if body_id != self.get_instance_id():
+		self.set_block_signals(true)
 "
 
 [sub_resource type="OccluderPolygon2D" id=2]
@@ -1135,14 +1166,14 @@ tracks/9/keys = {
 polygon = PoolVector2Array( -9.19195, 28.052, -5.87138, 31.3726, 9.92375, 31.2829, 10.6417, 29.129, 10.1032, 23.5648, 2.02619, 21.5904, -7.48679, 22.0391 )
 
 [node name="BlindGuy" type="KinematicBody2D"]
-position = Vector2( 0, -8.81466 )
+position = Vector2( 512, 300 )
 collision_layer = 6
 collision_mask = 27
 script = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
-animation = "fall"
+animation = "wait_down"
 
 [node name="LightOccluderFront" type="LightOccluder2D" parent="AnimatedSprite"]
 visible = false
@@ -1181,6 +1212,7 @@ stream = SubResource( 10 )
 volume_db = -2.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+playback_speed = 0.5
 anims/Idle_down = SubResource( 11 )
 anims/Idle_left = SubResource( 12 )
 anims/Idle_right = SubResource( 13 )
@@ -1193,12 +1225,11 @@ anims/fall = SubResource( 19 )
 script = ExtResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( -9.20759, 8.66818 )
+position = Vector2( 1.21709, 25.3326 )
 shape = SubResource( 20 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-position = Vector2( -9.66083, -17.462 )
 occluder = SubResource( 21 )
 
 [node name="Center" type="Position2D" parent="."]
-position = Vector2( -0.532386, -9.8077 )
+position = Vector2( -6.11888, 11.8881 )

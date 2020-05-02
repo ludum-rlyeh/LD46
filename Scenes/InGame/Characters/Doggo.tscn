@@ -95,13 +95,14 @@ func set_attract(var attract) -> void:
 	self.attract = attract
 	
 func on_stop_signal(var body_id) -> void:
-		set_physics_process(false)
-		set_block_signals(true)
-		
+	self.set_physics_process(false)
+	if body_id != self.get_instance_id():
+		self.set_block_signals(true)
+
 func on_died_signal(var body_id, var type):
 	if body_id == self.get_instance_id():
-		# TODO: Animation
 		Events.emit_signal(\"game_over_signal\", Enums.GAME_OVER_TYPE.DOGGO_DIED)
+
 "
 
 [sub_resource type="GDScript" id=2]
@@ -1071,7 +1072,6 @@ script = SubResource( 1 )
 visible = false
 frames = ExtResource( 4 )
 animation = "right"
-frame = 3
 playing = true
 flip_h = true
 script = SubResource( 2 )
@@ -1079,7 +1079,6 @@ script = SubResource( 2 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
 animation = "right"
-frame = 3
 playing = true
 flip_h = true
 

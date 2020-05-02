@@ -36,7 +36,7 @@ func change_path(path : Path2D) -> void:
 func _on_Collision_body_shape_entered(body_id, body, body_shape, area_shape):
 	if speed > CRITICAL_DEAD_SPEED:
 		if Debug : print(\"Crushed by a car : \", body)
-		Events.emit_signal(\"stop_signal\", body_id)
+		Events.emit_signal(\"stop_signal\",body_id) # stop process of doggo and human
 		body.visible = false
 		$AnimationPlayer.play(\"crash_\"+$AnimatedSprite.animation+\"_\"+body.get_name())
 		yield($AnimationPlayer,\"animation_finished\")
@@ -112,83 +112,83 @@ atlas = ExtResource( 7 )
 region = Rect2( 256, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=19]
-atlas = ExtResource( 9 )
+atlas = ExtResource( 8 )
 region = Rect2( 0, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=20]
-atlas = ExtResource( 9 )
+atlas = ExtResource( 8 )
 region = Rect2( 128, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=21]
-atlas = ExtResource( 9 )
+atlas = ExtResource( 8 )
 region = Rect2( 0, 128, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=22]
-atlas = ExtResource( 9 )
+atlas = ExtResource( 8 )
 region = Rect2( 128, 128, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=23]
-atlas = ExtResource( 9 )
+atlas = ExtResource( 8 )
 region = Rect2( 0, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=24]
-atlas = ExtResource( 9 )
+atlas = ExtResource( 8 )
 region = Rect2( 128, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=25]
-atlas = ExtResource( 8 )
+atlas = ExtResource( 10 )
 region = Rect2( 0, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=26]
-atlas = ExtResource( 8 )
+atlas = ExtResource( 10 )
 region = Rect2( 128, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=27]
-atlas = ExtResource( 8 )
-region = Rect2( 0, 128, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=28]
-atlas = ExtResource( 8 )
-region = Rect2( 128, 128, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=29]
-atlas = ExtResource( 8 )
-region = Rect2( 0, 256, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=30]
-atlas = ExtResource( 8 )
-region = Rect2( 128, 256, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=31]
-atlas = ExtResource( 10 )
-region = Rect2( 0, 0, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=32]
-atlas = ExtResource( 10 )
-region = Rect2( 128, 0, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=33]
 atlas = ExtResource( 10 )
 region = Rect2( 256, 0, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=34]
+[sub_resource type="AtlasTexture" id=28]
 atlas = ExtResource( 10 )
 region = Rect2( 0, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=35]
+[sub_resource type="AtlasTexture" id=29]
 atlas = ExtResource( 10 )
 region = Rect2( 128, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=36]
+[sub_resource type="AtlasTexture" id=30]
 atlas = ExtResource( 10 )
 region = Rect2( 256, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=37]
+[sub_resource type="AtlasTexture" id=31]
 atlas = ExtResource( 10 )
 region = Rect2( 0, 256, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=38]
+[sub_resource type="AtlasTexture" id=32]
 atlas = ExtResource( 10 )
+region = Rect2( 128, 256, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=33]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=34]
+atlas = ExtResource( 9 )
+region = Rect2( 128, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=35]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=36]
+atlas = ExtResource( 9 )
+region = Rect2( 128, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=37]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 256, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=38]
+atlas = ExtResource( 9 )
 region = Rect2( 128, 256, 128, 128 )
 
 [sub_resource type="SpriteFrames" id=39]
@@ -210,17 +210,17 @@ animations = [ {
 }, {
 "frames": [ SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ) ],
 "loop": true,
-"name": "crash_orange_doggo",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ) ],
-"loop": true,
 "name": "crash_blue_doggo",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ) ],
+"frames": [ SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ), SubResource( 31 ), SubResource( 32 ) ],
 "loop": true,
 "name": "crash_orange_guy",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ) ],
+"loop": true,
+"name": "crash_orange_doggo",
 "speed": 5.0
 } ]
 
