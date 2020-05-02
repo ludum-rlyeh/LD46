@@ -2,7 +2,7 @@ extends Node
 
 class_name StateMachine
 
-const DEBUG = false
+const DEBUG = true
 
 var state: Object
 
@@ -22,7 +22,7 @@ func change_to(new_state, params : Array):
 
 func _enter_state(var params : Array):
 	if DEBUG:
-		print("Entering state: ", state.name)
+		print("Entering state: ", self, state.name)
 	# Give the new state a reference to this state machine script
 	state.fsm = self
 	state.set_block_signals(false)

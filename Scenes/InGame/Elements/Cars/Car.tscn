@@ -15,6 +15,7 @@
 script/source = "extends PathFollow2D
 
 signal car_following_signal
+signal car_not_following_signal
 
 export (float) var init_speed = 40;
 export (Enums.DRIVER_MOOD) var driver_mood
@@ -28,10 +29,15 @@ func set_speed(value):
 func _ready():
 	speed = init_speed
 	Events.connect(\"car_following_signal\", self, \"_on_car_following\")
+	Events.connect(\"car_not_following_signal\", self, \"_on_car_not_following\")
 	
 func _on_car_following(car : Node2D, followed_car : Node2D) -> void:
 	if car == self:
 		emit_signal(\"car_following_signal\", followed_car)
+		
+func _on_car_not_following(car : Node2D, followed_car : Node2D) -> void:
+	if car == self:
+		emit_signal(\"car_not_following_signal\", followed_car)
 		
 func change_path(path : Path2D) -> void:
 	get_parent().call_deferred(\"remove_child\", self)
@@ -47,9 +53,11 @@ func _on_Collision_body_shape_entered(body_id, body, body_shape, area_shape):
 	yield($AnimationPlayer,\"animation_finished\")
 	Events.emit_signal(\"died_signal\", body_id, Enums.DIE_TYPE.CRUSHED_BY_CAR)
 
-
 func _on_FollowedArea_area_entered(area):
 	Events.emit_signal(\"car_following_signal\", area.get_parent(), self)
+
+func _on_FollowedArea_area_exited(area):
+	Events.emit_signal(\"car_not_following_signal\", area.get_parent(), self)
 "
 
 [sub_resource type="AtlasTexture" id=2]
@@ -121,83 +129,83 @@ atlas = ExtResource( 7 )
 region = Rect2( 256, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=19]
-atlas = ExtResource( 9 )
+atlas = ExtResource( 8 )
 region = Rect2( 0, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=20]
-atlas = ExtResource( 9 )
+atlas = ExtResource( 8 )
 region = Rect2( 128, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=21]
-atlas = ExtResource( 9 )
+atlas = ExtResource( 8 )
 region = Rect2( 0, 128, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=22]
-atlas = ExtResource( 9 )
+atlas = ExtResource( 8 )
 region = Rect2( 128, 128, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=23]
-atlas = ExtResource( 9 )
+atlas = ExtResource( 8 )
 region = Rect2( 0, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=24]
-atlas = ExtResource( 9 )
+atlas = ExtResource( 8 )
 region = Rect2( 128, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=25]
-atlas = ExtResource( 10 )
+atlas = ExtResource( 9 )
 region = Rect2( 0, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=26]
-atlas = ExtResource( 10 )
+atlas = ExtResource( 9 )
 region = Rect2( 128, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=27]
-atlas = ExtResource( 10 )
-region = Rect2( 256, 0, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=28]
-atlas = ExtResource( 10 )
+atlas = ExtResource( 9 )
 region = Rect2( 0, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=29]
-atlas = ExtResource( 10 )
+[sub_resource type="AtlasTexture" id=28]
+atlas = ExtResource( 9 )
 region = Rect2( 128, 128, 128, 128 )
 
+[sub_resource type="AtlasTexture" id=29]
+atlas = ExtResource( 9 )
+region = Rect2( 0, 256, 128, 128 )
+
 [sub_resource type="AtlasTexture" id=30]
-atlas = ExtResource( 10 )
-region = Rect2( 256, 128, 128, 128 )
+atlas = ExtResource( 9 )
+region = Rect2( 128, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=31]
 atlas = ExtResource( 10 )
-region = Rect2( 0, 256, 128, 128 )
+region = Rect2( 0, 0, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=32]
 atlas = ExtResource( 10 )
-region = Rect2( 128, 256, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=33]
-atlas = ExtResource( 8 )
-region = Rect2( 0, 0, 128, 128 )
-
-[sub_resource type="AtlasTexture" id=34]
-atlas = ExtResource( 8 )
 region = Rect2( 128, 0, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=35]
-atlas = ExtResource( 8 )
+[sub_resource type="AtlasTexture" id=33]
+atlas = ExtResource( 10 )
+region = Rect2( 256, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=34]
+atlas = ExtResource( 10 )
 region = Rect2( 0, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=36]
-atlas = ExtResource( 8 )
+[sub_resource type="AtlasTexture" id=35]
+atlas = ExtResource( 10 )
 region = Rect2( 128, 128, 128, 128 )
 
+[sub_resource type="AtlasTexture" id=36]
+atlas = ExtResource( 10 )
+region = Rect2( 256, 128, 128, 128 )
+
 [sub_resource type="AtlasTexture" id=37]
-atlas = ExtResource( 8 )
+atlas = ExtResource( 10 )
 region = Rect2( 0, 256, 128, 128 )
 
 [sub_resource type="AtlasTexture" id=38]
-atlas = ExtResource( 8 )
+atlas = ExtResource( 10 )
 region = Rect2( 128, 256, 128, 128 )
 
 [sub_resource type="SpriteFrames" id=39]
@@ -219,17 +227,17 @@ animations = [ {
 }, {
 "frames": [ SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ) ],
 "loop": true,
+"name": "crash_blue_doggo",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ) ],
+"loop": true,
 "name": "crash_orange_doggo",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 25 ), SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ), SubResource( 30 ), SubResource( 31 ), SubResource( 32 ) ],
+"frames": [ SubResource( 31 ), SubResource( 32 ), SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ) ],
 "loop": true,
 "name": "crash_orange_guy",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 33 ), SubResource( 34 ), SubResource( 35 ), SubResource( 36 ), SubResource( 37 ), SubResource( 38 ) ],
-"loop": true,
-"name": "crash_blue_doggo",
 "speed": 5.0
 } ]
 
@@ -244,6 +252,7 @@ func _ready():
 "
 
 [sub_resource type="GDScript" id=41]
+resource_name = "FollowPath"
 script/source = "extends Node
 
 var fsm : StateMachine
@@ -289,10 +298,14 @@ func _on_CollisionArea_area_entered(area : Area2D) -> void:
 				exit(\"BreakZone\", [])
 
 func _on_car_following(car : Node2D) -> void:
-	exit(\"FollowCar\", [car])
+	if is_active:
+		exit(\"FollowCar\", [car])
+		
+
 "
 
 [sub_resource type="GDScript" id=42]
+resource_name = "BreakZone"
 script/source = "extends Node
 
 var fsm : StateMachine
@@ -347,15 +360,20 @@ func _on_car_following(car : Node2D) -> void:
 		exit(\"FollowCar\", [car])
 "
 
-[sub_resource type="GDScript" id=55]
+[sub_resource type="GDScript" id=43]
+resource_name = "FollowCar"
 script/source = "extends Node
 
 var fsm : StateMachine
 var is_active = false
+var _last_area : Area2D
 
 var _car : Node2D = null
 
 onready var _path_follower : Node2D = get_node(\"../..\")
+
+func _ready():
+	_path_follower.connect(\"car_not_following_signal\", self, \"_on_car_not_following\")
 
 func enter(var params : Array) -> void:
 	if params.size() != 1:
@@ -367,25 +385,35 @@ func exit(next_state : String, params : Array) -> void:
 	fsm.change_to(next_state, params)
 	
 func process(delta) -> void:
-	if(_car.get_parent() != _path_follower.get_parent() or _car.speed > _path_follower.init_speed):
-		exit(\"FollowPath\", [])
-	else:
-		_update_car_position(delta)
+	_update_car_position(delta)
 
 func _update_car_position(delta) -> void:
-	_path_follower.set_offset(_path_follower.get_offset() + _car.speed * delta)
+	_path_follower.speed = _car.speed
+	_path_follower.set_offset(_path_follower.get_offset() + _path_follower.speed * delta)
+
+func _on_Trigger_area_entered(area):
+	if is_active && _last_area != area:
+		_last_area = area
+		match area.get_type():
+			Enums.TRIGGER_TYPE.CHANGE_TRACK:
+				_path_follower.change_path(area.get_track_path())
+				
+func _on_car_not_following(car : Node2D) -> void:
+	if is_active:
+		exit(\"FollowPath\", [])
+		_car = null
 "
 
-[sub_resource type="RectangleShape2D" id=43]
+[sub_resource type="RectangleShape2D" id=44]
 extents = Vector2( 6.3989, 2.36384 )
 
-[sub_resource type="RectangleShape2D" id=44]
+[sub_resource type="RectangleShape2D" id=45]
 extents = Vector2( 15.9143, 36.0754 )
 
-[sub_resource type="RectangleShape2D" id=45]
+[sub_resource type="RectangleShape2D" id=46]
 extents = Vector2( 15.9143, 36.9403 )
 
-[sub_resource type="Animation" id=46]
+[sub_resource type="Animation" id=47]
 length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimatedSprite:animation")
@@ -441,7 +469,7 @@ tracks/3/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=47]
+[sub_resource type="Animation" id=48]
 length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimatedSprite:animation")
@@ -497,7 +525,7 @@ tracks/3/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=48]
+[sub_resource type="Animation" id=49]
 length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimatedSprite:animation")
@@ -553,7 +581,7 @@ tracks/3/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=49]
+[sub_resource type="Animation" id=50]
 length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("AnimatedSprite:animation")
@@ -609,8 +637,8 @@ tracks/3/keys = {
 } ]
 }
 
-[sub_resource type="SegmentShape2D" id=54]
-b = Vector2( -30, 0 )
+[sub_resource type="RectangleShape2D" id=51]
+extents = Vector2( 17.0026, 21.9095 )
 
 [node name="CarPathFollower" type="PathFollow2D"]
 cubic_interp = false
@@ -634,7 +662,7 @@ script = SubResource( 41 )
 script = SubResource( 42 )
 
 [node name="FollowCar" type="Node" parent="StateMachine"]
-script = SubResource( 55 )
+script = SubResource( 43 )
 
 [node name="Tween" type="Tween" parent="StateMachine"]
 
@@ -646,7 +674,7 @@ collision_layer = 32
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Trigger"]
-shape = SubResource( 43 )
+shape = SubResource( 44 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 collision_layer = 0
@@ -655,7 +683,7 @@ collision_mask = 12
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2( 4.16087, 0.429287 )
 rotation = 1.5708
-shape = SubResource( 44 )
+shape = SubResource( 45 )
 one_way_collision_margin = 4.9
 
 [node name="Collision" type="Area2D" parent="."]
@@ -665,7 +693,7 @@ collision_mask = 12
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collision"]
 position = Vector2( 4.72208, 0.429279 )
 rotation = 1.5708
-shape = SubResource( 45 )
+shape = SubResource( 46 )
 one_way_collision = true
 one_way_collision_margin = 4.9
 
@@ -679,10 +707,10 @@ max_distance = 1000.0
 stream = ExtResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/crash_blue_BlindGuy = SubResource( 46 )
-anims/crash_blue_Doggo = SubResource( 47 )
-anims/crash_orange_BlindGuy = SubResource( 48 )
-anims/crash_orange_Doggo = SubResource( 49 )
+anims/crash_blue_BlindGuy = SubResource( 47 )
+anims/crash_blue_Doggo = SubResource( 48 )
+anims/crash_orange_BlindGuy = SubResource( 49 )
+anims/crash_orange_Doggo = SubResource( 50 )
 
 [node name="VisibilityEnabler2D" type="VisibilityEnabler2D" parent="."]
 position = Vector2( 1.66435, 0.693479 )
@@ -728,9 +756,11 @@ collision_layer = 0
 collision_mask = 64
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="FollowedArea"]
-position = Vector2( -37.0828, 0.875969 )
-shape = SubResource( 54 )
+position = Vector2( -53.1423, 0.291992 )
+shape = SubResource( 51 )
 [connection signal="area_entered" from="Trigger" to="StateMachine/FollowPath" method="_on_CollisionArea_area_entered"]
 [connection signal="area_entered" from="Trigger" to="StateMachine/BreakZone" method="_on_CollisionArea_area_entered"]
+[connection signal="area_entered" from="Trigger" to="StateMachine/FollowCar" method="_on_Trigger_area_entered"]
 [connection signal="body_shape_entered" from="Collision" to="." method="_on_Collision_body_shape_entered"]
 [connection signal="area_entered" from="FollowedArea" to="." method="_on_FollowedArea_area_entered"]
+[connection signal="area_exited" from="FollowedArea" to="." method="_on_FollowedArea_area_exited"]

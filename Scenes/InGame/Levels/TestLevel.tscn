@@ -451,7 +451,7 @@ points = PoolVector2Array( 46, 60, 93, 61, 92, 70, 43, 72 )
 } ]
 5/z_index = 0
 
-[sub_resource type="GDScript" id=51]
+[sub_resource type="GDScript" id=16]
 script/source = "extends Node2D
 
 onready var track_road_script = load(\"res://Scripts/Map/TrackPaths/TrackPath.gd\")
@@ -622,7 +622,7 @@ _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0, 14.6691, 0.898107, -14.6691, -0.898107, -512, 0, 0.299369, 19.459, -0.299369, -19.459, -544, -28, 0.428688, 28.2934, -0.428688, -28.2934, -544, -992, -13.2893, 0, 13.2893, 0, -512, -1024, 0, 0, 0, 0, -260, -1024, 0, 0, 0, 0, 264, -1024 )
 }
 
-[sub_resource type="GDScript" id=45]
+[sub_resource type="GDScript" id=44]
 script/source = "extends Area2D
 
 func get_track_path() -> Path2D:
@@ -632,15 +632,15 @@ func get_type():
 	return Enums.TRIGGER_TYPE.CHANGE_TRACK
 "
 
-[sub_resource type="RectangleShape2D" id=46]
+[sub_resource type="RectangleShape2D" id=45]
 extents = Vector2( 2.79376, 0.416122 )
 
-[sub_resource type="Curve2D" id=47]
+[sub_resource type="Curve2D" id=46]
 _data = {
 "points": PoolVector2Array( 0, 0, 0, 0, 0, 0.243805, 0, 0, 0, 0, -64, 0.243801 )
 }
 
-[sub_resource type="GDScript" id=48]
+[sub_resource type="GDScript" id=47]
 script/source = "extends Position2D
 
 
@@ -650,7 +650,7 @@ func _process(delta):
 	set_process(false)
 "
 
-[sub_resource type="GDScript" id=49]
+[sub_resource type="GDScript" id=48]
 script/source = "extends Node2D
 
 
@@ -661,7 +661,7 @@ func _on_character_moved(charac_position : Vector2):
 	self.position = -charac_position# + Vector2(512,300)
 "
 
-[sub_resource type="GDScript" id=50]
+[sub_resource type="GDScript" id=49]
 script/source = "extends TextureRect
 
 export (float, 1) var min_radius = 0.2
@@ -782,7 +782,7 @@ __meta__ = {
 
 [node name="Tracks" type="Node2D" parent="CameraPart"]
 scale = Vector2( 2, 2 )
-script = SubResource( 51 )
+script = SubResource( 16 )
 
 [node name="TrackPath" type="Node2D" parent="CameraPart/Tracks"]
 position = Vector2( 320, 416 )
@@ -830,6 +830,7 @@ one_way_collision_margin = 4.7
 curve = SubResource( 22 )
 
 [node name="CarPathFollower" parent="CameraPart/Tracks/TrackPath2/Paths/PathTrack" instance=ExtResource( 4 )]
+visible = false
 position = Vector2( -77.899, 63.1517 )
 rotation = 0.000571566
 offset = 1617.99
@@ -1099,17 +1100,17 @@ scale = Vector2( 3.3, 3.3 )
 monitoring = false
 collision_layer = 0
 collision_mask = 32
-script = SubResource( 45 )
+script = SubResource( 44 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CameraPart/Tracks/TrackPath12/Trigger"]
-shape = SubResource( 46 )
+shape = SubResource( 45 )
 one_way_collision = true
 one_way_collision_margin = 4.7
 
 [node name="Paths" type="Node2D" parent="CameraPart/Tracks/TrackPath12"]
 
 [node name="PathTrack" type="Path2D" parent="CameraPart/Tracks/TrackPath12/Paths"]
-curve = SubResource( 47 )
+curve = SubResource( 46 )
 
 [node name="Cross8" parent="CameraPart/Tracks" instance=ExtResource( 13 )]
 light_mask = 0
@@ -1121,10 +1122,10 @@ position = Vector2( 2176, -456 )
 
 [node name="Starting" type="Position2D" parent="CameraPart"]
 position = Vector2( -1352, 1944 )
-script = SubResource( 48 )
+script = SubResource( 47 )
 
 [node name="ForegroundPart" type="Node2D" parent="."]
-script = SubResource( 49 )
+script = SubResource( 48 )
 
 [node name="FG" type="TileMap" parent="ForegroundPart"]
 material = ExtResource( 27 )
@@ -1145,7 +1146,7 @@ rect_min_size = Vector2( 40, 40 )
 texture = ExtResource( 18 )
 expand = true
 flip_v = true
-script = SubResource( 50 )
+script = SubResource( 49 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
