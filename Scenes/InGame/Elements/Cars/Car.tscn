@@ -47,7 +47,7 @@ func change_path(path : Path2D) -> void:
 func _on_Collision_body_shape_entered(body_id, body, body_shape, area_shape):
 	if speed <= CRITICAL_DEAD_SPEED:
 		return
-	Events.emit_signal(\"stop_signal\", body_id)
+	Events.emit_signal(\"stop_signal\",body_id) # stop process of doggo and human
 	body.visible = false
 	$AnimationPlayer.play(\"crash_\"+$AnimatedSprite.animation+\"_\"+body.get_name())
 	yield($AnimationPlayer,\"animation_finished\")
