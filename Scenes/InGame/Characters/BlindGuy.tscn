@@ -1166,7 +1166,7 @@ tracks/9/keys = {
 polygon = PoolVector2Array( -9.19195, 28.052, -5.87138, 31.3726, 9.92375, 31.2829, 10.6417, 29.129, 10.1032, 23.5648, 2.02619, 21.5904, -7.48679, 22.0391 )
 
 [node name="BlindGuy" type="KinematicBody2D"]
-position = Vector2( 512, 300 )
+position = Vector2( 0, -8.815 )
 collision_layer = 6
 collision_mask = 27
 script = SubResource( 1 )
